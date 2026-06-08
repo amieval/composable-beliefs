@@ -1,27 +1,27 @@
 name: composable-beliefs
 
-  on:
-    push:
-    pull_request:
+on:
+  push:
+  pull_request:
 
-  jobs:
-    verify:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-        - uses: erlef/setup-beam@v1
-          with:
-            otp-version: '26'
-            elixir-version: '1.16'
-        - name: Fetch deps
-          run: mix deps.get
-        - name: Compile (warnings as errors)
-          run: mix compile --warnings-as-errors
-        - name: Test
-          run: mix test
-        - name: "Verify cb: schema"
-          run: mix cb.verify.schema
-        - name: Docs freshness gate (generated files match the graph)
-          run: |
-            mix cb.generate.claude_md --check
-            mix cb.generate.rules --check
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: '26'
+          elixir-version: '1.16'
+      - name: Fetch deps
+        run: mix deps.get
+      - name: Compile (warnings as errors)
+        run: mix compile --warnings-as-errors
+      - name: Test
+        run: mix test
+      - name: "Verify cb: schema"
+        run: mix cb.verify.schema
+      - name: Docs freshness gate (generated files match the graph)
+        run: |
+          mix cb.generate.claude_md --check
+          mix cb.generate.rules --check
