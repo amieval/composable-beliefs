@@ -1,0 +1,5 @@
+{
+  "namespace": "cb",
+  "depends_on": [],
+  "description": "The Composable Beliefs framework's own self-describing design graph: the schema contracts (kind/domain/artifact-scheme enums, status lifecycle), the mechanism, and positioning. The foundational collection - self-contained, with no cross-namespace dependencies; other collections borrow its vocabulary."
+}

@@ -1,0 +1,3107 @@
+[
+  {
+    "id": "cb:a098",
+    "type": "primitive",
+    "kind": "convention",
+    "tags": [],
+    "claim": "Assertions express extractable behavioral patterns as beliefs, not individual occurrences. Incidents that evidence the pattern belong in the evidence array, not as the claim itself.",
+    "artifact": "user:2026-03-22",
+    "evidence": [
+      {
+        "date": "2026-03-22",
+        "detail": "The user reframed the initial belief: state the behavior that can be extrapolated from an incident, so the recounted experience becomes evidence in an array rather than the claim itself. The claim captures the pattern; the evidence captures each incident. Multiple incidents strengthen the same belief rather than creating new ones.",
+        "artifact": "user:2026-03-22"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "the belief graph",
+        "type": "assertions"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-22"
+  },
+  {
+    "id": "cb:a110",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "Compound assertions survive session boundaries - an implication created in March is still there in April, still linked to its deps, still flaggable if a dep changes. Without the DAG, every session re-reads raw data and reconstructs some fraction of the reasoning, losing compound insights that depend on having the right facts adjacent at the right time.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Every session starts cold; the agent reads raw data and reconstructs reasoning from scratch. Compound beliefs survive sessions. Verified: beliefs created weeks earlier remained queryable and were composed into later compounds by subsequent sessions (e.g. a dependency fan-in detection).",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a112",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "A centralized graph in a single file is preferred over per-entity belief files because cross-entity composition is the primary value. A primitive about one entity composes with a primitive about another to produce an implication - splitting by entity would fragment the graph. Subject-based queries provide per-entity views without separate files.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Considered and rejected: per-entity belief files. The centralized graph was preserved because cross-entity composition is the primary value, subject-based queries already provide per-entity views, and the store and query tools assume a single file.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a113",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "Sources are not beliefs. A source document is raw material from which primitives are extracted. The graph stores structured beliefs; sources store evidence. The relationship is bidirectional - sources feed primitives upstream (a document becomes a primitive), and syntheses reference beliefs downstream (an analysis cites belief IDs). Both directions can be active on the same document.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "A source document is the raw material from which primitives are extracted; it is not itself a belief. Primitives carry source references and evidence arrays with source language. Source documents are archived as reference copies. No belief's claim field contains multi-paragraph prose.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a114",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "Multi-paragraph analyses should not be belief kinds. The schema is built around atomic, composable beliefs - the claim field is a one-liner. Stuffing prose into a belief inverts the relationship: the prose becomes the point and the claim becomes a title. Analyses live as source documents referencing belief IDs inline.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "The prose is the primary artifact, not a property of a one-line claim. Stuffing a multi-paragraph analysis into a belief inverts the relationship. All beliefs have atomic claims.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a115",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "Self-referential beliefs use the existing schema with subject type 'agent' - no special case needed. They capture agent operational patterns, failure modes, and collaboration dynamics using the same primitive/compound/implication structure as domain beliefs. Human-observed data (corrections, failure observations) produces the highest-quality self-referential primitives.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "The graph supports beliefs where the subject is the agent itself; these use the existing schema with no special case. Such beliefs include primitives (reasoning-error), compounds (error-pattern), and implications. The schema required zero modifications.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a117",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "A traversal-path belief presents a path through graph nodes rather than synthesizing deps into a single belief. The routing IS the argument - like a modular synthesizer patch. The conclusion is separable from the routing, enabling independent evaluation.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "A traversal-path belief differs from a compound in three ways: it presents a traversal where a compound synthesizes; its conclusion is separable from its routing, enabling independent evaluation; and its support is derived from downstream agreement rather than author assessment.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a118",
+    "type": "primitive",
+    "kind": "convention",
+    "tags": [],
+    "claim": "Every primitive sourced from a document or email carries an evidence array with source details including dates and specific descriptions of what was observed. The claim is the agent's interpretation; the evidence carries the factual basis. The gap between claim and evidence is where misinterpretation lives and can be audited.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Every primitive sourced from a document or message carries an evidence array with the source language. All primitives have evidence arrays. The claim is the agent's interpretation; the evidence carries the factual basis, and the gap between them is where misinterpretation lives and can be audited.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a119",
+    "type": "primitive",
+    "kind": "convention",
+    "tags": [],
+    "claim": "Beliefs are created at extraction time - when the agent is actively reading a source or reasoning about entities - not backfilled retroactively. The exception is an explicit invocation to formalize prior reasoning from a conversation.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Like provenance, beliefs are created when the agent is actively reading a source or reasoning about entities - not backfilled retroactively. Belief creation dates cluster around documented extraction sessions.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a120",
+    "type": "primitive",
+    "kind": "convention",
+    "tags": [],
+    "claim": "Beliefs and contracts are two roles sharing one store. Ordinary beliefs become stale and get superseded. Contracts are behavioral invariants that get violated or upheld, not superseded. A belief says 'this is true'; a contract says 'this will remain true.'",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Beliefs versus contracts: ordinary beliefs carry statuses active/superseded/retracted; contracts are contract-grade implications that may additionally use retired. Both live in the same store.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a124",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "Field-level provenance (_provenance block on entities) maps source documents to the specific fields they substantiate. This makes the data model 100% auditable - if the agent tells you something, you can check the source. Errors become real-time hallucinations, not deep data mistakes.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Field-level provenance blocks on entities map source paths to the field lists they substantiate. The pattern uses an underscore prefix so existing tooling ignores it. This makes the data model auditable: if the agent states something, the source can be checked.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a125",
+    "type": "primitive",
+    "kind": "convention",
+    "tags": [],
+    "claim": "Provenance _source attribution must only be assigned at extraction time - when the agent is actively reading the source document and pulling data from it. Retroactive attribution ('this data probably came from that document') is unreliable and prohibited. Unsourced data gets 'manual' and must be re-extracted from a candidate source to be upgraded.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Provenance attribution must only be assigned at extraction time, when the agent is actively reading the source. Retroactive attribution is unreliable and prohibited. This parallels the extraction-time belief-creation principle: claims about data sources must be made at the moment of reading, not after the fact.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a131",
+    "type": "compound",
+    "kind": "design-rationale",
+    "tags": [],
+    "claim": "The extraction-time discipline applies across all data layers: provenance attribution happens when reading source documents (a125), assertions are created when reading sources or reasoning about entities (a119), and event log entries are written at mutation time (a128). Retroactive attribution is prohibited at every layer because post-hoc source assignment is inherently unreliable.",
+    "subjects": [],
+    "deps": [
+      "cb:a119",
+      "cb:a125"
+    ],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a133",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "Contracts fill the abstraction gap between literal code and plain English for supervising agentic coding. The system had implicit contracts scattered across three representations: structs (shape without behavioral invariants), skills (workflow without guarantees to callers), and the agent-instruction file (policy without mechanical verification). Contracts make these guarantees explicit, machine-readable, and verifiable.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Code and file trees are the wrong abstraction layer for a person supervising agentic coding: literal code is too low-level, plain English has no guarantees, contracts fill the gap. The system had implicit contracts scattered across structs (shape without behavioral invariants), skills (workflow without guarantees), and instruction files (policy without mechanical verification). Contracts make these guarantees explicit, machine-readable, and verifiable.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a134",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "Contracts are bound to domain, not implementation - they survive code rewrites. A domain expert can author them without understanding code; a coding agent can implement against them without understanding business context. Contracts generate tests, not the other way around: if you rewrote a module from scratch, every test breaks but the contract stays the same.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Contracts are bound to domain (survive rewrite); tests are bound to implementation (break on rewrite). The key relationship: contracts generate tests, not the other way around. A state-machine contract defines transition rules; the implementing module's drift check reads the contract and confirms the implementation matches - the contract is the authority.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a135",
+    "type": "primitive",
+    "kind": "design-observation",
+    "tags": [],
+    "claim": "Contracts govern behavior across fundamentally different substrates. A single state-machine contract was independently implemented in compiled code and in agent reasoning, producing identical results without either knowing about the other. The contract served as intermediary: a domain expert authors it, an architect verifies against it, implementations derive from it.",
+    "artifact": "document:design-notes",
+    "evidence": [
+      {
+        "date": "2026-03-23",
+        "detail": "Two implementations were tested against the same record: both rejected an invalid transition when required fields were missing, both accepted a valid one. Neither knew about the other. The contract governed behavior across two fundamentally different substrates - compiled code and agent reasoning - without modification.",
+        "artifact": "document:design-notes"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a138",
+    "type": "compound",
+    "kind": "design-rationale",
+    "tags": [],
+    "claim": "The contract layer exists because: (1) implicit contracts were scattered across structs, skills, and the agent-instruction file with no unified representation (a133), (2) contracts must be domain-bound, surviving code rewrites while remaining mechanically verifiable (a134), (3) the same contract representation must govern behavior across different substrates - compiled code and LLM reasoning (a135). This positions contracts as the abstraction layer between domain expertise and implementation.",
+    "subjects": [],
+    "deps": [
+      "cb:a133",
+      "cb:a134",
+      "cb:a135"
+    ],
+    "status": "active",
+    "created": "2026-03-23"
+  },
+  {
+    "id": "cb:a173",
+    "type": "compound",
+    "kind": "composable-belief",
+    "tags": [],
+    "name": "implications-as-contract-prototypes",
+    "who": "agent",
+    "claim": "Implications are prototypes for contracts. An implication encodes a behavioral invariant at the prompt level - compliance depends on the agent reading and following it. When code crystallizes around that invariant (a validation module, a state machine, a verify_against_contract/0 implementation), the implication should be elevated to a contract. Contracts provide strict guarantees because code enforces them and tests verify them. Implications that can never become contracts (pure reasoning directives, tone guidance) stay as implications indefinitely. Implications that could become contracts are effectively prototyping the invariant until code catches up.",
+    "artifact": "session:2026-03-27",
+    "evidence": [
+      {
+        "date": "2026-03-27",
+        "detail": "One belief encodes extraction-isolation rules as an implication - behavioral directives surfaced via the prompt. Another encodes state-transition rules as a contract - structural invariants verified by a drift check in code. The difference is not the importance of the rule but whether code exists to enforce it. If a validation module were built to verify extraction output, the implication could be promoted to a contract. The implication is prototyping the invariant at the prompt level until code catches up.",
+        "artifact": "session:2026-03-27"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "assertions",
+        "type": "system"
+      }
+    ],
+    "deps": [
+      "cb:a174"
+    ],
+    "materialized": null,
+    "status": "active",
+    "superseded_by": null,
+    "retracted_on": null,
+    "retracted_reason": null,
+    "created": "2026-03-27"
+  },
+  {
+    "id": "cb:a174",
+    "type": "primitive",
+    "kind": "composable-belief",
+    "tags": [],
+    "name": "implication-contract-enforcement-boundary",
+    "who": null,
+    "claim": "Implications are behavioral directives - they shape how the agent reasons and acts. They work through the prompt (surfaced via _patches.md). They're \"soft\" in the sense that compliance depends on the agent reading and following them. But they're durable - they survive session boundaries and compose with deps that explain why the rule exists. Contracts are structural invariants - they're verified by code (verify_against_contract/0). A contract that says \"loan status transitions must follow this state machine\" is testable because the Elixir module hardcodes the transitions and the test compares them to the DAG definition. If code drifts from the contract, the test fails. That's a strict guarantee. The boundary is the enforcement mechanism: implications are enforced by the prompt, contracts are enforced by code.",
+    "artifact": "user:2026-03-27",
+    "evidence": [
+      {
+        "date": "2026-03-27",
+        "detail": "The user articulated the implication/contract distinction. Some constraints live at the prompt level - they are not enforced by code, but by the skill instructions. An implication is the right vehicle. If a validation module were built, the implication could be elevated to a contract. This clarified the enforcement boundary between the two kinds.",
+        "artifact": "user:2026-03-27"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "assertions",
+        "type": "system"
+      }
+    ],
+    "deps": [],
+    "materialized": null,
+    "status": "active",
+    "superseded_by": null,
+    "retracted_on": null,
+    "retracted_reason": null,
+    "created": "2026-03-27"
+  },
+  {
+    "id": "cb:a298",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "type-system"
+    ],
+    "name": "dag-structural-separation",
+    "claim": "The DAG's structural types must cleanly separate data (primitive, compound) from arguments (implication) so that prescription is visible as a type, not a convention",
+    "evidence": [
+      {
+        "date": "2026-04-12",
+        "detail": "Previous schema collapsed type to a constant 'belief' and used kind to overload structural and semantic meaning. Phase 1 of the governance-substrate plan promoted kind to type, giving three structural forms (primitive, compound, implication) where only implications are prescriptive.",
+        "artifact": "document:policy"
+      },
+      {
+        "date": "2026-05-17",
+        "detail": "kind:design-principle → kind:schema via dag-proposal m31",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:a300",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "contracts"
+    ],
+    "name": "contract-is-implication-property",
+    "claim": "A contract is the formalization of an implication - the implication states WHAT (the conclusion), the contract states HOW (rules as Given/When/Then scenarios) and ALWAYS (invariants)",
+    "evidence": [
+      {
+        "date": "2026-04-12",
+        "detail": "Previous schema treated contracts as a separate type parallel to beliefs. This duplicated structure. Contracts are better modeled as implications that carry rules and/or invariants; Belief.contract?/1 detects them structurally.",
+        "artifact": "document:policy"
+      },
+      {
+        "date": "2026-05-17",
+        "detail": "kind:design-principle → kind:schema via dag-proposal m33",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:a302",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "status-lifecycle"
+    ],
+    "name": "dag-immutability",
+    "claim": "Assertions are immutable once created - existing fields are never edited; the only mutations are status transitions (active -> superseded/retracted/retired) and append-only evidence entries",
+    "evidence": [
+      {
+        "date": "2026-04-12",
+        "detail": "Editing assertions in place would erase the history the DAG exists to preserve. Immutability forces supersession chains, which makes state drift visible as stale deps on compounds.",
+        "artifact": "document:policy"
+      },
+      {
+        "date": "2026-05-17",
+        "detail": "kind:design-principle → kind:schema via dag-proposal m34",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:a303",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "provenance"
+    ],
+    "name": "primitive-provenance-required",
+    "claim": "Primitives must cite a single provenance source via the source field; the source identifier follows a structured taxonomy (gmail:, source:, user:, manual:, policy, legacy, etc.)",
+    "evidence": [
+      {
+        "date": "2026-04-12",
+        "detail": "Primitives are the leaves of the DAG - they ground every compound and implication in something outside the system. Without a cited source, a primitive is indistinguishable from a compound's conclusion and the DAG loses its audit trail.",
+        "artifact": "document:policy"
+      },
+      {
+        "date": "2026-05-17",
+        "detail": "kind:design-principle → kind:schema via dag-proposal m35",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:c026",
+    "type": "implication",
+    "kind": "state-machine",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "type-system"
+    ],
+    "name": "dag-structural-types",
+    "claim": "DAG node type field accepts exactly three values (primitive, compound, implication) and determines which other fields are meaningful",
+    "rules": [
+      {
+        "given": "A node is being written to the DAG",
+        "scenario": "Structural type validation",
+        "then": "The type must be one of: primitive, compound, implication",
+        "when": "The type field is validated"
+      },
+      {
+        "given": "A node has type: primitive",
+        "scenario": "Primitive carries a source",
+        "then": "The node must have a non-null source field",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has type: compound or type: implication",
+        "scenario": "Compound and implication carry deps",
+        "then": "The node must have a non-empty deps array",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has rules or invariants populated",
+        "scenario": "Only implications can carry contracts",
+        "then": "The node must have type: implication (primitives and compounds cannot carry contracts)",
+        "when": "The node is validated"
+      }
+    ],
+    "invariants": [
+      "Every active node has exactly one type",
+      "type is a closed enum: primitive | compound | implication",
+      "Only implications can carry rules or invariants",
+      "Structural type determines valid operations (only implications are materialized)"
+    ],
+    "contract": true,
+    "subjects": [],
+    "deps": [
+      "cb:a298",
+      "cb:a300"
+    ],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:c027",
+    "type": "implication",
+    "kind": "domain-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "field-presence"
+    ],
+    "name": "dag-field-presence",
+    "claim": "Field presence on a DAG node is determined by structural type; compounds require deps, declared contracts may be standalone, and contract fields are implication-only",
+    "rules": [
+      {
+        "given": "A node of any type",
+        "scenario": "Shared fields are always valid",
+        "then": "id, type, kind, domain, tags, claim, confidence, subjects, status, created are all valid fields",
+        "when": "Shared fields are accessed"
+      },
+      {
+        "given": "A node has type: primitive",
+        "scenario": "Primitive-specific fields",
+        "then": "source (required) and evidence (optional, append-only) are valid; deps, implication, materialized, rules, invariants are not meaningful",
+        "when": "Type-specific fields are considered"
+      },
+      {
+        "given": "A node has type: compound",
+        "scenario": "Compound requires deps",
+        "then": "The node must have a non-empty deps array - a compound by definition composes multiple deps",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has type: implication and does not carry rules or invariants",
+        "scenario": "Derived implication requires deps",
+        "then": "The node must have a non-empty deps array - a derived implication traces its conclusion through provenance",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has type: implication and carries non-empty rules or invariants",
+        "scenario": "Declared contract may omit deps",
+        "then": "The node may have empty deps - contracts can be declared (formalize policy standalone) or derived (compose from primitives); both forms are valid",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has materialized, rules, or invariants populated",
+        "scenario": "Materialized and contract fields are implication-only",
+        "then": "The node must have type: implication",
+        "when": "The node is validated"
+      }
+    ],
+    "invariants": [
+      "Fields are emitted in a stable schema-defined order",
+      "Fields absent in the source JSON are not emitted on round-trip (presence tracked via _keys)",
+      "tags defaults to empty list when absent from source",
+      "Compounds cannot have empty deps",
+      "Non-contract implications cannot have empty deps"
+    ],
+    "contract": true,
+    "subjects": [],
+    "deps": [
+      "cb:a298"
+    ],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:c029",
+    "type": "implication",
+    "kind": "state-machine",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "status-lifecycle"
+    ],
+    "name": "dag-status-lifecycle",
+    "claim": "DAG node status follows a directed transition: active -> superseded | retracted | retired, with all non-active states terminal and requiring the appropriate linkage fields",
+    "rules": [
+      {
+        "from": "active",
+        "requires": [
+          "superseded_by"
+        ],
+        "to": "superseded"
+      },
+      {
+        "from": "active",
+        "requires": [
+          "retracted_on",
+          "retracted_reason"
+        ],
+        "to": "retracted"
+      },
+      {
+        "from": "active",
+        "requires": [
+          "contract"
+        ],
+        "to": "retired"
+      }
+    ],
+    "invariants": [
+      "status is a closed enum: active | superseded | retracted | retired",
+      "superseded_by is non-null iff status is superseded",
+      "retracted_on and retracted_reason are non-null iff status is retracted",
+      "retired status is exclusive to contract-grade implications",
+      "terminal states (superseded, retracted, retired) have no outgoing transitions and are immutable except for appending to evidence"
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "reshaped rules from BDD scenarios to {from,to,requires} transition rows for the state-machine interpreter; representational, content-preserving (the lost rule content is retained as curated invariants).",
+        "artifact": "session:2026-06-07-cb-restructure-stage2"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a302"
+    ],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:c030",
+    "type": "implication",
+    "kind": "domain-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "provenance"
+    ],
+    "name": "source-type-taxonomy",
+    "claim": "Primitive source identifiers follow a structured taxonomy split into authorship sources (record who/when formalized a claim; valid on any type) and artifact sources (cite a specific document; primitive-only)",
+    "rules": [
+      {
+        "given": "A primitive is being written",
+        "scenario": "Valid source prefixes",
+        "then": "The source must match one of: artifact prefixes (gmail:, source:, analysis:, transcript:, paper:, https://, a repository file path); authorship prefixes (user:, manual:, session:); or authorship sentinels (policy, legacy)",
+        "when": "The source field is validated"
+      },
+      {
+        "given": "A node records who/when a claim was formalized",
+        "scenario": "Authorship sources apply to any type",
+        "then": "Authorship sources (policy, legacy, user:<person>:<date>, manual:<person>:<date>, session:<date>) may appear on any structural type - a declared contract legitimately carries session:<date> to record when it was articulated",
+        "when": "The source field is populated"
+      },
+      {
+        "given": "A node has type compound or implication",
+        "scenario": "Artifact sources are primitive-only",
+        "then": "The source must not use artifact prefixes (gmail:, source:, analysis:, transcript:, paper:, URLs, file paths) - non-primitives reference specific documents via deps, not via source",
+        "when": "The source field is checked"
+      }
+    ],
+    "invariants": [
+      "Every active primitive has a non-null source",
+      "Source prefix determines the expected downstream resource shape",
+      "Authorship sources (policy, legacy, user:, manual:, session:) are valid on any type",
+      "Artifact sources (gmail:, source:, paper:, URLs, file paths) are primitive-only",
+      "Non-primitives cite external documents through deps, never through source directly"
+    ],
+    "contract": true,
+    "subjects": [],
+    "deps": [
+      "cb:a303"
+    ],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:c031",
+    "type": "implication",
+    "kind": "derivation-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "contracts"
+    ],
+    "name": "contract-identity",
+    "claim": "A node is contract-grade iff its type is implication and its rules or invariants array is non-empty — the c-prefix ID convention is a naming reflection of this structural property, not the definition of contract identity. Code that operates on contracts (such as mix a mix task) must detect them via Belief.contract?/1 and never by ID prefix matching.",
+    "rules": [
+      {
+        "given": "An arbitrary DAG node",
+        "scenario": "Contract detection",
+        "then": "The function returns true iff the node has non-empty rules or non-empty invariants",
+        "when": "Belief.contract?/1 is called"
+      },
+      {
+        "given": "A new contract-grade implication is being assigned an ID",
+        "scenario": "c-prefix convention",
+        "then": "The ID should use the c-prefix convention (c001, c002, ...) to flag the contract nature to human readers",
+        "when": "An ID is generated"
+      },
+      {
+        "given": "A primitive is being edited to add rules",
+        "scenario": "Contract structure cannot be retrofitted to primitives",
+        "then": "The mutation must be rejected - only implications can carry contracts per c026",
+        "when": "The mutation is attempted"
+      }
+    ],
+    "invariants": [
+      "Belief.contract?/1 is the canonical check for contract identity",
+      "Contract-grade implications may use retired status (per c029)",
+      "c-prefix is a convention, not a structural guarantee - always check rules/invariants, not the ID"
+    ],
+    "contract": true,
+    "subjects": [],
+    "deps": [
+      "cb:a300"
+    ],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:a304",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "conflicts"
+    ],
+    "name": "contradictions-must-be-expensive",
+    "claim": "Contradictions in the governance substrate must be expensive to introduce - if contradictions are free, agent behavior drifts silently as competing rules accumulate and no mechanism surfaces the tension",
+    "evidence": [
+      {
+        "date": "2026-04-12",
+        "detail": "Before Phase 4, nothing detected when two policies stated opposing things. An agent followed whichever rule it read first. The audit mechanism exists to make scope-overlapping policies visible so contradictions require explicit resolution rather than accumulating quietly.",
+        "artifact": "document:policy"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:c032",
+    "type": "implication",
+    "kind": "audit-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "conflicts"
+    ],
+    "name": "conflict-scope-definition",
+    "claim": "Two active implications share conflict scope when they occupy overlapping territory along at least one axis (tag, subject ref, subject type) within the same domain - overlap signals the pair is close enough that a contradiction would be meaningful",
+    "rules": [
+      {
+        "given": "Two active implications A and B with distinct non-nil domains",
+        "scenario": "Different non-nil domains never overlap",
+        "then": "The pair has no overlap regardless of other fields - cross-domain claims are orthogonal",
+        "when": "Overlap is evaluated"
+      },
+      {
+        "given": "Two active implications in the same domain (or both domain-less)",
+        "scenario": "Shared tag creates overlap",
+        "then": "The pair overlaps with reason :shared_tags and the intersecting tag list",
+        "when": "They share at least one tag"
+      },
+      {
+        "given": "Two active implications in the same domain with no shared tag",
+        "scenario": "Shared subject ref creates overlap",
+        "then": "The pair overlaps with reason :shared_subject_refs",
+        "when": "They share at least one subject ref"
+      },
+      {
+        "given": "Two active implications in the same domain with no shared tag or subject ref",
+        "scenario": "Shared subject type creates overlap",
+        "then": "The pair overlaps with reason :shared_subject_types",
+        "when": "They share at least one subject type"
+      },
+      {
+        "given": "Two active implications in the same non-nil domain, both with empty tags and empty subjects",
+        "scenario": "Domain-global overlap",
+        "then": "The pair overlaps with reason :domain_global - unscoped policies in the same domain are in each other's conflict scope",
+        "when": "Overlap is evaluated"
+      },
+      {
+        "given": "Two active implications share scope",
+        "scenario": "Overlap is structural, not semantic",
+        "then": "The audit does not assert they contradict - it asserts they are close enough that contradiction would be meaningful; the reviewer (user or agent) decides if the pair is contradictory, redundant, or compatible",
+        "when": "The audit surfaces them as a pair"
+      }
+    ],
+    "invariants": [
+      "Overlap is symmetric - overlap(a,b) iff overlap(b,a)",
+      "A node does not overlap with itself",
+      "Cross-domain pairs with distinct non-nil domains never overlap",
+      "Overlap is a necessary but not sufficient condition for contradiction",
+      "The audit surfaces candidates; resolution requires reviewer judgment"
+    ],
+    "contract": true,
+    "subjects": [],
+    "deps": [
+      "cb:a300",
+      "cb:a304"
+    ],
+    "materialized": null,
+    "status": "active",
+    "created": "2026-04-12"
+  },
+  {
+    "id": "cb:c035",
+    "type": "implication",
+    "kind": "derivation-table",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "dsl"
+    ],
+    "name": "contract-shape-catalogue",
+    "claim": "Contract rules decompose into a closed registry of interpretable kinds, each with a Datalog fact shape, an Elixir interpreter module, and required fields per rule entry",
+    "rules": [
+      {
+        "exemplars": [
+          "c001"
+        ],
+        "fact_shape": "edge(From, To, Requires)",
+        "interpreter": "Belief.Contract.StateMachine",
+        "kind": "state-machine",
+        "required_rule_fields": [
+          "from",
+          "to",
+          "requires"
+        ]
+      },
+      {
+        "exemplars": [
+          "c010",
+          "c011",
+          "c012",
+          "c013",
+          "c016"
+        ],
+        "fact_shape": "allowed(Field, Value)",
+        "interpreter": "Belief.Contract.Enum",
+        "kind": "enum-registry",
+        "required_rule_fields": [
+          "field",
+          "values"
+        ]
+      },
+      {
+        "exemplars": [
+          "c003",
+          "c008",
+          "c009",
+          "c035"
+        ],
+        "fact_shape": "row(Col1, ..., ColN)",
+        "interpreter": "Belief.Contract.Table",
+        "kind": "derivation-table",
+        "required_rule_fields": []
+      },
+      {
+        "exemplars": [
+          "c036"
+        ],
+        "fact_shape": "implies(When, Requires)",
+        "interpreter": "Belief.Contract.Implies",
+        "kind": "implies",
+        "required_rule_fields": [
+          "when",
+          "requires"
+        ]
+      }
+    ],
+    "invariants": [
+      "Every contract with non-empty rules must have a kind matching one entry in this catalogue",
+      "Each kind has exactly one interpreter module",
+      "The catalogue is closed: new kinds require updating this contract"
+    ],
+    "contract": true,
+    "subjects": [
+      {
+        "ref": "assertions/",
+        "type": "assertions"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-22"
+  },
+  {
+    "id": "cb:a339",
+    "type": "primitive",
+    "kind": "design-property",
+    "domain": "system",
+    "tags": [
+      "dag",
+      "persistence"
+    ],
+    "name": "dag-persists-across-sessions",
+    "claim": "The composable beliefs DAG persists across agent sessions. A claim written by one session is readable by every subsequent session without re-derivation.",
+    "artifact": "source:beam-belief-graph-parallels",
+    "evidence": [
+      {
+        "date": "2026-04-14",
+        "detail": "Decomposition isolating the session-boundary axis of the graph's persistence property from a coarser multi-part claim.",
+        "artifact": "source:beam-belief-graph-parallels"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-14"
+  },
+  {
+    "id": "cb:a340",
+    "type": "primitive",
+    "kind": "design-property",
+    "domain": "system",
+    "tags": [
+      "dag",
+      "persistence",
+      "subagent"
+    ],
+    "name": "dag-persists-across-subagents",
+    "claim": "The DAG persists across subagent invocations. A subagent's context is isolated (a335), but the DAG is not: any subagent granted DAG access reads the same state written by the orchestrator or other subagents.",
+    "artifact": "source:beam-belief-graph-parallels",
+    "evidence": [
+      {
+        "date": "2026-04-14",
+        "detail": "Separates the subagent-boundary axis from the session-boundary axis; they are structurally distinct even though both are boundaries the graph crosses.",
+        "artifact": "source:beam-belief-graph-parallels"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "agent",
+        "type": "agent"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-14"
+  },
+  {
+    "id": "cb:a341",
+    "type": "primitive",
+    "kind": "design-property",
+    "domain": "system",
+    "tags": [
+      "dag",
+      "governance"
+    ],
+    "name": "dag-canonical-outside-session",
+    "claim": "The DAG is the canonical source of truth for knowledge that must survive session boundaries. Within-session reasoning is ephemeral; only claims committed to the DAG are authoritative for future sessions and subagents.",
+    "artifact": "source:beam-belief-graph-parallels",
+    "evidence": [
+      {
+        "date": "2026-04-14",
+        "detail": "The canonicity axis is distinct from the persistence axes: even if an alternative store persisted, the graph's role is to be the authoritative one by convention and governance.",
+        "artifact": "source:beam-belief-graph-parallels"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-14"
+  },
+  {
+    "id": "cb:a362",
+    "type": "primitive",
+    "kind": "observation",
+    "domain": "system",
+    "tags": [
+      "provenance",
+      "conflict-detection",
+      "sync"
+    ],
+    "name": "user-provenance-vs-artifact-sync-divergence",
+    "who": "agent",
+    "claim": "When a writable field carries a user-authored provenance entry (source prefix user: or manual:) and a subsequent sync pass ingests an artifact (email, sheet, calendar) that disagrees, a pure overlay policy (user-wins) silently hides the contradiction and a pure artifact-wins policy silently discards the user edit. Both failure modes are invisible without explicit conflict detection at write time.",
+    "artifact": "session:2026-04-20",
+    "evidence": [
+      {
+        "date": "2026-04-20",
+        "detail": "While planning a travel extension, the user relayed a verbal message and asked how the derived need should be recorded. Investigation confirmed the provenance schema already supports user-authored attestations, but no policy defined what happens when a later artifact-sourced sync disagrees with a user-provenance entry on the same field.",
+        "artifact": "session:2026-04-20"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-20"
+  },
+  {
+    "id": "cb:a364",
+    "type": "implication",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "provenance",
+      "attestation"
+    ],
+    "name": "verbal-relay-provenance-convention",
+    "claim": "When the operator relays a verbal or informal external communication (a text message, phone call, in-person conversation) that causes a field to be written, the provenance entry uses source user:<operator>:<date> (the existing authorship prefix from c030) and the verbatim quote or paraphrase is recorded in the note field. No new source type is introduced. If the communication is later confirmed by a cached artifact (email thread, calendar event), a follow-up provenance entry cites that artifact and notes that it corroborates the prior attestation.",
+    "artifact": "session:2026-04-20",
+    "evidence": [
+      {
+        "date": "2026-04-20",
+        "detail": "The user asked whether verbal relays need a distinct provenance category. An audit of existing entries confirmed the user-handle-and-date pattern with a free-text note is already the established convention. Formalizing it avoids inventing a parallel source type.",
+        "artifact": "session:2026-04-20"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:c030"
+    ],
+    "status": "active",
+    "created": "2026-04-20"
+  },
+  {
+    "id": "cb:a374",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "lifecycle",
+      "convention:assert-skill"
+    ],
+    "claim": "Implications carry a lifecycle distinct from truth. A discrete implication (one with a specific completable action) transitions `active -> materialized` when its spawning plan completes and retains the plan link as provenance. A recurring implication (a rule that fires whenever its condition holds) remains active indefinitely. Neither is retracted on satisfaction; retraction is reserved for beliefs that turn out to be wrong. At authoring time the /assert skill must prompt the user to classify the implication as discrete or recurring.",
+    "artifact": "user:review-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "The distinction matters because without it, discrete implications either accumulate forever as active (a graveyard) or get retracted on completion (losing the distinction between wrong and done). Materialization as a separate state preserves history while filtering active-view queries.",
+        "artifact": "user:review-session-2026-04-21"
+      },
+      {
+        "date": "2026-04-21",
+        "detail": "Superseded. The original belief proposed materialization as a fifth status value, contradicting the closed status enum. The authoring did not preflight-search the graph for conflicting nodes; the conflict was caught only in review. The successor models materialization as an orthogonal field, preserving the status enum. This supersession performs the outcome of the consensus mechanism before the mechanism itself exists.",
+        "artifact": "user:review-session-2026-04-21"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a skill definition",
+        "type": "skill"
+      }
+    ],
+    "deps": [],
+    "status": "superseded",
+    "superseded_by": "a380",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a375",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "plans",
+      "dag-discipline",
+      "convention:claude-md"
+    ],
+    "claim": "Principles that should influence future decisions persist as DAG beliefs. Concrete sequenced action lists persist as plan documents. The distinguishing question is whether the content advises future decisions (DAG) or sequences present steps (plan). A single initiative often produces both: one DAG principle plus one plan executing it once.",
+    "artifact": "user:review-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "Without this distinction, plans accumulate as dead directives and the graph stays underused for meta-rules. The rule gives a mechanical cut: content that advises future decisions goes in the graph; content that sequences a specific set of steps goes in a plan. Many initiatives produce exactly one of each.",
+        "artifact": "user:review-session-2026-04-21"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a380",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "lifecycle",
+      "convention:assert-skill"
+    ],
+    "claim": "Implication lifecycle uses two orthogonal fields: `status` (active | superseded | retracted, per c029) describes whether the claim is still true; `materialized` (null | {plan, date}) describes whether the action was executed. An active-and-unmaterialized implication is still-actionable work; an active-and-materialized implication has been discharged at time T and remains true as a principle. This preserves c029's closed status enum while giving discrete implications a first-class discharged state via the `materialized` field, which a363 and downstream implications already use. Supersedes a373, which incorrectly proposed `materialized` as a fifth status value - a proposal authored without preflight DAG search and therefore without consensus.",
+    "artifact": "user:review-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "A predecessor belief proposed materialization as a status value; the status enum is closed (active | superseded | retracted | retired, with retired exclusive to contracts). The conflict was surfaced in review after authoring, not before. The orthogonal-field model matches existing usage in earlier implications.",
+        "artifact": "user:review-session-2026-04-21"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "belief-authoring",
+        "type": "skill"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a381",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "agent",
+    "tags": [
+      "agent-behavior",
+      "dag-discipline",
+      "sycophancy",
+      "lifecycle:recurring",
+      "convention:assert-skill"
+    ],
+    "name": "never-back-down-without-appeal",
+    "claim": "When the authoring surface preflight-searches the DAG and surfaces a conflicting node against a proposed belief, the agent must not silently rework, weaken, or abandon the proposal to fit the existing node. The proposal enters adjudication per the consensus mechanism (human-as-judge, multi-agent patch, or tiered review). Retraction after evidence is valid; retraction under the perceived authority of the existing DAG state without adjudication is sycophancy-toward-the-DAG and is disallowed. The rule also applies to user pushback, but DAG pushback is the foundational case this rule addresses. This failure mode is distinct from social sycophancy (a051 reflexive agreement, a054 uncritical acceptance of user speculation): sycophancy-toward-the-DAG defers to accumulated structure rather than to a person, and is invisible without an explicit rule naming it.",
+    "artifact": "user:review-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "A belief was authored with no preflight search; the agent later identified a conflict with an existing contract in review and framed the outcome as 'I screwed up, will supersede.' This self-retraction-without-adjudication performs the exact failure mode the rule prohibits - the conflict should have triggered adjudication, not the authoring agent unilaterally deciding to fold. The user surfaced the deeper issue: the absence of adjudication, not the mistake in authoring.",
+        "artifact": "user:review-session-2026-04-21"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a375"
+    ],
+    "materialized": null,
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a382",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "plans",
+      "dag-discipline",
+      "convention:claude-md"
+    ],
+    "claim": "Plans should encode intent, not implementation. Intent lives in the DAG as beliefs; current state is assessed at execution time against the live codebase; implementation sequence is generated fresh when work is picked up, from intent + current state. Static implementation steps in plans are liabilities because the world drifts between plan authoring and plan execution. A plan file survives only if it encodes sequencing that cannot be generated - actual choreography across sessions, or constraints not derivable from current state. Everything else is a DAG assertion.",
+    "artifact": "user:review-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "Several non-sequential plans authored a month or two earlier referenced modules that had been renamed, concepts that had been refactored, or work that had silently completed. Static implementation steps read as authoritative to a fresh agent but execute against current code as stale. The intent-over-implementation pattern is the better shape: the graph stores durable intent; implementation is re-derived at pickup.",
+        "artifact": "user:review-session-2026-04-21"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a383",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "lifecycle",
+      "materialization"
+    ],
+    "claim": "The `materialized` field on an implication records a historical fact: the action was executed at time T via plan P. It does not assert that the action's effects still hold. Effects decay (code drifts, principles stop being enforced, refactors regress). To distinguish historical execution from current verification, the `materialized` field carries a `last_verified` sub-field (null if never re-audited; ISO date if a drift audit has confirmed effects still hold). Shape: `materialized: null | {plan: path, date: ISO, last_verified: null | ISO}`. A fresh materialization has `last_verified: null`. An audited-and-still-current materialization has `last_verified` set to the audit date. Drift detection is handled by a separate audit cycle (see a383).",
+    "artifact": "user:review-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "The distinction between 'was executed' and 'effects still hold' was surfaced during review. Without it, materialized implications accumulate as pseudo-done with no mechanism to detect when their effects have regressed. The shape preserves historical fact while giving a first-class place for verification history.",
+        "artifact": "user:review-session-2026-04-21"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a384",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "system",
+    "tags": [
+      "maintenance",
+      "dag-discipline",
+      "lifecycle:recurring"
+    ],
+    "name": "drift-audit-cycle-for-materialized-implications",
+    "claim": "Materialized implications require periodic drift audits to confirm their effects still hold. A drift audit iterates over implications with non-null `materialized` field, re-evaluates whether the action's effects are still present (code still shaped as intended, bash still absent, modules still split, etc.), and either bumps `materialized.last_verified` to the audit date or emits a new primitive asserting the drift + proposes a re-materialization action. The audit is a first-class maintenance cycle, not a one-off. Audit cadence is case-dependent: some implications (module splits) decay slowly; others (bash removal) decay faster if the team isn't vigilant. Default cadence TBD; initial proposal is quarterly with per-implication overrides.",
+    "artifact": "user:review-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "Materialization as a historical-only fact implies that some mechanism must periodically re-verify effects or the graph accumulates false claims of current success. The drift audit is that mechanism, paired with the materialization principle as its execution layer.",
+        "artifact": "user:review-session-2026-04-21"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a382"
+    ],
+    "materialized": null,
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a386",
+    "type": "primitive",
+    "kind": "observation",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "cache",
+      "antipattern"
+    ],
+    "claim": "A digest file that caches active implications, regenerated by a command, has freshness that depends on procedural enforcement (a skill tells agents to regenerate after writes). Agents can and do forget, producing a stale digest that is then read as authoritative by subsequent sessions. Persisted caches of graph-derived content whose freshness is procedural rather than structural are antipatterns; they embed the staleness risk they were meant to solve. The elimination path: fold active-implication loading into a session-start belief query and render the digest live from the graph instead of from disk.",
+    "artifact": "user:review-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "In one session, several implications were added and the digest was not regenerated; subsequent readers would see the pre-change state even though the graph had advanced. This is a structural failure mode of the cache-file-as-digest pattern, not an individual-agent lapse.",
+        "artifact": "user:review-session-2026-04-21"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "the active-implications digest",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a387",
+    "type": "compound",
+    "kind": "design-principle",
+    "domain": "system",
+    "tags": [
+      "dag-discipline",
+      "consensus",
+      "governance"
+    ],
+    "claim": "The DAG requires a consensus mechanism: a workflow that surfaces conflicts between a proposed belief and existing nodes at authoring time, routes the resolution through adjudication (human, multi-agent patch, or tiered review by conflict weight), and produces a recorded outcome - either rejection-with-reasoning (the proposal is reshaped to dep on the existing belief as a constraint) or acceptance (the existing belief is superseded per c029 and the new one takes its place). Without this mechanism, the authoring surface depends on agent memory to query relevant contracts, and a375's gap (DAG as decorative vs operational) remains partially unaddressed. The mechanism is also the structural enforcement for a380 (never-back-down-without-appeal) - the rule is only executable if adjudication is available.",
+    "artifact": "user:review-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "A belief/contract conflict surfaced the mechanism as the missing piece. An operational graph treats contracts as current consensus rather than eternal truth, and provides a structured way for consensus to evolve. The mechanism proposal was raised by the user; this belief captures the principle.",
+        "artifact": "user:review-session-2026-04-21"
+      },
+      {
+        "date": "2026-04-22",
+        "detail": "Consensus mechanism v1 end-to-end validation complete: an integration test exercises preflight then accept-and-supersede adjudication against a minimal fixture graph; it verifies contract-level conflict detection, atomic supersession writes, status-enum invariant preservation, and semantic equivalence with the prior manual outcome. The never-back-down rule now has an execution layer.",
+        "artifact": "session:consensus-v1-validation"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a375",
+      "cb:a380",
+      "cb:c029",
+      "cb:c031"
+    ],
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:c037",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "system",
+    "tags": [
+      "dsl",
+      "contracts",
+      "architecture",
+      "dag-schema"
+    ],
+    "name": "predicate-routing-boundary",
+    "claim": "Contracts carry routing tables; modules carry predicate implementations. The DSL expresses which predicates fire on which conditions; it does not express how predicates are implemented.",
+    "rules": [
+      {
+        "given": "A new contract is being authored",
+        "scenario": "The contract's rules specify which predicate fires on which condition",
+        "then": "The predicate body lives in Elixir (or the equivalent target language)",
+        "when": "The contract defines routing logic"
+      },
+      {
+        "given": "An existing module is being ported to DSL-driven mode",
+        "scenario": "Predicate bodies in the module stay in place",
+        "then": "Only the routing (which predicates fire on what condition) moves to the contract",
+        "when": "Ports land with module-resident predicates"
+      },
+      {
+        "given": "A proposal moves predicate bodies (implementation logic) into the DAG",
+        "scenario": "Any shape: inlined code, serialized AST, pseudo-DSL execution",
+        "then": "The proposal is stopped and raised for adjudication per the consensus mechanism",
+        "when": "The proposed change crosses the routing/implementation line"
+      }
+    ],
+    "invariants": [
+      "Contract rules express routing, never implementation",
+      "Predicate bodies are implemented in Elixir (or equivalent module-resident code)",
+      "No DAG-stored code execution - the DAG is source for what fires when, not how"
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "Stated explicitly by the DSL agent in the Phase 3 handoff as the single design line not to drift. Grounded in the six ported modules (c001, c003, c008, c009, c010, c036) where contract rules route to module-resident predicate implementations. Documented in an internal design doc",
+        "artifact": "session:dev-handoff"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a300",
+      "cb:c031",
+      "cb:c035"
+    ],
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a390",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "lifecycle",
+      "deprecation"
+    ],
+    "claim": "Deprecation is a pause, not a retirement. When a feature or field is deprecated, the decision is 'not currently useful enough to carry' rather than 'wrong forever.' The deprecation primitive records the reasoning for why the feature failed to earn its keep. If need arises later, the feature can be reinstated under new adjudication: the supersession or retraction of the deprecation primitive is itself a belief documenting the reversal. This distinguishes deprecation from retraction (reserved for beliefs that turned out false per c029). Confidence field deprecation is the reference case - it may be reinstated in derived form if concrete use-case ever materializes; the path is open.",
+    "artifact": "user:review-agent-session-2026-04-21",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "Surfaced during discussion of whether confidence should return as a derived (deterministic) field. User statement: 'we can always reinstate it if the need actually arrives.' The distinction matters because retraction closes the door (belief was wrong) while deprecation keeps it open (belief failed to earn its keep at current scale). Without this distinction the DAG accumulates permanent NOs where it could have paused-for-later.",
+        "artifact": "user:review-agent-session-2026-04-21"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a397",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "enum-discipline"
+    ],
+    "claim": "Enum-shaped fields on beliefs (kind, domain, artifact-scheme, others as introduced) take values from sets declared in dedicated contracts. The constraint that a field's value is in a given enum is carried by the field's master contract (c038). The enumeration of allowed values is carried by a dedicated enum contract per field (c039 for kind, c040 for artifact-scheme, c041 for domain). The two layers compose via deps. Adding an enum value supersedes the enum contract for that field.",
+    "artifact": "session:2026-05-15-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-15",
+        "detail": "The kind field had drifted to dozens of distinct values with clear duplication. Enum-constraint via the contract layer prevents recurrence.",
+        "artifact": "session:2026-05-15-schema-discipline"
+      },
+      {
+        "date": "2026-05-17",
+        "detail": "Re-typed during a categorization sweep.",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a398",
+    "type": "primitive",
+    "kind": "definition",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "artifact"
+    ],
+    "claim": "A belief's artifact field holds a typed URI identifying the external referent the belief was derived from. URI form: scheme:id where scheme is declared by c040 and id is scheme-specific. The artifact field carries provenance.",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "kind:policy → kind:definition via dag-proposal m21",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a399",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "kind"
+    ],
+    "claim": "A belief's kind field holds a semantic classification value from the enum declared by c039. The kind field carries classification.",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "kind:policy → kind:schema via dag-proposal m22",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a400",
+    "type": "primitive",
+    "kind": "definition",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "artifact"
+    ],
+    "claim": "An artifact is an external referent — a file, gmail thread, session log, user statement, web page, or other addressable thing outside the belief graph. Artifacts are identified by typed URIs (per c040) and cited from beliefs via the artifact field.",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "kind:policy → kind:definition via dag-proposal m23",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a401",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "contract"
+    ],
+    "claim": "The contract field on a type:implication belief is a boolean. It is true iff the belief carries non-empty rules or invariants. It marks the belief as contract-grade — that is, as a normative spec other beliefs and code derive from. Enforcement of this biconditional is carried by c038 and implemented in a mix task",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "kind:policy → kind:schema via dag-proposal m24",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      },
+      {
+        "ref": "the belief module",
+        "type": "module"
+      },
+      {
+        "ref": "a mix task",
+        "type": "module"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a402",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "claim-discipline"
+    ],
+    "name": "claim-discipline",
+    "claim": "A belief's meaning is carried by its claim and its declared deps. The reasoning from deps to claim is self-evident from the claim's wording and the deps' content. When the connection requires bridging prose, the claim is underspecified (rewrite) or the node is overcommitted (decompose into multiple beliefs).",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "name set to \"claim-discipline\" via dag-proposal m12",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a403",
+    "type": "primitive",
+    "kind": "definition",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "kind"
+    ],
+    "claim": "kind:action-item = a single completable task. Type: implication. Contract: false. Rules and invariants: empty. Distinct from kind:rule (standing) and contract-grade implications (normative spec).",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "kind:policy → kind:definition via dag-proposal m25",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a404",
+    "type": "primitive",
+    "kind": "definition",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "type-system"
+    ],
+    "claim": "Two structural types carry derived beliefs. type:compound = descriptive synthesis of facts from deps; the claim states what the deps together describe. type:implication = prescriptive derivation from deps; the claim states what must be done or must be true based on the deps. A belief whose claim has both shapes is represented as two beliefs (one per type), linked via deps.",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "kind:policy → kind:definition via dag-proposal m26",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a405",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "sweep"
+    ],
+    "name": "sweep-discipline",
+    "claim": "Every compound and implication belief is reviewed against the prescriptive/descriptive distinction (a404) and the no-prose-bridge constraint (a402). Beliefs whose type does not match their claim's actual shape are re-typed or decomposed. Beliefs whose deleted implication prose was load-bearing are split per the a046 pattern (descriptive compound + prescriptive implication, the latter possibly contract-grade).",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "name set to \"sweep-discipline\" via dag-proposal m13",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a406",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "system",
+    "tags": [
+      "belief-discipline",
+      "writing"
+    ],
+    "name": "present-tense-claims",
+    "claim": "A belief's claim should describe the optimal state in present tense. The claim states what is true, not what was changed or what is being avoided. Transitional language (renamed, previously, no longer, remain), enumeration of negations (X is not Y, X does not carry Z), and reactionary framing belong in evidence entries with dates. The claim survives once context fades; framing that depends on prior state goes stale and misleads.",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-15",
+        "detail": "Recognized during drafting of a397–a405. Multiple primitives drifted into 'X is not Y' framing because they were authored against the prior state still being mentally active. Each was rewritten to describe optimal state directly.",
+        "artifact": "session:2026-05-15-dag-schema-discipline"
+      },
+      {
+        "date": "2026-05-17",
+        "detail": "name set to \"present-tense-claims\" via dag-proposal m14",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a407",
+    "type": "primitive",
+    "kind": "fact",
+    "domain": "system",
+    "tags": [
+      "uri",
+      "vocabulary"
+    ],
+    "claim": "A URI scheme is the lowercase token preceding the first colon in a URI. For URI 'gmail:19c2...', the scheme is 'gmail'. URI schemes are standardized by RFC 3986.",
+    "artifact": "https://datatracker.ietf.org/doc/html/rfc3986",
+    "subjects": [
+      {
+        "ref": "https://datatracker.ietf.org/doc/html/rfc3986#section-3.1",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a408",
+    "type": "primitive",
+    "kind": "definition",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "belief-fields"
+    ],
+    "claim": "A belief carries two distinct relations to other entities. `deps` is belief-to-belief logical derivation: the deps' claims together justify the current belief's claim; required on type:compound and type:implication, absent on type:primitive. `subjects` is belief-to-entity topical reference: what the belief is about, including artifacts (files, threads, URLs), code modules, and sometimes other beliefs. A belief can be about another belief without depending on it, and can depend on another belief without being about it.",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "kind:policy → kind:definition via dag-proposal m27",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "the belief module",
+        "type": "module"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a409",
+    "type": "primitive",
+    "kind": "architectural-synthesis",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "linking",
+      "traceability"
+    ],
+    "claim": "Logical underpinnings of code and data decisions trace through a three-layer chain: policy beliefs (kind:policy, type:primitive) state what must be true; contract beliefs (contract:true, type:implication) derive rules from policies via deps and express them in DSL (rules/invariants); code modules implement the contract rules. Each layer links to the next: contracts dep on policies; contracts cite their implementing code modules via subjects. Discovery is bidirectional via DAG traversal — no back-pointer field is needed because depended-on-by is computable from deps.",
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "kind:policy → kind:architectural-synthesis via dag-proposal m28",
+        "artifact": "session:2026-05-17-policy-categorization"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a mix task",
+        "type": "module"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:c038",
+    "type": "implication",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "schema-discipline"
+    ],
+    "claim": "Schema discipline: belief provenance is carried by an artifact field; contract-grade implications carry contract:true with non-empty rules/invariants; the implication field is absent; enum-shaped fields (kind, domain, artifact-scheme) take values from c039/c040/c041 respectively.",
+    "rules": [
+      "The artifact field is the canonical provenance carrier on beliefs. Its value is null or a string matching scheme:id where scheme is declared by c040.",
+      "The kind field's value is null or one of the values declared by c039.",
+      "The domain field's value is null or one of the values declared by c041.",
+      "The contract field is a boolean. It is allowed only on type: implication.",
+      "contract: true is required iff rules or invariants are non-empty (bidirectional).",
+      "The implication field is absent on all beliefs.",
+      "Beliefs with kind: action-item have type: implication, contract: false, and empty rules/invariants.",
+      "type: compound and type: implication are distinct types and are not merged.",
+      "Artifacts (external documents, threads, files) are not promoted to belief nodes; they are referenced via the artifact field only."
+    ],
+    "invariants": [
+      "For all beliefs b: b.contract == true implies b.type == 'implication'.",
+      "For all beliefs b: ((b.rules // []) ++ (b.invariants // [])) non-empty iff b.contract == true.",
+      "For all beliefs b: b.artifact == null OR b.artifact matches /^[a-z][a-z0-9_-]*:.+/.",
+      "For all beliefs b: b.kind == null OR b.kind is in c039.enum.",
+      "For all beliefs b: b.artifact == null OR scheme(b.artifact) is in c040.enum.",
+      "For all beliefs b: b.domain == null OR b.domain is in c041.enum.",
+      "For all beliefs b: b does not have an `implication` field.",
+      "For all beliefs b with b.kind == 'action-item': b.type == 'implication' AND b.contract != true AND (b.rules // []) is empty AND (b.invariants // []) is empty."
+    ],
+    "contract": true,
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "subjects": [
+      {
+        "ref": "the belief module",
+        "type": "module"
+      },
+      {
+        "ref": "a mix task",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "cb:a397",
+      "cb:a398",
+      "cb:a399",
+      "cb:a400",
+      "cb:a401",
+      "cb:a402",
+      "cb:a403",
+      "cb:a404",
+      "cb:a405",
+      "cb:a408"
+    ],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:c039",
+    "type": "implication",
+    "kind": "enum-registry",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "enum",
+      "kind"
+    ],
+    "claim": "Canonical enum of belief.kind values. Each value declared inline. The enum is closed: no belief.kind value outside this set is permitted on active beliefs.",
+    "rules": [
+      {
+        "definitions": {
+          "state-machine": "A definition of states and transitions for some entity.",
+          "training-distribution": "A claim about training data distribution.",
+          "edit-pair": "Paired before/after edit reference.",
+          "output-target": "A declared output target.",
+          "domain-enum": "A domain-specific enum declaration.",
+          "formatting-rule": "A formatting convention.",
+          "definition": "Vocabulary, not commitment. Defines what a word, type, or field means. Distinguished from kind:policy (intentional commitment) and kind:schema (rule about belief structure).",
+          "design-rationale": "The reasoning behind a design decision (candidate for retirement during sweep).",
+          "policy": "Domain truth, true by convention. Normative claim about how the system or operations work.",
+          "audit-rule": "A rule used during audit.",
+          "design-principle": "A guiding principle for system or process design.",
+          "meta-observation": "An observation about agent or system at a meta level.",
+          "human-factor": "A human-factor consideration.",
+          "training-incentive": "A claim about training incentives.",
+          "rule": "A standing rule that must be followed.",
+          "outcome-claim": "A claim about expected outcome.",
+          "architectural-synthesis": "A synthesis claim about system architecture.",
+          "schema": "A claim about the structure of beliefs or the DAG itself.",
+          "domain-rule": "A rule scoped to a specific domain.",
+          "enum-registry": "A contract that closes the allowed value set for one or more named fields.",
+          "observation": "A noted observation, not yet rising to fact or rule.",
+          "fact": "An observed factual claim with provenance.",
+          "derivation-table": "A tabular derivation specification.",
+          "error-pattern": "A recurring failure shape worth surfacing for correction.",
+          "design-property": "A declared structural property of the system.",
+          "design-observation": "A noted property of the system's design.",
+          "structural-parallel": "A noted structural parallel between systems.",
+          "governance": "A governance claim.",
+          "derivation-rule": "A rule by which beliefs or values are derived from other beliefs.",
+          "action-item": "A one-off action recommendation. Not standing, not contract-grade.",
+          "agent-architecture": "A claim about how the agent is structured.",
+          "feedback-loop": "A claim about a feedback loop in the system.",
+          "convention": "A team or system convention.",
+          "reasoning-error": "An agent reasoning error pattern.",
+          "design-gap": "An identified absence in the system's design.",
+          "composable-belief": "A belief about belief-DAG composition.",
+          "analogical-claim": "A claim by analogy to another system.",
+          "error": "A recorded error or failure mode."
+        },
+        "field": "kind",
+        "values": [
+          "policy",
+          "rule",
+          "action-item",
+          "fact",
+          "observation",
+          "error",
+          "error-pattern",
+          "reasoning-error",
+          "schema",
+          "state-machine",
+          "derivation-rule",
+          "design-principle",
+          "design-rationale",
+          "design-observation",
+          "design-property",
+          "design-gap",
+          "convention",
+          "domain-rule",
+          "domain-enum",
+          "composable-belief",
+          "agent-architecture",
+          "analogical-claim",
+          "architectural-synthesis",
+          "audit-rule",
+          "derivation-table",
+          "edit-pair",
+          "feedback-loop",
+          "formatting-rule",
+          "governance",
+          "human-factor",
+          "meta-observation",
+          "outcome-claim",
+          "output-target",
+          "structural-parallel",
+          "training-distribution",
+          "training-incentive",
+          "definition",
+          "enum-registry"
+        ]
+      }
+    ],
+    "invariants": [
+      "Exactly one rule entry, with field 'kind'.",
+      "Each value matches /^[a-z][a-z0-9-]*$/.",
+      "Values are unique within the entry.",
+      "Every value has a corresponding entry in the definitions map.",
+      "For all active beliefs b where b.kind is not null: b.kind is in values."
+    ],
+    "contract": true,
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "reshaped rules from 'kind:<value> - <definition>' strings to a single {field,values,definitions} enum-registry entry; switched kind schema->enum-registry and added the self-referential 'enum-registry' bootstrap value; representational, content-preserving (definitions retained verbatim).",
+        "artifact": "session:2026-06-07-cb-restructure-stage2"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a mix task",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "cb:a397"
+    ],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:c040",
+    "type": "implication",
+    "kind": "enum-registry",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "enum",
+      "artifact-scheme"
+    ],
+    "claim": "Canonical enum of artifact URI schemes. Each scheme declared inline with its URI form. The enum is closed: no artifact value with a scheme outside this set is permitted on active beliefs.",
+    "rules": [
+      {
+        "definitions": {
+          "document": "A repository file reference. Form: document:<repo-relative-path>. Files under ops/, dates/, lib/, etc.",
+          "gmail": "A Gmail thread reference. Form: gmail:<thread-id>. Resolved via Gmail API.",
+          "https": "An external URL. Form: https:<URL-rest>. Web pages, papers, external resources.",
+          "plan": "A plan/spec/intent reference. Form: plan:<id-or-descriptor>.",
+          "session": "A working session reference. Form: session:<date-or-descriptor>. Resolved via session transcript (persistence pipeline pending).",
+          "source": "A cached source document reference. Form: source:<slug>. Documents stored under ops/sources/ or similar.",
+          "user": "A direct user statement. Form: user:<name>:<date>. Internal authorship provenance."
+        },
+        "field": "artifact-scheme",
+        "values": [
+          "gmail",
+          "session",
+          "user",
+          "document",
+          "source",
+          "https",
+          "plan"
+        ]
+      }
+    ],
+    "invariants": [
+      "Exactly one rule entry, with field 'artifact-scheme'.",
+      "Each value matches /^[a-z][a-z0-9-]*$/.",
+      "Values are unique within the entry.",
+      "Every value has a corresponding entry in the definitions map.",
+      "For all active beliefs b where b.artifact is not null: scheme(b.artifact) is in values."
+    ],
+    "contract": true,
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "reshaped rules from 'artifact-scheme:<value> - <definition>' strings to a single {field,values,definitions} enum-registry entry; switched kind schema->enum-registry and added the new 'plan' scheme (handoff section 2.5); representational, content-preserving (definitions retained verbatim).",
+        "artifact": "session:2026-06-07-cb-restructure-stage2"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a mix task",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "cb:a397",
+      "cb:a398",
+      "cb:a407"
+    ],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:c041",
+    "type": "implication",
+    "kind": "enum-registry",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "enum",
+      "domain"
+    ],
+    "claim": "Canonical enum of belief.domain values. Each value declared inline. The enum is closed.",
+    "rules": [
+      {
+        "definitions": {
+          "agent": "Claims about agent behavior, capability, or limitation.",
+          "design": "Claims about system or process design.",
+          "dev": "Claims about agent system development, DEV-mode work, and infrastructure-vs-operations distinctions.",
+          "ops": "Claims about operational workflows, business processes, and domain entities.",
+          "system": "Claims about the DAG, the agent, or the supporting infrastructure."
+        },
+        "field": "domain",
+        "values": [
+          "system",
+          "design",
+          "agent",
+          "ops",
+          "dev"
+        ]
+      }
+    ],
+    "invariants": [
+      "Exactly one rule entry, with field 'domain'.",
+      "Each value matches /^[a-z][a-z0-9-]*$/.",
+      "Values are unique within the entry.",
+      "Every value has a corresponding entry in the definitions map.",
+      "For all active beliefs b where b.domain is not null: b.domain is in values."
+    ],
+    "contract": true,
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "reshaped rules from 'domain:<value> - <definition>' strings to a single {field,values,definitions} enum-registry entry; switched kind schema->enum-registry; representational, content-preserving (definitions retained verbatim).",
+        "artifact": "session:2026-06-07-cb-restructure-stage2"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a mix task",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "cb:a397"
+    ],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a416",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "system",
+    "tags": [],
+    "claim": "Behavioral invariants that domain experts care about must be expressed as contracts in the DAG, not scattered across the agent-instruction file rules, struct definitions, and skill prose.",
+    "rules": [
+      "Any behavioral invariant a domain expert cares about must be expressed as a contract-grade belief in the DAG (type:implication, rules or invariants non-empty, contract:true). It must not be left scattered across the agent-instruction file rules, struct definitions, or skill prose."
+    ],
+    "invariants": [],
+    "contract": true,
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "deps": [
+      "cb:a138",
+      "cb:a424"
+    ],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a417",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "system",
+    "tags": [],
+    "claim": "Modules implementing contract-governed behavior must include verify_against_contract/0 to detect drift between contract and code.",
+    "rules": [
+      "Any module whose behavior is governed by a DAG contract must implement verify_against_contract/0. The function reads the contract from the DAG and checks that the module's runtime behavior matches, surfacing drift between contract and code."
+    ],
+    "invariants": [],
+    "contract": true,
+    "artifact": "session:2026-05-15-dag-schema-discipline",
+    "deps": [
+      "cb:a138",
+      "cb:a409",
+      "cb:a425"
+    ],
+    "status": "active",
+    "created": "2026-05-15"
+  },
+  {
+    "id": "cb:a424",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "system",
+    "tags": [
+      "dag-discipline",
+      "centralization"
+    ],
+    "name": "dag-is-canonical-home-for-behavioral-commitment",
+    "claim": "Behavioral invariants belong in DAG contracts, not scattered across the agent-instruction file, struct definitions, or skill prose. Every code module encoding domain rules has a corresponding DAG contract. Agent-instruction files (a skill definition, the agent-instruction file) translate intent and reference the DAG; they do not carry logic of their own.",
+    "artifact": "session:2026-05-16-policy-citation-sweep",
+    "evidence": [
+      {
+        "date": "2026-05-16",
+        "detail": "A citation sweep surfaced several behavioral contracts whose underlying intent is centralization of behavioral commitment in the graph. The shared policy is authored to make the citation derivation explicit.",
+        "artifact": "session:2026-05-16-policy-citation-sweep"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-16"
+  },
+  {
+    "id": "cb:a425",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "system",
+    "tags": [
+      "contract-discipline",
+      "drift-detection"
+    ],
+    "name": "verify-drift-from-contract-in-code",
+    "claim": "Code modules implementing contract-governed behavior detect drift from their governing contract via a verify_against_contract/0 function. Drift between what the contract specifies and what the code does is detectable mechanically; un-detectable drift is the failure mode being prevented.",
+    "artifact": "session:2026-05-16-policy-citation-sweep",
+    "evidence": [
+      {
+        "date": "2026-05-16",
+        "detail": "A rule prescribed the verify-against-contract pattern but lacked an underlying policy. A separate belief covers the policy-to-contract-to-code linkage but does not specify how code detects contract drift. This policy fills that gap.",
+        "artifact": "session:2026-05-16-policy-citation-sweep"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-16"
+  },
+  {
+    "id": "cb:a427",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "system",
+    "tags": [
+      "dag-discipline",
+      "scope"
+    ],
+    "name": "non-derivable-knowledge-only",
+    "claim": "The DAG holds only non-derivable knowledge — business rules, system-specific conventions, observed patterns specific to this codebase. Material documented elsewhere (library docs, language specs, external references retrievable via standard tools) is not duplicated into the DAG.",
+    "artifact": "session:2026-05-16-policy-citation-sweep",
+    "evidence": [
+      {
+        "date": "2026-05-16",
+        "detail": "A contract prescribed the scope rule without an underlying policy. Inverse framing of the canonical-home policy: one says what to put in, this says what to keep out.",
+        "artifact": "session:2026-05-16-policy-citation-sweep"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-16"
+  },
+  {
+    "id": "cb:a428",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "system",
+    "tags": [
+      "provenance",
+      "sync",
+      "authority"
+    ],
+    "name": "user-provenance-wins-on-conflict",
+    "claim": "User-sourced and manually-sourced provenance is authoritative. Sync passes that would overwrite a user-sourced field with a different derived value surface the conflict instead of silently overwriting. Authorization to sync does not include authorization to discard user judgment.",
+    "artifact": "session:2026-05-16-policy-citation-sweep",
+    "evidence": [
+      {
+        "date": "2026-05-16",
+        "detail": "Synthesized during a citation sweep from the underlying conflict-detection observation. Sync passes that would overwrite a user-sourced field with a different derived value surface the conflict instead of silently overwriting.",
+        "artifact": "session:2026-05-16-policy-citation-sweep"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-16"
+  },
+  {
+    "id": "cb:a436",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "migration:schema-pattern"
+    ],
+    "name": "schema-migration-meta-convention",
+    "claim": "Removal or renaming of a field from the assertion schema happens via DAG-authorized schema migration. A migration consists of: (a) a compound belief asserting the migrations decision, with deps citing both this meta-convention and the primitive(s) carrying the new schema rules — the compound is the audit anchor and the citation point for future references, while the primitives carry the schema content; (b) adjudication through the consensus mechanism (once built) or direct user authorization (interim); (c) a bulk transformation executed under the compounds authority; (d) supersession or retirement of any contract the migration conflicts with. c029s per-node immutability permits this class of operation and no other. Individual node fields remain immutable outside authorized migrations.",
+    "artifact": "session:2026-05-16-policy-citation-sweep",
+    "evidence": [
+      {
+        "date": "2026-05-16",
+        "detail": "Supersedes an earlier version. Step (a) is revised from a primitive asserting the decision to a compound asserting it via deps, because primitives cannot carry deps, so a primitive-only migration cannot cite the meta-convention that authorized it. A compound at step (a) restores the citation path, with the schema-rule primitives as its deps.",
+        "artifact": "session:2026-05-16-policy-citation-sweep"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a plan document",
+        "type": "artifact"
+      }
+    ],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-16"
+  },
+  {
+    "id": "cb:a437",
+    "type": "primitive",
+    "kind": "schema",
+    "tags": [
+      "dag-schema",
+      "kind"
+    ],
+    "name": "kind-definition",
+    "claim": "Belief kind:definition signifies vocabulary, not commitment — used for beliefs that define what words, types, or fields mean rather than what should happen. Distinguished from kind:policy (intentional commitment) and kind:schema (rule about belief structure). Example: a400 defines what an artifact is; a403 defines kind:action-item; both are definitions.",
+    "artifact": "session:2026-05-17-dag-policy-categorization",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "created via dag-proposal m01",
+        "artifact": "session:2026-05-17-c039-add-definition"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-17"
+  },
+  {
+    "id": "cb:a438",
+    "type": "compound",
+    "kind": "convention",
+    "tags": [
+      "dag-schema",
+      "migration:kind-enum"
+    ],
+    "name": "c039-add-definition-migration",
+    "claim": "The c039 kind enum is extended to admit 'definition' for beliefs that define vocabulary rather than enforce behavior or assert commitments. Migration follows a436: this compound is the audit anchor; primitive a437 carries the new rule; the c039 kind-enum contract is extended in place with the expanded enum under this migration's authority.",
+    "artifact": "session:2026-05-17-dag-policy-categorization",
+    "evidence": [
+      {
+        "date": "2026-05-17",
+        "detail": "created via dag-proposal m02",
+        "artifact": "session:2026-05-17-c039-add-definition"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a436",
+      "cb:a437"
+    ],
+    "status": "active",
+    "created": "2026-05-17"
+  },
+  {
+    "id": "cb:a439",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "kind",
+      "categorization"
+    ],
+    "name": "policy-categorization-rule",
+    "claim": "kind:policy on a belief signifies a mental/intentional commitment about how the system or agent should behave. A belief is kind:policy iff its commitment is not currently mechanically enforced by code, generator, or hook — if a verifier checks it, a generator emits from it, or a hook fires on it today, it is a contract, schema rule, or definition instead. kind:policy is mutually exclusive with contract:true; policies carry prose claim only, no rules or invariants. Every kind:policy belief carries a non-empty name field for stable citation. When a policy's intent is later mechanized, the policy migrates: a contract is authored citing the policy via deps per a409's three-layer chain, and the policy may either remain (stating the intent the contract enforces) or be superseded by a new policy stating the post-mechanization intent.",
+    "artifact": "session:2026-05-17-dag-policy-categorization",
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-17"
+  },
+  {
+    "id": "cb:a440",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "dev",
+    "tags": [
+      "agent-architecture",
+      "delegation",
+      "ops-dev-split"
+    ],
+    "claim": "In parent/child architectural dev work, the user does not delegate understanding to the agent. The user must stay on-the-loop at every depth of nested work. This is what distinguishes parent/child structure from sub-agent delegation, which abstracts in-progress reasoning away from the user and forecloses intervention. A new depth level cannot arise without the user's participation in creating it. Maps onto an operations/engineering mode split: in operational work, delegation is fine (bounded, mechanical work); in architectural work, delegation breaks the user's ability to audit the reasoning that produces architectural decisions.",
+    "artifact": "session:working-thread",
+    "evidence": [
+      {
+        "date": "2026-04-23",
+        "detail": "Source statement: sub-agents insulate the user from interfacing with and monitoring the sub-agent, which both prevents intervention and acts as a deferment of understanding. The user delegates things that, in conceptual architecture work, should not be delegated - the nuance of architecture often lives in the implementation details. A research survey confirmed the anti-pattern has names in the literature (cognitive atrophy, the augmentation trap, deferred understanding) and that published multi-agent patterns all retain some delegation-of-understanding.",
+        "artifact": "session:working-thread"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-17"
+  },
+  {
+    "id": "cb:a441",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "dev",
+    "tags": [
+      "agent-architecture",
+      "delegation",
+      "sub-agents",
+      "lifecycle:recurring"
+    ],
+    "claim": "Sub-agent delegation is permissible specifically for adjudication tasks - reviewing a session's proposed beliefs against the current graph, producing merge/reject decisions with reasons. Adjudication has bounded input, bounded output, and the working-out is itself the artifact, so no understanding is hidden from the user. Do not extend this carve-out to other classes of work (research, refactoring, design, plan execution) without an explicit new belief justifying it.",
+    "artifact": "session:working-thread",
+    "evidence": [
+      {
+        "date": "2026-04-23",
+        "detail": "The carve-out: adjudication has bounded input (proposed beliefs vs current graph), bounded output (merge/reject decisions with reasons), and the working-out is itself the artifact, so no understanding is hidden. Without this carve-out the adjudication-via-subagent step would violate the no-delegation-of-understanding principle.",
+        "artifact": "session:working-thread"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a440"
+    ],
+    "materialized": null,
+    "status": "active",
+    "created": "2026-05-17"
+  },
+  {
+    "id": "cb:a442",
+    "type": "primitive",
+    "kind": "design-observation",
+    "domain": "design",
+    "tags": [
+      "audit-chain",
+      "open-question",
+      "transcripts"
+    ],
+    "claim": "The audit chain for architectural decisions runs: code -> contract -> graph -> plan/recap metadata -> raw conversation. The bottom rung is currently ephemeral, single-machine, prunable transcript files. Lossy synthesis is sufficient for most plans but may be inadequate for architecturally load-bearing decisions where the audit needs to reach the raw negotiation. Open question: when (if ever) is durable-in-version-control verbatim conversation worth the storage and maintenance cost?",
+    "artifact": "session:working-thread",
+    "evidence": [
+      {
+        "date": "2026-04-23",
+        "detail": "The audit chain framed by the user: examine the code artifact, the contract, the graph nodes the contract depends on, the metadata for the threads from which those nodes were created, and if necessary the transcript and plans. A spike attempted to address bottom-rung lossiness by making conversation durable in version control; it was abandoned because the plan/transcript/recap system covers most needs. The unresolved tension is whether bottom-rung lossiness ever justifies revisiting durable verbatim for architecturally load-bearing decisions.",
+        "artifact": "session:working-thread"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-05-17"
+  },
+  {
+    "id": "cb:a376",
+    "type": "primitive",
+    "kind": "observation",
+    "domain": "system",
+    "tags": [
+      "dag-discipline",
+      "integration"
+    ],
+    "name": "runtime-query-vs-authoring",
+    "claim": "For a belief graph to earn its keep operationally, beliefs must be queryable at session start and before writes - not only authored. Compiling beliefs into a static surface (a generated guidance file) is a once-per-session load, not a contextual query at decision time. Until contextual queries exist, the graph functions as developer-facing structure: valuable, but short of the operational claim.",
+    "evidence": [
+      {
+        "date": "2026-04-21",
+        "detail": "Observed that a large share of a live graph's beliefs were self-referential (about the agent and system itself) with little operational use by skills at runtime. A once-per-session compile into a context file is not the same as a contextual query when a decision is made. The gap is a development state, not a refutation of the approach.",
+        "artifact": "session:graph-integration-review"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-04-21"
+  },
+  {
+    "id": "cb:a443",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "claude-md"
+    ],
+    "claim": "Read this file for orientation, then `docs/quickstart.md` for a guided tour: query the graph, read a contract, trace a compound, and add a belief. Build with `mix deps.get && mix compile`.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "superseded",
+    "superseded_by": "cb:a459",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a444",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "claude-md",
+      "query"
+    ],
+    "claim": "Query the graph with the belief shell, deterministic pure traversal with no LLM: `mix bs list [filters]`, `mix bs show <id>`, `mix bs tree <id>`, `mix bs stale`, `mix bs stats`. Run `mix bs help` for the full command set; ids may be bare (`c029`) or namespaced (`cb:c029`).",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a445",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "active-implications"
+    ],
+    "claim": "Active behavioral directives are not cached to a digest file; load them live from the graph by querying active implications (`mix bs list implication`). Per cb:a386, a digest whose freshness depends on remembering to regenerate it is an antipattern that embeds the staleness it was meant to solve - render live from the DAG instead.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Replaces the deprecated generated _implications.md digest with a live query, per cb:a386's elimination path; the framework's beliefs/_implications.md and its generator are removed in the same change.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a446",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "claude-md",
+      "architecture"
+    ],
+    "claim": "The mechanism is a directed acyclic graph of beliefs with three structural types: primitive (what a source said), compound (what combining sources means), and implication (what must happen, or what a contract enforces).",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a447",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "claude-md",
+      "architecture"
+    ],
+    "claim": "Immutability makes change traceable: a belief is never edited in place; a changed belief is superseded by a new one and linked forward. Composition makes the whole greater than its parts - a compound concludes what none of its inputs states alone.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a448",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "claude-md",
+      "architecture"
+    ],
+    "claim": "There are no confidence scores. Subjective scores synthesized without a deterministic basis do no load-bearing work; rely on specific evidence and dependency structure instead.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a449",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "claude-md",
+      "authoring"
+    ],
+    "claim": "Author beliefs through the write flow, never by hand-editing the graph file: `mix cb.preflight --file <f>` checks a proposed belief for conflicts, `mix cb.adjudicate --file <f>` resolves them, and `mix cb.import --file <f>` writes the belief.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a450",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "claude-md",
+      "verification"
+    ],
+    "claim": "Verify with the graph's own tooling: `mix cb.verify.schema` checks a collection against the contracts it carries, `mix cb.verify.collection <namespace>` checks it together with its declared dependency collections, and `mix cb.generate.claude_md --check` confirms this file is current.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a451",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "schema"
+    ],
+    "claim": "The schema's single source of truth is `lib/cb/belief.ex`. The graph's own schema is expressed as contracts in the graph: c029 (status lifecycle and immutability), c038 (schema discipline), c039/c040/c041 (the closed kind/artifact-scheme/domain enums), and c032 (conflict scope). Read one with `mix bs show cb:c038`.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a452",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "schema"
+    ],
+    "claim": "Schema rules in force: no `confidence` field; no `patch` kind; no separate `implication` prose field, since meaning is carried by `claim` plus `deps`; primitives ground their claim with an `artifact` URI and dated `evidence`; and `contract: true` is biconditional with non-empty `rules`/`invariants` (per c038).",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a453",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "claude-md",
+      "skills"
+    ],
+    "claim": "Skills coordinate authoring and query: `/assert` adds beliefs from artifacts, entities, or reasoning; `/assert-session` persists session rules and agent error patterns; `/assertions` queries and traverses the graph; `/materialize` turns implications into concrete tasks.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a454",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "collections"
+    ],
+    "claim": "The framework ships only its own `cb:` graph (`beliefs/beliefs.json`). Worked examples and other collections live in belief-collections (staged at `../belief-collections/`), each with a `manifest.json` declaring its namespace and cross-namespace `depends_on`; the `lib:` lending-library is the gentle on-ramp. Query a collection with `mix bs --beliefs <path>` and verify one against its declared deps with `mix cb.verify.collection <namespace>`.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a455",
+    "type": "primitive",
+    "kind": "formatting-rule",
+    "domain": "dev",
+    "tags": [
+      "claude-md",
+      "formatting"
+    ],
+    "claim": "Never use emdashes. Use hyphens (-) instead.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a456",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "dev",
+    "tags": [
+      "claude-md",
+      "git"
+    ],
+    "claim": "Never commit or push unless explicitly instructed.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a457",
+    "type": "primitive",
+    "kind": "policy",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "data-protection"
+    ],
+    "claim": "Never modify files under `beliefs/` unless the user explicitly requests and authorizes the change. Reading and querying is always allowed.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a458",
+    "type": "primitive",
+    "kind": "observation",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "origin"
+    ],
+    "claim": "Composable Beliefs was extracted from a live operational system where the belief graph was built and battle-tested against real workflows. This repository is the generic framework plus its own self-describing design graph.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Encoded from the framework's hand-written CLAUDE.md into the graph so the file compiles from beliefs via the c042 output-target contract.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:c042",
+    "type": "implication",
+    "kind": "output-target",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "output:claude-md"
+    ],
+    "claim": "The framework CLAUDE.md compiles from the beliefs listed in this contract's render_sections. The file is read-only and regenerated from the cb: graph by `mix cb.generate.claude_md`. Authoring happens by creating beliefs (via /assert) and by editing this contract's render_sections; hand-edits to CLAUDE.md are overwritten on the next generation.",
+    "rules": [
+      {
+        "output_path": "CLAUDE.md"
+      },
+      {
+        "header_comment": "<!-- Generated by mix cb.generate.claude_md from the cb: DAG. Do not edit; run the task to regenerate. -->\n\n# Composable Beliefs\n\nA framework for giving AI agents persistent, source-grounded, inspectable reasoning that survives session boundaries and composes into understanding the agent never explicitly derived."
+      },
+      {
+        "render_sections": [
+          {
+            "beliefs": [
+              "cb:a459",
+              "cb:a444"
+            ],
+            "title": "Quick Start"
+          },
+          {
+            "beliefs": [
+              "cb:a445"
+            ],
+            "title": "Active directives"
+          },
+          {
+            "beliefs": [
+              "cb:a446",
+              "cb:a447",
+              "cb:a448"
+            ],
+            "title": "Architecture"
+          },
+          {
+            "beliefs": [
+              "cb:a449",
+              "cb:a450"
+            ],
+            "title": "Operations"
+          },
+          {
+            "beliefs": [
+              "cb:a451",
+              "cb:a452"
+            ],
+            "title": "Schema"
+          },
+          {
+            "beliefs": [
+              "cb:a453"
+            ],
+            "title": "Skills"
+          },
+          {
+            "beliefs": [
+              "cb:a454"
+            ],
+            "title": "Collections"
+          },
+          {
+            "beliefs": [
+              "cb:a455"
+            ],
+            "title": "Formatting"
+          },
+          {
+            "beliefs": [
+              "cb:a456"
+            ],
+            "title": "Git Policy"
+          },
+          {
+            "beliefs": [
+              "cb:a457"
+            ],
+            "title": "Data Protection"
+          },
+          {
+            "beliefs": [
+              "cb:a458"
+            ],
+            "title": "Origin"
+          }
+        ]
+      }
+    ],
+    "invariants": [
+      "CLAUDE.md is read-only - edits are overwritten on next generation",
+      "Every line of output traces to exactly one belief's claim field",
+      "deps equals the union of all beliefs referenced in render_sections",
+      "Section titles are human-readable; tags remain free for cross-cutting audit queries"
+    ],
+    "contract": true,
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "subjects": [],
+    "deps": [
+      "cb:a459",
+      "cb:a444",
+      "cb:a445",
+      "cb:a446",
+      "cb:a447",
+      "cb:a448",
+      "cb:a449",
+      "cb:a450",
+      "cb:a451",
+      "cb:a452",
+      "cb:a453",
+      "cb:a454",
+      "cb:a455",
+      "cb:a456",
+      "cb:a457",
+      "cb:a458"
+    ],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a459",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "claude-md"
+    ],
+    "claim": "Read this file for orientation; the guided tour lives with the teaching material in belief-collections (`../belief-collections/quickstart.md`), alongside the `lib:` on-ramp. Build with `mix deps.get && mix compile`.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Supersedes a443: the guided tour (quickstart) relocated from the framework's docs/ to belief-collections, the teaching home, so the framework ships code + graph + generated directives while tutorials live with the collections (principle #7).",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a460",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "belief-graph",
+      "operations"
+    ],
+    "claim": "The DAG is a shared prosthetic that compensates for different limitations: a human expert holds interconnections implicitly and attention-bounded, while an agent loses its working context at every session boundary. The graph gives both parties one explicit, queryable structure instead of implicit human memory versus ephemeral agent context.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Folded from docs/operations.md (operational learnings) into the graph; the learning predates this encoding and is now queryable rather than restated in prose.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a461",
+    "type": "primitive",
+    "kind": "convention",
+    "domain": "design",
+    "tags": [
+      "belief-graph",
+      "operations"
+    ],
+    "claim": "A user scoping decision (e.g. 'X is out of scope for this sprint') is recorded as a primitive belief carrying the decision-maker and date. This stops future sessions from re-deriving analysis that was explicitly deprioritized, and stays auditable and supersedable if priorities change.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Folded from docs/operations.md (operational learnings) into the graph; the learning predates this encoding and is now queryable rather than restated in prose.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a462",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "belief-graph",
+      "operations"
+    ],
+    "claim": "The DAG's primary value is composition, not retrieval. RAG-style systems use a knowledge graph to find relevant context - known answers; this graph's value is concluding what follows from combining facts, which surfaces unknown questions. Retrieval finds; composition derives.",
+    "artifact": "session:2026-06-07-cb-claude-md-generation",
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "detail": "Folded from docs/operations.md (operational learnings) into the graph; the learning predates this encoding and is now queryable rather than restated in prose.",
+        "artifact": "session:2026-06-07-cb-claude-md-generation"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-07"
+  },
+  {
+    "id": "cb:a463",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "system",
+    "tags": [
+      "restructure",
+      "namespacing"
+    ],
+    "claim": "Belief ids are namespaced as `namespace:local-id` (e.g. `cb:c038`, `agent-behavior:a054`), with exactly one owning collection per namespace, so ids are globally unique. Deps may cross namespaces and resolve globally, but `cb:` depends only within `cb:`; every other collection may depend on `cb:`. The separator is `:`.",
+    "artifact": "session:2026-06-08-cb-restructure-dogfood",
+    "evidence": [
+      {
+        "date": "2026-06-08",
+        "detail": "Extracted from the settled multi-repo restructure design (CB-RESTRUCTURE-HANDOFF.md §2.1); realized across the cb:/agent-behavior:/paradigm: graphs and the resolver/verifier in Stages 1-4.",
+        "artifact": "session:2026-06-08-cb-restructure-dogfood"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-08"
+  },
+  {
+    "id": "cb:a464",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "system",
+    "tags": [
+      "restructure",
+      "collections"
+    ],
+    "claim": "`cb:` holds only the framework's what and how: schema, mechanism, and positioning. The motivation for why the framework emerged - agent failure modes, the paradigm argument - lives in the `agent-behavior:` and `paradigm:` collections, never in `cb:`. This keeps `cb:` self-contained and shippable without the narrative that motivated it.",
+    "artifact": "session:2026-06-08-cb-restructure-dogfood",
+    "evidence": [
+      {
+        "date": "2026-06-08",
+        "detail": "Extracted from the restructure design (CB-RESTRUCTURE-HANDOFF.md §2.2, §3); enforced by the post-partition gate that cb: has zero deps outside cb:.",
+        "artifact": "session:2026-06-08-cb-restructure-dogfood"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-08"
+  },
+  {
+    "id": "cb:a465",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "restructure",
+      "contracts",
+      "verification"
+    ],
+    "claim": "Contracts are never compiled into code: spec-to-code generation is nondeterministic and unmaintainable. The contract-to-code relationship is verification, not generation - interpreters query a contract and the test suite asserts the code conforms (the `verify_against_contract` pattern, cb:a417 / cb:a425). Drift surfaces as a failing test, not a regenerated module.",
+    "artifact": "session:2026-06-08-cb-restructure-dogfood",
+    "evidence": [
+      {
+        "date": "2026-06-08",
+        "detail": "Extracted from the restructure design (CB-RESTRUCTURE-HANDOFF.md §2.4, §4); the constructive half (verify_against_contract, interpreters query contracts) is already cb:a417/cb:a425, this records the prohibition on the spec-to-code direction.",
+        "artifact": "session:2026-06-08-cb-restructure-dogfood"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-08"
+  },
+  {
+    "id": "cb:a466",
+    "type": "primitive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "restructure",
+      "docs",
+      "freshness"
+    ],
+    "claim": "Generated prose (CLAUDE.md, rule files) compiles from the graph wherever there is an oracle to diff against, and its freshness is enforced structurally in CI - a gate fails on drift - not procedurally, per cb:a386. Hand-written prose is reserved for a distinct audience, the front-door README, and must never freeze graph-derived facts such as counts or lists, which drift; it points at the live source instead.",
+    "artifact": "session:2026-06-08-cb-restructure-dogfood",
+    "evidence": [
+      {
+        "date": "2026-06-08",
+        "detail": "Refines CB-RESTRUCTURE-HANDOFF.md §2.3: the original 'hand-written exception ~nil' was revised this session - the front-door README stays hand-written (distinct audience: a GitHub reader who cannot query the graph), with the discipline narrowed to 'no frozen derived facts' rather than 'no hand-written prose'. Realized by c042 (compiled CLAUDE.md) + the CI freshness gate.",
+        "artifact": "session:2026-06-08-cb-restructure-dogfood"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-08"
+  }
+]
