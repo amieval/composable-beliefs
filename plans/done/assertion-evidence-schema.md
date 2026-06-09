@@ -1,6 +1,6 @@
 # Plan: Assertion Evidence Schema
 
-**Status:** in-progress
+**Status:** done (2026-06) — `quote` → `evidence[]` shipped; the identity-hashing specifics diverged to the typed `artifact` scheme
 **Effort:** medium
 **Domain:** assertion DAG
 

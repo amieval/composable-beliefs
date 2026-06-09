@@ -122,4 +122,4 @@ Four plans extend this thesis into action:
 3. **Privacy** - how agents use the framework without exposing proprietary beliefs. Structure without content, hashed references, tiered telemetry.
 4. **Distribution** - content strategy, AEO (agent experience optimization), posting plan. How to achieve distribution to both human developers and agent evaluators.
 
-See `composable-beliefs-plans.md` for the detailed briefs.
+See [`../plans/superseded/composable-beliefs-plans.md`](../plans/superseded/composable-beliefs-plans.md) for the original briefs — now **largely superseded** (plans 1–2 realized by the shipped framework + self-describing graph; 3–4 unbuilt).
