@@ -7,7 +7,7 @@
       "steps": [
         {
           "id": "data",
-          "file": "composable-beliefs/beliefs/beliefs.json",
+          "file": "beliefs/beliefs.json",
           "anchor": "\"id\":",
           "occurrence": 1,
           "note": "Raw data - each object is one belief (id, kind, claim, deps). The whole graph is this one file.",
@@ -18,20 +18,20 @@
         },
         {
           "id": "from-map",
-          "file": "composable-beliefs/lib/cb/belief.ex",
+          "file": "lib/cb/belief.ex",
           "anchor": "def from_map(",
           "note": "The boundary: a JSON map with string keys becomes a typed %Belief{}. Everything downstream works on the struct, not the map.",
           "goto": "store"
         },
         {
           "id": "store",
-          "file": "composable-beliefs/lib/cb/belief/store.ex",
+          "file": "lib/cb/belief/store.ex",
           "anchor": "def read",
           "note": "Loads the whole graph off disk and hands back %Belief{} structs. The single read path the CLI and dashboard share."
         },
         {
           "id": "formatter",
-          "file": "composable-beliefs/lib/cb/belief/formatter.ex",
+          "file": "lib/cb/belief/formatter.ex",
           "anchor": "def table",
           "note": "Renders beliefs back out to the terminal (ANSI). The other end of the pipeline from the raw JSON you started at."
         }
