@@ -1,7 +1,14 @@
 # Composable Beliefs - Plan Briefs
 
-**Status:** active
+**Status:** largely superseded (2026-06) — see determination below
 **Purpose:** Detailed briefs for creating four follow-up plans. Each brief contains enough context for a fresh session to produce a full plan without re-reading the entire plan history.
+
+> **Status determination (2026-06): largely superseded — do not feed to a fresh session as-is.**
+> None of the four briefed plans was written as a standalone doc, and the landscape moved on:
+> - **Plan 1 (The DAG, formal spec)** — *realized by other means.* The framework ships a self-describing graph (`beliefs/beliefs.json`) plus `docs/belief-graph.md`; the paradigm prose lives in `docs/composable-beliefs-thesis.md`.
+> - **Plan 2 (Architecture)** — *realized.* The framework is built (`lib/`, `mix bs`, contracts); BEAM rationale is in `docs/cb-on-the-beam.md`.
+> - **Plan 3 (Privacy)** and **Plan 4 (Distribution)** — *not built; still possible future work,* but speculative and the briefs below depend on the deprecated confidence / earned-confidence service model.
+> Every "what to read first" path below is stale (`docs/systems/*`, `examples/assertions.json` no longer exist). Current equivalents: `docs/belief-graph.md`, `docs/operations.md`, `docs/actualization.md`, `beliefs/beliefs.json`. Kept for historical reference only.
 
 ## How to use this document
 
