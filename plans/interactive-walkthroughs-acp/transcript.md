@@ -177,3 +177,26 @@ keep/neutralize-at-re-cut decision). Wrote `dashboard-residue-scrub.md`. Created
 - **Scrub:** apply the two Tier-1 edits (`README.md:27`, `watcher.ex:20-22`); decide Tier-2 timing. See `dashboard-residue-scrub.md`.
 - **Walkthroughs:** decide home for the JSON + skill (spans `composable-beliefs` and `cb-dashboard`); whether to scaffold Phase 1 now; Phase 3 (Tidewave) appetite. See `plan.md` Open Questions.
 - **Billing:** confirm whether this ACP session bills API credits vs subscription — the fact that anchors the whole usage-split rationale.
+
+---
+
+## Post-thread resolution (2026-06-09)
+
+The walkthrough follow-ups above were resolved in a later session; `plan.md` was
+revised accordingly (see its "Resolved decisions" section). Summary:
+
+- **Format/instance split.** The decisive reframe: the *spec* for the walkthrough
+  format is separate from any *instantiation* of it (e.g. `belief-pipeline`). This
+  produced a three-part structure - a new **`code-walkthrough/` framework repo**
+  (spec + skill + abstract reasoning), **`<repo>/code-walkthrough/` instance dirs**
+  (composable-beliefs owns `belief-pipeline`), and the same pattern for any other
+  consuming repo. Mirrors `composable-beliefs : belief-collections`.
+- **Skill (Q3).** One canonical home in `code-walkthrough/.claude/skills/`,
+  parameterized by an instance path; launch from the framework repo / `amieval`
+  umbrella and point outward. Not copied into consuming repos.
+- **Anchor syntax (Q2).** Literal substring + optional `occurrence: N`; no regex.
+- **Branch model (Q5).** Full DAG with re-convergence.
+- **Phase 3 appetite (Q4).** In scope (decided 2026-06-09). The deciding factor: the
+  `tidewave` Phoenix package is open source and needs no subscription, so the cost is
+  wiring effort only. All three phases are committed; "do not half-wire" carries
+  forward as a build constraint.
