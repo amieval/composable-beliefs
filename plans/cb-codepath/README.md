@@ -42,6 +42,10 @@ transcripts kept as a record.
   standalone `code-walkthrough` repo is archived. Codepath instances are cb collections
   hosted beside the code they walk.
 
+**Records:** [`transcript.md`](transcript.md) is how the design was reached;
+[`transcript-execution.md`](transcript-execution.md) is how the set was built
+(all of plans 0-3A plus a graph-housekeeping batch, executed 2026-06-09).
+
 ## The series
 
 | Plan | What it delivers | Touches `beliefs/`? | Runtime? |
