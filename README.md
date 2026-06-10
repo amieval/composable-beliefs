@@ -5,7 +5,7 @@ Composable Beliefs (CB) gives a system's reasoning a durable, inspectable form: 
 Two commitments define the design:
 
 - **Beliefs, not facts.** The unit of the graph records what is believed, on what evidence, and what would have to change - truth status is tracked and revisable, never presumed. A belief can turn out to be wrong without breaking the model; that is what retraction is for.
-- **CB does not reason for you.** Nothing in the framework derives new beliefs. Humans and agents author them; CB makes the authored reasoning inspectable, composable, and falsifiable.
+- **Reasoning is authored.** Humans and agents create every belief, exercising judgment at each step; CB records the derivation, keeps it walkable, and makes the reasoning inspectable, composable, and falsifiable.
 
 At its core CB is a schema. The format is plain JSON, and the discipline could in principle be practiced with a text editor. What ships in this repo is the schema plus the machinery that turns its promises into guarantees - an Elixir library and mix-task suite for querying, verifying, authoring, and rendering belief graphs. The schema gives you legibility; the verifiers give you guarantees. One dependency (Jason), pure deterministic traversal, no LLM anywhere in the read path, and CI gates every push on the test suite and the graph verifiers.
 
@@ -33,7 +33,7 @@ CB_BELIEFS=codepath/beliefs.json mix cb.verify.codepath belief-pipeline
 mix cb.render.audit toy:a9 --collection toy --out audit.html
 ```
 
-If you are evaluating adoption: you adopt a JSON file format for your graph, a small Elixir library and its mix tasks to query and verify it, and (optionally) agent skills for a Claude-Code-style harness. What you are *not* adopting: a vector memory, an inference engine, or an eval harness - CB deliberately does none of those.
+If you are evaluating adoption: you adopt a JSON file format for your graph, a small Elixir library and its mix tasks to query and verify it, and (optionally) agent skills for a Claude-Code-style harness. Three things stay deliberately outside CB's scope, left to other tools: vector memory, inference, and eval execution.
 
 ## Sixty seconds
 
@@ -87,7 +87,7 @@ Every belief has exactly one of three `type` values:
 
 - **`primitive`** - a claim grounded in a single source. Structurally atomic: it carries an `artifact` and `evidence`, and no `deps`. Atomicity here is about provenance, not logic - what makes a claim primitive is that it derives from one source rather than from other beliefs.
 - **`compound`** - a claim composed from other beliefs (its `deps`). Not an aggregate: a compound asserts something *none of its deps states alone*. Two scorers each report a failure; the compound asserts that two independent scorers *agree* - a new claim that exists only in the composition.
-- **`implication`** - a prescription: something that should happen, or (as a contract, below) an invariant that must hold. Implications are authored judgments - a verdict, a piece of guidance, a policy - resting on `deps` that record the reasoning. CB records the derivation; it never performs it.
+- **`implication`** - a prescription: something that should happen, or (as a contract, below) an invariant that must hold. Implications are authored judgments - a verdict, a piece of guidance, a policy - resting on `deps` that record the reasoning; the graph keeps the derivation walkable and its premises' staleness detectable.
 
 ### Provenance: artifact and evidence
 
@@ -115,7 +115,7 @@ One more verb completes the lifecycle: an implication can be **materialized** - 
 
 A **contract** is an implication formalized to the point of being machine-checkable. The framework's own definition (`cb:a300`) is the cleanest statement: *the implication states WHAT (the conclusion); the contract states HOW (rules as Given/When/Then scenarios) and ALWAYS (invariants).* Structurally (`cb:c031`): a node is contract-grade iff it is an implication with non-empty `rules` or `invariants` - the conventional `c` prefix on contract ids is a naming reflection of that property, never its definition, and code must detect contracts structurally, not by id.
 
-Contract rules are not free-form. They decompose into a **closed catalogue of rule kinds** (`cb:c046`): each kind has a Datalog-shaped declarative fact and exactly one Elixir interpreter. Datalog-*shaped*, not Datalog: there is no evaluator, no recursion, no query engine - the rules are facts, and each kind's interpreter is ordinary code.
+Contract rules are not free-form. They decompose into a **closed catalogue of rule kinds** (`cb:c046`): each kind has a Datalog-shaped declarative fact and exactly one Elixir interpreter. Datalog supplies the fact shape only; evaluation lives in each kind's ordinary Elixir interpreter. The graph routes, code implements.
 
 | Kind | Fact shape | Interpreter | Typical use |
 | --- | --- | --- | --- |
@@ -155,7 +155,7 @@ The graph serves two audiences from the same nodes, and the split is deliberate:
 
 **Routed assertions.** Contract rules bind predicate *names* to conditions; the predicate bodies are ordinary repo-resident functions that pre-exist the contract. Codepath stops and eval methodology checks both work this way (sections below).
 
-**Never application code.** Per `cb:c047`, application code is neither compiled from nor stored in the graph. Documents are rendered from it; assertions are routed by it; code is written by people, about which the graph holds beliefs.
+**Application code stays in modules.** Per `cb:c047`, the graph carries specification and routing; implementation bodies live in ordinary code. Documents are rendered from the graph; assertions are routed by it; application code is written by people, about which the graph holds beliefs.
 
 ## Codepaths: beliefs anchored to code
 
