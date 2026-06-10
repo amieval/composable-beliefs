@@ -218,19 +218,50 @@ plans.
 (`code:` locator and codepath output-target) + plan-2 (`present-codepath` renderer,
 assertions off) + plan-3 (named predicates + `Sink.Test` + dynamic verifier, assertions
 on). Committed + pushed. Captured the walkthrough->codepath rename as plan-0's task rather
-than running it mid-flight (entangled with the fold).
+than running it mid-flight (entangled with the fold). Persisted this transcript beside the
+plans.
+
+---
+
+**User:** *(pastes a review of the plans by Fable, a new Anthropic model)* consider this.
+
+**Fable review (condensed):** (1) batch the `eval:` scheme into plan-1's c040
+supersession (a397 - each addition supersedes the enum) and add an eval-collection plan;
+defer plan-3 until a real eval is authored. (2) plan-1 anchor encoding is underspecified -
+substrings collide with URI/regex delimiters, and *multiple* matches are the common case,
+not the rare one. (3) plan-3 Tidewave is heavier than the pure predicates need - a mix
+task can invoke them directly; reserve Tidewave for live-state predicates; encode
+inspection-only as a contract, not a convention. (4) plan-2 should add a deterministic
+`mix cb.render.codepath` for CI-testability; state that post-import reorders supersede the
+output-target. (5) plan-0 should make the rename acceptance a `grep`-with-whitelist exit.
+
+**Assistant:** *(verified a397 and the schemes)* a397 confirms enum additions supersede
+c040, so the batching *principle* holds - but the `eval:` premise is a conflation: cb's
+c040 has no `eval:`; that scheme lives in the separate **sdl / eval-provenance** mission's
+own enum, and cb-codepath's `eval` is a predicate-invocation mechanism, not an artifact
+scheme. Absorbed (2)-(5) into the plans - anchor encoding + multiple-match rule,
+direct-invocation Step A / Tidewave Step B split, inspection-only as a contract, the
+deterministic renderer + churn honesty, the grep exit. Held (1) back as a scope question:
+does the evals mission converge with codepaths?
+
+**User:** keep them separate, commit the revisions.
+
+**Assistant:** Kept evals/sdl separate (plan-1 adds only `code:`; convergence documented
+as "separate by default" in the README). Committed + pushed the five revised plan files.
 
 ---
 
 ## Where it stands at thread close
 
 - **Decided:** full collapse into cb; codepath terminology; fold + archive the standalone
-  repo; single-language (BEAM/Tidewave) target; the locked defaults in the
-  [README](README.md) (code: scheme, reuse output-target, sibling verifier,
-  draft-then-import).
-- **Built:** the plan set (committed, pushed). Nothing under `beliefs/` touched yet.
+  repo; single-language (BEAM/Tidewave) target; evals/sdl kept **separate** from
+  codepaths; the locked defaults in the [README](README.md) (code: scheme, reuse
+  output-target, sibling verifier, draft-then-import).
+- **Built:** the plan set, revised once per the Fable review (committed, pushed). Nothing
+  under `beliefs/` touched yet.
 - **Open / next:** execute plan-0 (mechanical, depends on nothing) - including whether to
   run the walkthrough->codepath rename as an immediate standalone pass or with the fold.
-  plan-1 is the first `beliefs/` change. The final fork from the dialogue still to settle
-  in build: does the dynamic verifier reuse `verify.schema`'s role-discovery wholesale or
-  ship as a fully separate task (the plans default to sibling).
+  plan-1 is the first `beliefs/` change. Build-time forks still to settle: does the
+  dynamic verifier reuse `verify.schema`'s role-discovery or ship as a fully separate task
+  (plans default to sibling); and whether/when the evals mission ever converges (default
+  no).
