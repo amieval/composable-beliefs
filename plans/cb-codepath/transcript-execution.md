@@ -217,7 +217,25 @@ plan-0.
 
 **User:** "persist this entire thread alongside the plans that were just done"
 
-**Assistant:** This file.
+**Assistant:** This file (commit `ee52ade`), linked from the plan-set README alongside the
+design transcript.
+
+---
+
+**User:** "commit. great. now refactor the readme, if not rewrite from scratch. do not
+concern yourself with brevity, concern yourself with comprehensiveness and thoroughness"
+
+**Assistant (commit `4a7d611`):** Rewrote the repo README from scratch (445 -> 695
+lines), every embedded output captured from live runs. The old README predated the
+codepath capability entirely and rendered superseded graph state (`cb:c040` shown
+active; a 16-check sdl verify run). New coverage: the artifact-scheme table including
+`code:`, the full rule-kind catalogue with interpreters, the current active
+schema-contract family with supersession lineage, the complete command surface, and new
+Collections / Codepaths / Output-targets sections with real render + verify output. The
+sdl worked example kept as the centerpiece with stale outputs recaptured; its ending
+upgraded from hypothetical to demonstrated - the a397 "adding an enum value supersedes
+the enum contract" rule shown having actually run (`bs history cb:c043` plus the full
+successor record with its adjudication evidence). Pushed.
 
 ---
 
