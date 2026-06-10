@@ -61,9 +61,27 @@ the emitted `path:line` refs against the same root.
 - Re-convergence is normal (two branches may reach the same step). If the reader
   steers into an already-visited step, present it again from the live JSON rather
   than recapping from memory.
-- **Gradient off:** stops referencing non-contract beliefs narrate only. Plan-3
-  (`plans/cb-codepath/plan-3-assertions-runtime.md`) adds the assertion branch for
-  contract-grade stops; until it lands, do not pretend to verify anything.
+- **The gradient:** stops referencing non-contract beliefs narrate only; never
+  pretend to verify one. Contract-grade stops can additionally assert (below).
+
+## Assertions on
+
+When the reader asks for assertions (or the codepath is being used as a check, not
+a tour), pair each contract-grade stop with its predicate result:
+
+1. Run `mix cb.verify.codepath <id> --json --beliefs <path>` once up front. Each
+   result row carries `step`, `predicate`, `result` ("pass"/"fail"), and `detail`.
+   Predicates are invoked directly in-process (plan-3 Step A) - no app to boot.
+2. At each stop, after the `path:line - claim` line, emit that step's results:
+   `PASS predicate_name` or `FAIL predicate_name - detail`. Stops with no rows
+   narrate only - say nothing about verification for them.
+3. Pass `--record` only when the reader asks to persist the run: it writes dated
+   pass/fail history onto each contract stop's `materialized` field (a re-run
+   replaces the prior record).
+
+Predicates are inspection-only per `cb:c045` - names end in `?` or `_check` and
+resolve to repo-resident functions (`CB.Codepath.Predicates`); the DAG stores only
+routing (per c037). Never eval an expression from the collection.
 
 ## Authoring loop (draft -> import)
 

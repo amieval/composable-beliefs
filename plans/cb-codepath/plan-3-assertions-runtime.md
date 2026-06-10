@@ -6,7 +6,7 @@ as test history bound to the immutable claim. The *same* `belief-pipeline` codep
 plan-2 narrates now also runs. This is the heaviest plan - it needs the runtime channel -
 and it is gated behind plans 1 and 2.
 
-**Status:** Proposed 2026-06-09. Nothing built.
+**Status:** Step A executed 2026-06-09 (CB.Codepath.Predicates/Assertions, Sink.Test, mix cb.verify.codepath, cb:c045, contract-grade belief-pipeline stops). Step B (Tidewave federation) deferred until a live-state predicate first demands it.
 **Date:** 2026-06-09
 **Depends on:** plan-1 (schema), plan-2 (renderer). Runtime depends on the open-source `tidewave` Phoenix package (no subscription) and a booted `cb-dashboard`.
 **Touches:** repo-resident predicate functions (cb test support); contract routing on the `belief-pipeline` claim beliefs; `cb-dashboard/mix.exs` + `cb-dashboard/lib/cb_dashboard/endpoint.ex:63` (Tidewave mount); a new `CB.Materializer.Sink.Test`; a new dynamic verifier mix task.

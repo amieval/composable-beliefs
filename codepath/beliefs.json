@@ -53,7 +53,8 @@
     "deps": [
       "codepath:a001"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "codepath:c002",
     "created": "2026-06-09"
   },
   {
@@ -83,7 +84,8 @@
     "deps": [
       "codepath:a002"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "codepath:c003",
     "created": "2026-06-09"
   },
   {
@@ -113,7 +115,8 @@
     "deps": [
       "codepath:a002"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "codepath:c004",
     "created": "2026-06-09"
   },
   {
@@ -186,6 +189,248 @@
       "codepath:a002",
       "codepath:a003",
       "codepath:a004"
+    ],
+    "status": "superseded",
+    "superseded_by": "codepath:c005",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "codepath:c002",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "system",
+    "tags": [
+      "belief-pipeline",
+      "codepath-stop"
+    ],
+    "claim": "The boundary: a JSON map with string keys becomes a typed %Belief{}. Everything downstream works on the struct, not the map. With assertions on, from_map_roundtrips? must hold: every belief in the loaded collection survives the map -> struct -> map round-trip.",
+    "rules": [
+      {
+        "requires": "from_map_roundtrips?",
+        "when": {
+          "assertions": "on"
+        }
+      }
+    ],
+    "contract": true,
+    "artifact": "code:lib/cb/belief.ex#def from_map(",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "plan-3 Step A raises this stop to contract grade: the implies rule routes to the repo-resident predicate from_map_roundtrips? (CB.Codepath.Predicates), invoked in-process by mix cb.verify.codepath. Narration claim and code: anchor carried from the superseded stop; deps re-pointed to active successors.",
+        "artifact": "document:plans/cb-codepath/plan-3-assertions-runtime.md"
+      },
+      {
+        "date": "2026-06-09",
+        "detail": "Accepted via human adjudication against codepath:a002. Reasoning: plan-3 Step A: the stop becomes contract-grade so the codepath asserts as well as narrates. c031 requires contract: true to live on an implication, so the implication-grade reshaping is a supersession, not an edit; the claim and anchor are carried verbatim with the assertion sentence appended. Routing only - the predicate body lives in CB.Codepath.Predicates per c037.",
+        "artifact": "adjudication:human:cb-codepath-plan-3-2026-06-09"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.Belief",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "codepath:a001"
+    ],
+    "materialized": {
+      "date": "2026-06-09",
+      "todos": [
+        {
+          "action": "invoke from_map_roundtrips?",
+          "id": "from_map_roundtrips?",
+          "result": "pass"
+        }
+      ]
+    },
+    "status": "active",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "codepath:c003",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "system",
+    "tags": [
+      "belief-pipeline",
+      "codepath-stop"
+    ],
+    "claim": "Loads the whole graph off disk and hands back %Belief{} structs. The single read path the CLI and dashboard share. With assertions on, store_reads_structs? must hold: Store.read/0 returns only %Belief{} structs.",
+    "rules": [
+      {
+        "requires": "store_reads_structs?",
+        "when": {
+          "assertions": "on"
+        }
+      }
+    ],
+    "contract": true,
+    "artifact": "code:lib/cb/belief/store.ex#def read do",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "plan-3 Step A raises this stop to contract grade: the implies rule routes to the repo-resident predicate store_reads_structs? (CB.Codepath.Predicates), invoked in-process by mix cb.verify.codepath. Narration claim and code: anchor carried from the superseded stop; deps re-pointed to active successors.",
+        "artifact": "document:plans/cb-codepath/plan-3-assertions-runtime.md"
+      },
+      {
+        "date": "2026-06-09",
+        "detail": "Accepted via human adjudication against codepath:a003. Reasoning: plan-3 Step A: the stop becomes contract-grade so the codepath asserts as well as narrates. c031 requires contract: true to live on an implication, so the implication-grade reshaping is a supersession, not an edit; the claim and anchor are carried verbatim with the assertion sentence appended. Routing only - the predicate body lives in CB.Codepath.Predicates per c037.",
+        "artifact": "adjudication:human:cb-codepath-plan-3-2026-06-09"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.Belief.Store",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "codepath:c002"
+    ],
+    "materialized": {
+      "date": "2026-06-09",
+      "todos": [
+        {
+          "action": "invoke store_reads_structs?",
+          "id": "store_reads_structs?",
+          "result": "pass"
+        }
+      ]
+    },
+    "status": "active",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "codepath:c004",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "system",
+    "tags": [
+      "belief-pipeline",
+      "codepath-stop"
+    ],
+    "claim": "Renders beliefs back out to the terminal (ANSI). The other end of the pipeline from the raw JSON you started at. With assertions on, formatter_renders_table? must hold: Formatter.table/2 renders table output for the loaded collection.",
+    "rules": [
+      {
+        "requires": "formatter_renders_table?",
+        "when": {
+          "assertions": "on"
+        }
+      }
+    ],
+    "contract": true,
+    "artifact": "code:lib/cb/belief/formatter.ex#def table(",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "plan-3 Step A raises this stop to contract grade: the implies rule routes to the repo-resident predicate formatter_renders_table? (CB.Codepath.Predicates), invoked in-process by mix cb.verify.codepath. Narration claim and code: anchor carried from the superseded stop; deps re-pointed to active successors.",
+        "artifact": "document:plans/cb-codepath/plan-3-assertions-runtime.md"
+      },
+      {
+        "date": "2026-06-09",
+        "detail": "Accepted via human adjudication against codepath:a004. Reasoning: plan-3 Step A: the stop becomes contract-grade so the codepath asserts as well as narrates. c031 requires contract: true to live on an implication, so the implication-grade reshaping is a supersession, not an edit; the claim and anchor are carried verbatim with the assertion sentence appended. Routing only - the predicate body lives in CB.Codepath.Predicates per c037.",
+        "artifact": "adjudication:human:cb-codepath-plan-3-2026-06-09"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.Belief.Formatter",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "codepath:c002"
+    ],
+    "materialized": {
+      "date": "2026-06-09",
+      "todos": [
+        {
+          "action": "invoke formatter_renders_table?",
+          "id": "formatter_renders_table?",
+          "result": "pass"
+        }
+      ]
+    },
+    "status": "active",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "codepath:c005",
+    "type": "implication",
+    "kind": "output-target",
+    "domain": "system",
+    "tags": [
+      "output:codepath",
+      "belief-pipeline"
+    ],
+    "name": "belief-pipeline",
+    "claim": "The belief-pipeline codepath: a narrated, branching tour of the pipeline from raw data to render (beliefs.json -> Belief.from_map/1 -> Store.read/0 -> Formatter.table/2) that also runs as a test suite. Entry and step navigation live in this render-spec per cb:c044; presented interactively by the present-codepath skill, linearly by mix cb.render.codepath, and asserted by mix cb.verify.codepath (the data stop narrates only - the gradient).",
+    "rules": [
+      {
+        "entry": "data"
+      },
+      {
+        "render_steps": [
+          {
+            "belief": "codepath:a001",
+            "choices": [
+              {
+                "goto": "from-map",
+                "label": "How does raw JSON become a struct?"
+              },
+              {
+                "goto": "formatter",
+                "label": "How is it rendered back out?"
+              }
+            ],
+            "id": "data"
+          },
+          {
+            "belief": "codepath:c002",
+            "goto": "store",
+            "id": "from-map"
+          },
+          {
+            "belief": "codepath:c003",
+            "id": "store"
+          },
+          {
+            "belief": "codepath:c004",
+            "id": "formatter"
+          }
+        ]
+      }
+    ],
+    "invariants": [
+      "Navigation here is render metadata; reordering this spec supersedes this belief, never the claim beliefs it references."
+    ],
+    "contract": true,
+    "artifact": "document:plans/cb-codepath/plan-3-assertions-runtime.md",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "Re-pointed at the contract-grade stop successors (codepath:c002/c003/c004, plan-3 Step A); the data stop stays the narration-only codepath:a001 to keep the gradient visible. Steps, entry, and branching otherwise unchanged from the superseded codepath:c001.",
+        "artifact": "document:plans/cb-codepath/plan-3-assertions-runtime.md"
+      },
+      {
+        "date": "2026-06-09",
+        "detail": "Accepted via human adjudication against codepath:c001. Reasoning: plan-3 Step A superseded three stop beliefs with contract-grade versions; the render-spec's step rows and deps must reference the active successors or the codepath goes stale. Same stops, same entry branch - only the referenced ids and the assertions-on description change.",
+        "artifact": "adjudication:human:cb-codepath-plan-3-2026-06-09"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.Codepath",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "codepath:a001",
+      "codepath:c002",
+      "codepath:c003",
+      "codepath:c004"
     ],
     "status": "active",
     "created": "2026-06-09"

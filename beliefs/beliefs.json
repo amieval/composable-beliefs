@@ -3250,5 +3250,50 @@
     ],
     "status": "active",
     "created": "2026-06-09"
+  },
+  {
+    "id": "cb:c045",
+    "type": "implication",
+    "kind": "rule",
+    "domain": "system",
+    "tags": [
+      "cb-codepath",
+      "dsl",
+      "inspection-only"
+    ],
+    "claim": "Codepath predicates are inspection-only: a routed predicate observes the system and never mutates it. The checkable proxy: every routed predicate name ends in '?' or '_check' and resolves to an exported zero-arity boolean function on the predicates module - CB.Codepath.Predicates.resolve/2 enforces the naming invariant and refuses to invoke anything else, so an executable string in the DAG has nothing to grab onto. The naming invariant is a verifiable proxy, not a proof of purity; the no-mutation rule itself is this contract.",
+    "rules": [],
+    "invariants": [
+      "Routed predicate names match /(\\?|_check)$/.",
+      "Predicates are zero-arity, exported by the predicates module, and return a boolean.",
+      "Predicates read state; they never mutate it (inspection-only).",
+      "eval invokes a named, repo-resident predicate - never an executable string stored in the DAG (per c037).",
+      "Resolution failures and raises report as predicate failures; an assertion run never crashes the suite."
+    ],
+    "contract": true,
+    "artifact": "document:plans/cb-codepath/plan-3-assertions-runtime.md",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "plan-3 encodes 'predicates only read, never mutate' as a contract rather than a review note. Implemented by CB.Codepath.Predicates.resolve/2 (naming invariant + exported-function check) and exercised by CB.Codepath.Assertions and mix cb.verify.codepath. Preflight 2026-06-09 surfaced tag-overlap matches only; the substantive neighbor is c037 (routing/implementation boundary), taken as a dep, not a conflict.",
+        "artifact": "document:plans/cb-codepath/plan-3-assertions-runtime.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.Codepath.Predicates",
+        "type": "module"
+      },
+      {
+        "ref": "a mix task",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "cb:a467",
+      "cb:c037"
+    ],
+    "status": "active",
+    "created": "2026-06-09"
   }
 ]
