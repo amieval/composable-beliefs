@@ -1,0 +1,5 @@
+{
+  "namespace": "codepath",
+  "description": "Codepaths over the composable-beliefs source: code-anchored cb collections that read as narrated, branching tours and (from plan-3) run as test suites. Hosted beside the code they walk; schema vocabulary borrowed from cb:.",
+  "depends_on": ["cb"]
+}

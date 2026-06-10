@@ -1,0 +1,193 @@
+[
+  {
+    "id": "codepath:a001",
+    "type": "primitive",
+    "kind": "fact",
+    "domain": "system",
+    "tags": [
+      "belief-pipeline",
+      "codepath-stop"
+    ],
+    "claim": "Raw data - each object is one belief (id, kind, claim, deps). The whole graph is this one file.",
+    "artifact": "code:beliefs/beliefs.json#\"id\":@1",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "Observed in beliefs/beliefs.json: the graph serializes as a flat JSON array of belief objects, each opening with its id field; there is no other storage. The anchor pins the first id line as the entry into the raw data (explicit @1 - the id key recurs once per belief by design).",
+        "artifact": "code:beliefs/beliefs.json#\"id\":@1"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "beliefs/beliefs.json",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "codepath:a002",
+    "type": "compound",
+    "kind": "fact",
+    "domain": "system",
+    "tags": [
+      "belief-pipeline",
+      "codepath-stop"
+    ],
+    "claim": "The boundary: a JSON map with string keys becomes a typed %Belief{}. Everything downstream works on the struct, not the map.",
+    "artifact": "code:lib/cb/belief.ex#def from_map(",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "Belief.from_map/1 maps every string key of the decoded JSON object onto the %Belief{} struct fields and records the original key set in _keys for byte-stable round-trips. No other entry point converts raw maps to structs.",
+        "artifact": "code:lib/cb/belief.ex#def from_map("
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.Belief",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "codepath:a001"
+    ],
+    "status": "active",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "codepath:a003",
+    "type": "compound",
+    "kind": "fact",
+    "domain": "system",
+    "tags": [
+      "belief-pipeline",
+      "codepath-stop"
+    ],
+    "claim": "Loads the whole graph off disk and hands back %Belief{} structs. The single read path the CLI and dashboard share.",
+    "artifact": "code:lib/cb/belief/store.ex#def read do",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "Store.read/0 resolves the graph path via CB.Config, decodes the JSON array, and maps each object through Belief.from_map/1. Every consumer (bs shell, verify tasks, dashboard) reads through this function.",
+        "artifact": "code:lib/cb/belief/store.ex#def read do"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.Belief.Store",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "codepath:a002"
+    ],
+    "status": "active",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "codepath:a004",
+    "type": "compound",
+    "kind": "fact",
+    "domain": "system",
+    "tags": [
+      "belief-pipeline",
+      "codepath-stop"
+    ],
+    "claim": "Renders beliefs back out to the terminal (ANSI). The other end of the pipeline from the raw JSON you started at.",
+    "artifact": "code:lib/cb/belief/formatter.ex#def table(",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "Formatter.table/2 takes %Belief{} structs and emits the ANSI table the bs shell prints - the render end of the data -> struct -> render pipeline.",
+        "artifact": "code:lib/cb/belief/formatter.ex#def table("
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.Belief.Formatter",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "codepath:a002"
+    ],
+    "status": "active",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "codepath:c001",
+    "type": "implication",
+    "kind": "output-target",
+    "domain": "system",
+    "tags": [
+      "output:codepath",
+      "belief-pipeline"
+    ],
+    "name": "belief-pipeline",
+    "claim": "The belief-pipeline codepath: a narrated, branching tour of the pipeline from raw data to render (beliefs.json -> Belief.from_map/1 -> Store.read/0 -> Formatter.table/2). Entry and step navigation live in this render-spec per cb:c044; presented interactively by the present-codepath skill and linearly by mix cb.render.codepath.",
+    "rules": [
+      {
+        "entry": "data"
+      },
+      {
+        "render_steps": [
+          {
+            "belief": "codepath:a001",
+            "choices": [
+              {
+                "goto": "from-map",
+                "label": "How does raw JSON become a struct?"
+              },
+              {
+                "goto": "formatter",
+                "label": "How is it rendered back out?"
+              }
+            ],
+            "id": "data"
+          },
+          {
+            "belief": "codepath:a002",
+            "goto": "store",
+            "id": "from-map"
+          },
+          {
+            "belief": "codepath:a003",
+            "id": "store"
+          },
+          {
+            "belief": "codepath:a004",
+            "id": "formatter"
+          }
+        ]
+      }
+    ],
+    "invariants": [
+      "Navigation here is render metadata; reordering this spec supersedes this belief, never the claim beliefs it references."
+    ],
+    "contract": true,
+    "artifact": "document:plans/cb-codepath/plan-2-codepath-renderer.md",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "Reauthored from the retired standalone instance (codepath/codepaths.json, formerly walkthroughs.json): same four stops and the same entry branch (data forks to from-map or formatter; from-map continues to store). Drafted outside the graph and imported once settled, per the plan-2 authoring loop.",
+        "artifact": "document:plans/cb-codepath/plan-2-codepath-renderer.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.Codepath",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "codepath:a001",
+      "codepath:a002",
+      "codepath:a003",
+      "codepath:a004"
+    ],
+    "status": "active",
+    "created": "2026-06-09"
+  }
+]

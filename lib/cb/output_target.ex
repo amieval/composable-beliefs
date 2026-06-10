@@ -45,7 +45,7 @@ defmodule CB.OutputTarget do
   """
   def compile(target, all_beliefs) do
     by_id = Map.new(all_beliefs, &{&1.id, &1})
-    rules = extract_rules_map(target)
+    rules = rules_map(target)
 
     with {:ok, output_path} <- fetch_rule(rules, "output_path"),
          {:ok, sections} <- fetch_rule(rules, "render_sections") do
@@ -73,15 +73,18 @@ defmodule CB.OutputTarget do
   defp filter_by_tag(targets, nil), do: targets
   defp filter_by_tag(targets, tag), do: Enum.filter(targets, &(tag in (&1.tags || [])))
 
-  # Rules on a contract is a list of single-key maps; flatten into one.
-  defp extract_rules_map(%{rules: rules}) when is_list(rules) do
+  @doc """
+  Flatten a contract's rules (a list of single-key maps) into one map.
+  Shared by the compiler, the codepath validator, and `CB.Codepath`.
+  """
+  def rules_map(%{rules: rules}) when is_list(rules) do
     Enum.reduce(rules, %{}, fn
       rule, acc when is_map(rule) -> Map.merge(acc, rule)
       _, acc -> acc
     end)
   end
 
-  defp extract_rules_map(_), do: %{}
+  def rules_map(_), do: %{}
 
   defp fetch_rule(rules, key) do
     case Map.fetch(rules, key) do
@@ -169,7 +172,7 @@ defmodule CB.OutputTarget do
   Returns `:ok` or `{:error, [message]}` with every violation listed.
   """
   def validate_codepath(target, all_beliefs) do
-    rules = extract_rules_map(target)
+    rules = rules_map(target)
     entry = Map.get(rules, "entry")
     steps = Map.get(rules, "render_steps")
 
@@ -284,7 +287,7 @@ defmodule CB.OutputTarget do
   Returns `:ok` or `{:error, {:deps_mismatch, missing, extra}}`.
   """
   def validate_deps_match_sections(target) do
-    rules = extract_rules_map(target)
+    rules = rules_map(target)
     sections = Map.get(rules, "render_sections", [])
 
     section_ids =

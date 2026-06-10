@@ -5,7 +5,7 @@ composable-beliefs, rename the artifact from "walkthrough" to "codepath" across 
 current codebase, and reconcile the superseded prior plan. No schema changes, no
 runtime. This clears the ground so plans 1-3 build on a single, consistently-named home.
 
-**Status:** Proposed 2026-06-09. Nothing built.
+**Status:** Executed 2026-06-09 (cb commit 4bf56e7; standalone repo archived).
 **Date:** 2026-06-09
 **Depends on:** nothing.
 **Touches:** the `code-walkthrough` repo (archived); `composable-beliefs/code-walkthrough/` (renamed); the `present-walkthrough` skill; `plans/interactive-walkthroughs-acp/` (marked superseded).

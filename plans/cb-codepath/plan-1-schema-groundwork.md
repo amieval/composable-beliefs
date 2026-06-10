@@ -5,7 +5,7 @@ ordered, branching render over claim ids is a first-class output-target. This is
 prerequisite the collapse created: even a read-only codepath (plan-2) needs claims that
 point at code and a render-spec that orders them.
 
-**Status:** Proposed 2026-06-09. Nothing built.
+**Status:** Executed 2026-06-09 (cb commit b7ddea9; cb:c043 supersedes cb:c040, cb:c044 is the codepath output-target contract).
 **Date:** 2026-06-09
 **Depends on:** plan-0 (fold + rename).
 **Touches:** `beliefs/beliefs.json` (c040, the codepath output-target contract, supporting beliefs); `lib/cb/belief.ex` (artifact parsing); `lib/mix/tasks/cb.verify.schema.ex` (artifact-format + enum checks); possibly `lib/cb/output_target.ex`.

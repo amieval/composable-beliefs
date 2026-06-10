@@ -5,7 +5,7 @@ cb collection. This is the codepath at its lower gradient: read-only, no runtime
 usable on its own as a guided walk. It also reauthors the seed `belief-pipeline` from a
 standalone JSON file into a proper cb collection.
 
-**Status:** Proposed 2026-06-09. Nothing built.
+**Status:** Executed 2026-06-09 (codepath: collection + CB.Codepath + mix cb.render.codepath + the present-codepath skill rewrite).
 **Date:** 2026-06-09
 **Depends on:** plan-1 (the `code:` locator and the codepath output-target).
 **Touches:** a new cb collection for `belief-pipeline` (claim beliefs + the codepath output-target); the `present-codepath` skill in `.claude/skills/`; possibly a small loader/resolver helper in `lib/cb`.
