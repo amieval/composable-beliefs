@@ -1843,44 +1843,44 @@
     "rules": [
       {
         "definitions": {
-          "state-machine": "A definition of states and transitions for some entity.",
-          "training-distribution": "A claim about training data distribution.",
-          "edit-pair": "Paired before/after edit reference.",
+          "reasoning-error": "An agent reasoning error pattern.",
+          "derivation-rule": "A rule by which beliefs or values are derived from other beliefs.",
+          "error-pattern": "A recurring failure shape worth surfacing for correction.",
           "output-target": "A declared output target.",
           "domain-enum": "A domain-specific enum declaration.",
-          "formatting-rule": "A formatting convention.",
-          "definition": "Vocabulary, not commitment. Defines what a word, type, or field means. Distinguished from kind:policy (intentional commitment) and kind:schema (rule about belief structure).",
-          "design-rationale": "The reasoning behind a design decision (candidate for retirement during sweep).",
-          "policy": "Domain truth, true by convention. Normative claim about how the system or operations work.",
-          "audit-rule": "A rule used during audit.",
-          "design-principle": "A guiding principle for system or process design.",
-          "meta-observation": "An observation about agent or system at a meta level.",
-          "human-factor": "A human-factor consideration.",
-          "training-incentive": "A claim about training incentives.",
-          "rule": "A standing rule that must be followed.",
-          "outcome-claim": "A claim about expected outcome.",
-          "architectural-synthesis": "A synthesis claim about system architecture.",
-          "schema": "A claim about the structure of beliefs or the DAG itself.",
           "domain-rule": "A rule scoped to a specific domain.",
+          "meta-observation": "An observation about agent or system at a meta level.",
+          "schema": "A claim about the structure of beliefs or the DAG itself.",
           "enum-registry": "A contract that closes the allowed value set for one or more named fields.",
+          "design-principle": "A guiding principle for system or process design.",
+          "edit-pair": "Paired before/after edit reference.",
+          "outcome-claim": "A claim about expected outcome.",
+          "state-machine": "A definition of states and transitions for some entity.",
+          "formatting-rule": "A formatting convention.",
           "observation": "A noted observation, not yet rising to fact or rule.",
-          "fact": "An observed factual claim with provenance.",
-          "derivation-table": "A tabular derivation specification.",
-          "error-pattern": "A recurring failure shape worth surfacing for correction.",
-          "design-property": "A declared structural property of the system.",
-          "design-observation": "A noted property of the system's design.",
-          "structural-parallel": "A noted structural parallel between systems.",
-          "governance": "A governance claim.",
-          "derivation-rule": "A rule by which beliefs or values are derived from other beliefs.",
-          "action-item": "A one-off action recommendation. Not standing, not contract-grade.",
-          "agent-architecture": "A claim about how the agent is structured.",
-          "feedback-loop": "A claim about a feedback loop in the system.",
-          "convention": "A team or system convention.",
-          "reasoning-error": "An agent reasoning error pattern.",
-          "design-gap": "An identified absence in the system's design.",
-          "composable-belief": "A belief about belief-DAG composition.",
+          "audit-rule": "A rule used during audit.",
+          "architectural-synthesis": "A synthesis claim about system architecture.",
           "analogical-claim": "A claim by analogy to another system.",
-          "error": "A recorded error or failure mode."
+          "feedback-loop": "A claim about a feedback loop in the system.",
+          "training-distribution": "A claim about training data distribution.",
+          "governance": "A governance claim.",
+          "fact": "An observed factual claim with provenance.",
+          "human-factor": "A human-factor consideration.",
+          "derivation-table": "A tabular derivation specification.",
+          "error": "A recorded error or failure mode.",
+          "design-property": "A declared structural property of the system.",
+          "composable-belief": "A belief about belief-DAG composition.",
+          "design-observation": "A noted property of the system's design.",
+          "design-gap": "An identified absence in the system's design.",
+          "action-item": "A one-off action recommendation. Not standing, not contract-grade.",
+          "training-incentive": "A claim about training incentives.",
+          "definition": "Vocabulary, not commitment. Defines what a word, type, or field means. Distinguished from kind:policy (intentional commitment) and kind:schema (rule about belief structure).",
+          "rule": "A standing rule that must be followed.",
+          "convention": "A team or system convention.",
+          "agent-architecture": "A claim about how the agent is structured.",
+          "policy": "Domain truth, true by convention. Normative claim about how the system or operations work.",
+          "structural-parallel": "A noted structural parallel between systems.",
+          "design-rationale": "The reasoning behind a design decision (candidate for retirement during sweep)."
         },
         "field": "kind",
         "values": [
@@ -2014,7 +2014,8 @@
       "cb:a398",
       "cb:a407"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:c043",
     "created": "2026-05-15"
   },
   {
@@ -3103,5 +3104,151 @@
     "deps": [],
     "status": "active",
     "created": "2026-06-08"
+  },
+  {
+    "id": "cb:a467",
+    "type": "primitive",
+    "kind": "design-rationale",
+    "domain": "system",
+    "tags": [
+      "cb-codepath",
+      "artifact-scheme"
+    ],
+    "claim": "The cb-codepath plan set (plans/cb-codepath/) settles the code-anchoring design: a codepath is a cb collection; a claim anchors to a within-file site via code:<repo-relative-path>#<anchor>, where everything after the first '#' is one opaque literal substring anchor with an optional trailing '@<N>' occurrence selector (a literal trailing '@<digits>' is percent-encoded as '%40<digits>'); line numbers are never stored and resolve at render/run time; a missing anchor is a maintenance signal and multiple matches render against the first match with a tighten-this-anchor warning; ordering and branching live in an output-target render-spec (entry plus render_steps rows), never in the claim beliefs.",
+    "artifact": "document:plans/cb-codepath/plan-1-schema-groundwork.md",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "plans/cb-codepath/ (README decision record + plan-0..3) landed 2026-06-09 after the design discussion collapsed the standalone code-walkthrough plugin into cb as the single schema authority. plan-1 pins the code: locator grammar (first-# split, opaque anchor, @N occurrence, %40 escape, first-match-plus-warning on multiples) and the codepath output-target shape; plan-0 (fold + rename) executed the same day. Preflight 2026-06-09 surfaced tag/claim-overlap matches only (dag-schema family); reviewed against c026-c042: no semantic conflict - the one genuine conflict is c040's enum closure, resolved by the adjudicated c040 supersession this primitive feeds.",
+        "artifact": "document:plans/cb-codepath/plan-1-schema-groundwork.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "plans/cb-codepath/plan-1-schema-groundwork.md",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "cb:c043",
+    "type": "implication",
+    "kind": "enum-registry",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "enum",
+      "artifact-scheme"
+    ],
+    "claim": "Canonical enum of artifact URI schemes. Each scheme declared inline with its URI form. The enum is closed: no artifact value with a scheme outside this set is permitted on active beliefs.",
+    "rules": [
+      {
+        "definitions": {
+          "code": "An anchored site within a repository file. Form: code:<repo-relative-path>#<anchor>. Everything after the first '#' is one opaque literal substring anchor (the fixed-string grep target); an optional trailing '@<N>' selects the Nth match, and a literal trailing '@<digits>' is percent-encoded as '%40<digits>'. Line numbers are never stored - they resolve at render/run time. document: remains the whole-file reference.",
+          "document": "A repository file reference. Form: document:<repo-relative-path>. Files under ops/, dates/, lib/, etc.",
+          "gmail": "A Gmail thread reference. Form: gmail:<thread-id>. Resolved via Gmail API.",
+          "https": "An external URL. Form: https:<URL-rest>. Web pages, papers, external resources.",
+          "plan": "A plan/spec/intent reference. Form: plan:<id-or-descriptor>.",
+          "session": "A working session reference. Form: session:<date-or-descriptor>. Resolved via session transcript (persistence pipeline pending).",
+          "source": "A cached source document reference. Form: source:<slug>. Documents stored under ops/sources/ or similar.",
+          "user": "A direct user statement. Form: user:<name>:<date>. Internal authorship provenance."
+        },
+        "field": "artifact-scheme",
+        "values": [
+          "gmail",
+          "session",
+          "user",
+          "document",
+          "source",
+          "https",
+          "plan",
+          "code"
+        ]
+      }
+    ],
+    "invariants": [
+      "Exactly one rule entry, with field 'artifact-scheme'.",
+      "Each value matches /^[a-z][a-z0-9-]*$/.",
+      "Values are unique within the entry.",
+      "Every value has a corresponding entry in the definitions map.",
+      "For all active beliefs b where b.artifact is not null: scheme(b.artifact) is in values."
+    ],
+    "contract": true,
+    "artifact": "document:plans/cb-codepath/plan-1-schema-groundwork.md",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "Added the 'code' scheme for within-file anchored sites per cb-codepath plan-1; the seven inherited schemes and all invariants are unchanged from cb:c040. Single-scheme supersession consistent with a397's batching discipline: the eval: scheme was deliberately not co-added - it belongs to the separate sdl / eval-provenance mission per the plan-1 decision.",
+        "artifact": "document:plans/cb-codepath/plan-1-schema-groundwork.md"
+      },
+      {
+        "date": "2026-06-09",
+        "detail": "Accepted via human adjudication against cb:c040. Reasoning: cb-codepath plan-1 (user-authorized 2026-06-09) extends the closed artifact-scheme enum with the code: locator. A closed enum changes only by superseding its contract as a whole; the successor carries the full enum (seven inherited schemes plus code) and all invariants verbatim. Only code: is added in this supersession - eval: stays with the separate sdl / eval-provenance mission per the plan-1 batching decision (a397).",
+        "artifact": "adjudication:human:cb-codepath-plan-1-2026-06-09"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "a mix task",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "cb:a397",
+      "cb:a398",
+      "cb:a407",
+      "cb:a467"
+    ],
+    "status": "active",
+    "created": "2026-06-09"
+  },
+  {
+    "id": "cb:c044",
+    "type": "implication",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "output:codepath",
+      "cb-codepath"
+    ],
+    "claim": "A codepath output-target is an output-target contract (kind 'output-target', tagged 'output:codepath') whose rules carry an 'entry' step id and 'render_steps' rows of shape {id, belief, goto?, choices?}. Each row's belief resolves to a belief anchored by a code: artifact; navigation (entry/goto/choices) is render metadata that never enters deps and never lives in the claim beliefs; deps equals the union of the rows' belief ids. Enforced statically by mix cb.verify.schema's codepath output-targets check; rendering the steps is the codepath renderer's job.",
+    "rules": [],
+    "invariants": [
+      "A codepath output-target has kind 'output-target' and tag 'output:codepath'.",
+      "Rules carry exactly one 'entry' and one non-empty 'render_steps' list; 'entry' names a step id.",
+      "Step rows are {id, belief, goto?, choices?}; step ids are unique within the target; every 'goto' and choice 'goto' names an existing step id.",
+      "Every step's 'belief' resolves to an existing belief whose artifact is a valid code: locator.",
+      "Navigation (entry, goto, choices) is render metadata only - it never enters deps and never lives in the claim beliefs.",
+      "deps equals the union of belief ids referenced by render_steps.",
+      "A codepath render-spec is drafted outside the graph and imported once settled; a post-import reorder supersedes the output-target belief itself, never the claim beliefs it references."
+    ],
+    "contract": true,
+    "artifact": "document:plans/cb-codepath/plan-1-schema-groundwork.md",
+    "evidence": [
+      {
+        "date": "2026-06-09",
+        "detail": "cb-codepath plan-1 settled reusing the existing output-target kind (the mechanism cb:c042 demonstrates for CLAUDE.md) over minting a new c035 kind, with navigation on parallel render_steps rows rather than overloading render_sections. CB.OutputTarget.validate_codepath/2 and the verifier's codepath output-targets check implement these invariants.",
+        "artifact": "document:plans/cb-codepath/plan-1-schema-groundwork.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "CB.OutputTarget",
+        "type": "module"
+      },
+      {
+        "ref": "CB.Schema.Verifier",
+        "type": "module"
+      }
+    ],
+    "deps": [
+      "cb:a467",
+      "cb:c042"
+    ],
+    "status": "active",
+    "created": "2026-06-09"
   }
 ]

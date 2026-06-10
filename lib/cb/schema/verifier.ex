@@ -46,6 +46,8 @@ defmodule CB.Schema.Verifier do
       check_domain_enum(beliefs),
       check_artifact_format(beliefs),
       check_artifact_scheme_enum(beliefs),
+      check_code_artifact_format(beliefs),
+      check_codepath_targets(beliefs),
       check_no_implication_field(beliefs),
       check_action_item_shape(beliefs),
       check_compound_implication_have_deps(beliefs),
@@ -212,6 +214,56 @@ defmodule CB.Schema.Verifier do
         else
           {"artifact-scheme enum", :fail,
            "artifact schemes outside #{contract.id} enum: #{inspect(violations)}"}
+        end
+    end
+  end
+
+  # --- code: locator format (framework-universal) ---
+
+  defp check_code_artifact_format(beliefs) do
+    # Whether `code` is an allowed scheme is the enum check's job; this
+    # check pins the locator grammar (path + '#' + opaque anchor, optional
+    # trailing @N) on every code: artifact via the shared parser.
+    violations =
+      beliefs
+      |> Enum.filter(&(is_binary(&1.artifact) and String.starts_with?(&1.artifact, "code:")))
+      |> Enum.flat_map(fn b ->
+        case CB.CodeLocator.parse(b.artifact) do
+          {:ok, _} -> []
+          {:error, reason} -> [{b.id, b.artifact, reason}]
+        end
+      end)
+
+    if violations == [] do
+      {"code: locator format", :ok, "all code: artifacts parse as code:<path>#<anchor>[@N]"}
+    else
+      {"code: locator format", :fail, "unparseable code: artifacts: #{inspect(violations)}"}
+    end
+  end
+
+  # --- codepath output-targets (discovered by kind + tag) ---
+
+  defp check_codepath_targets(beliefs) do
+    targets = Enum.filter(beliefs, &CB.OutputTarget.codepath_target?/1)
+
+    case targets do
+      [] ->
+        {"codepath output-targets", :skip, "no active output:codepath output-target present"}
+
+      _ ->
+        violations =
+          Enum.flat_map(targets, fn target ->
+            case CB.OutputTarget.validate_codepath(target, beliefs) do
+              :ok -> []
+              {:error, messages} -> Enum.map(messages, &"#{target.id}: #{&1}")
+            end
+          end)
+
+        if violations == [] do
+          {"codepath output-targets", :ok,
+           "#{length(targets)} codepath target(s) valid - entry/steps resolve, beliefs carry code: anchors, deps match"}
+        else
+          {"codepath output-targets", :fail, Enum.join(violations, "; ")}
         end
     end
   end

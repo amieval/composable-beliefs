@@ -158,7 +158,7 @@ defmodule CB.Belief.Adjudication do
   # --- outcome application ---
 
   defp apply_outcome(%{outcome: "accept_supersede"} = r, conflicting, existing, today) do
-    new_id = next_id(existing, r.proposed)
+    new_id = next_id(existing, r.proposed) |> inherit_namespace(conflicting.id)
 
     evidence =
       evidence_entry(
@@ -189,8 +189,8 @@ defmodule CB.Belief.Adjudication do
     {:ok, updated, summary}
   end
 
-  defp apply_outcome(%{outcome: "reject_dep_tie"} = r, _conflicting, existing, today) do
-    new_id = next_id(existing, r.proposed)
+  defp apply_outcome(%{outcome: "reject_dep_tie"} = r, conflicting, existing, today) do
+    new_id = next_id(existing, r.proposed) |> inherit_namespace(conflicting.id)
 
     evidence =
       evidence_entry(
@@ -211,8 +211,8 @@ defmodule CB.Belief.Adjudication do
     {:ok, existing ++ [new_belief], summary}
   end
 
-  defp apply_outcome(%{outcome: "defer"} = r, _conflicting, existing, today) do
-    new_id = next_a_id(existing)
+  defp apply_outcome(%{outcome: "defer"} = r, conflicting, existing, today) do
+    new_id = next_a_id(existing) |> inherit_namespace(conflicting.id)
     deferral = build_deferral_primitive(new_id, r, today)
 
     summary = %{
@@ -314,10 +314,11 @@ defmodule CB.Belief.Adjudication do
   # globally unique across the whole graph, so the max is taken over all
   # ids regardless of namespace.
   #
-  # NOTE (Stage 1 restructure): the returned id is still a BARE local id
+  # NOTE (Stage 1 restructure): the returned id is a BARE local id
   # (`a###` / `c###`). Which namespace a newly authored belief belongs to is
-  # a collection-assignment decision that the multi-repo restructure defers
-  # to a later stage; this generator deliberately does not invent one.
+  # a collection-assignment decision this generator does not invent - but an
+  # adjudication outcome always has one belief whose namespace IS known (the
+  # conflicting belief), so `inherit_namespace/2` carries it onto the new id.
   defp next_prefixed_id(existing, prefix) do
     pattern = ~r/^#{prefix}(\d+)$/
 
@@ -329,6 +330,18 @@ defmodule CB.Belief.Adjudication do
       |> Enum.max(fn -> 0 end)
 
     format_id(prefix, max + 1)
+  end
+
+  # An adjudication's new belief lives in the same collection as the
+  # belief it was adjudicated against: a successor replaces a node in a
+  # known namespace, a dep-tie/deferral attaches to one. Bare conflicting
+  # ids (pre-namespacing graphs) yield bare new ids, preserving the old
+  # behavior.
+  defp inherit_namespace(bare_id, conflicting_id) do
+    case String.split(conflicting_id, ":", parts: 2) do
+      [namespace, _local] -> "#{namespace}:#{bare_id}"
+      _ -> bare_id
+    end
   end
 
   defp parse_id_num(nil, _), do: nil

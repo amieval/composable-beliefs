@@ -14,10 +14,12 @@ defmodule CB.SchemaContractsTest do
   - cb:c029 (state-machine): the StateMachine-derived state set equals
     `CB.Belief.statuses()`, and each edge's `requires` matches the expected
     linkage slugs.
-  - cb:c039 / cb:c040 / cb:c041 (enum-registry): `Enum.values_for/2` returns the
+  - cb:c039 / cb:c043 / cb:c041 (enum-registry): `Enum.values_for/2` returns the
     expected vocabularies, and every active belief's kind / artifact-scheme /
     domain in the graph is a declared value (`valid_value?/3`). There is no
     `CB.Belief` code list for kind / domain / scheme - the contract is the SSOT.
+    (cb:c043 superseded cb:c040 when the `code` scheme was added; the linkage
+    is pinned here too.)
   """
   use ExUnit.Case, async: true
 
@@ -189,29 +191,35 @@ defmodule CB.SchemaContractsTest do
     end
   end
 
-  describe "cb:c040 artifact-scheme enum-registry" do
-    @expected_schemes ["gmail", "session", "user", "document", "source", "https", "plan"]
+  describe "cb:c043 artifact-scheme enum-registry (supersedes cb:c040)" do
+    @expected_schemes ["gmail", "session", "user", "document", "source", "https", "plan", "code"]
 
     test "is an active enum-registry contract", %{by_id: by_id} do
-      c040 = fetch(by_id, "cb:c040")
-      assert c040.kind == "enum-registry"
-      assert c040.status == "active"
+      c043 = fetch(by_id, "cb:c043")
+      assert c043.kind == "enum-registry"
+      assert c043.status == "active"
     end
 
-    test "values_for/2 returns the expected scheme vocabulary including plan", %{by_id: by_id} do
+    test "the superseded cb:c040 links forward to cb:c043", %{by_id: by_id} do
       c040 = fetch(by_id, "cb:c040")
-      assert Enum.values_for(c040, "artifact-scheme") == @expected_schemes
-      assert Enum.valid_value?(c040, "artifact-scheme", "plan")
-      assert Enum.valid_value?(c040, "artifact-scheme", "session")
+      assert c040.status == "superseded"
+      assert c040.superseded_by == "cb:c043"
+    end
+
+    test "values_for/2 returns the expected scheme vocabulary including code", %{by_id: by_id} do
+      c043 = fetch(by_id, "cb:c043")
+      assert Enum.values_for(c043, "artifact-scheme") == @expected_schemes
+      assert Enum.valid_value?(c043, "artifact-scheme", "code")
+      assert Enum.valid_value?(c043, "artifact-scheme", "session")
     end
 
     test "every active belief's artifact scheme is a declared value", %{all: all, by_id: by_id} do
-      c040 = fetch(by_id, "cb:c040")
+      c043 = fetch(by_id, "cb:c043")
 
       bad =
         all
         |> Elixir.Enum.filter(&(&1.status == "active" and is_binary(&1.artifact)))
-        |> Elixir.Enum.reject(&Enum.valid_value?(c040, "artifact-scheme", scheme(&1.artifact)))
+        |> Elixir.Enum.reject(&Enum.valid_value?(c043, "artifact-scheme", scheme(&1.artifact)))
         |> Elixir.Enum.map(&{&1.id, &1.artifact})
 
       assert bad == []

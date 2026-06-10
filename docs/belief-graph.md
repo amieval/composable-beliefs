@@ -12,7 +12,7 @@ The schema is expressed as contracts in the graph; the struct in `lib/cb/belief.
 | `c032` | Conflict scope - when two implications overlap |
 | `c038` | Schema discipline - `artifact` provenance, `contract: true` flag, no `implication` field, enum-shaped `kind`/`domain`/`artifact-scheme` |
 | `c039` | Closed enum of `belief.kind` values |
-| `c040` | Closed enum of artifact URI schemes |
+| `c043` | Closed enum of artifact URI schemes (supersedes `c040`; added the `code:` locator) |
 | `c041` | Closed enum of `belief.domain` values |
 
 Query any contract for its rules and invariants - e.g. `mix bs show cb:c038`, `mix bs tree cb:c029`. Verification:
@@ -34,7 +34,7 @@ The reasoning is in the graph. Entry points:
 | Kind semantics and the `kind: policy` test | `cb:a399` / `cb:a439` / `cb:c039` |
 | Immutability and the status lifecycle | `cb:a302` / `cb:c029` |
 | No confidence score (structural support instead) | `cb:a448`; `CB.Belief.support/1` returns artifact / evidence / dep counts |
-| Artifacts and URI schemes | `cb:a398` / `cb:a400` / `cb:a407` / `cb:c040` |
+| Artifacts and URI schemes | `cb:a398` / `cb:a400` / `cb:a407` / `cb:c043` |
 | Shared prosthetic; composition over retrieval | `cb:a460` / `cb:a462` |
 | Persistence across sessions and subagents | `cb:a339` / `cb:a340` / `cb:a341` |
 
@@ -45,7 +45,7 @@ For the full chain behind any node, `mix bs tree <id>`.
 Full field definitions and types are the struct in `lib/cb/belief.ex` (SSOT), governed by `c038`. In brief:
 
 - **All types:** `id` (namespaced, `cb:a001` / `cb:c029`), `type`, `kind` (enum per `c039`), `domain` (enum per `c041`), `tags`, `claim`, `subjects` (`{ref, type}`), `status`, `created`.
-- **Primitive:** `artifact` (URI, scheme enum per `c040`) + `evidence` (`{date, artifact, detail}` entries).
+- **Primitive:** `artifact` (URI, scheme enum per `c043`) + `evidence` (`{date, artifact, detail}` entries).
 - **Compound / implication:** `deps` (upstream belief ids).
 - **Implication:** `materialized` (`null` or `{date, tasks}`); contract-grade adds non-empty `rules` + `invariants` with `contract: true` (biconditional per `c038`).
 - **Terminal:** `superseded_by` (on `superseded`), `retracted_on` + `retracted_reason` (on `retracted`).

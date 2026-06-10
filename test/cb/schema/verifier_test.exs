@@ -59,6 +59,65 @@ defmodule CB.Schema.VerifierTest do
     assert status_of(Verifier.check(beliefs), "kind enum") == :skip
   end
 
+  test "an artifact scheme outside the declared enum fails (closed enum)" do
+    scheme_enum =
+      b(
+        id: "x:c002",
+        type: "implication",
+        kind: "enum-registry",
+        contract: true,
+        rules: [%{"field" => "artifact-scheme", "values" => ["document", "code"]}]
+      )
+
+    ok = [scheme_enum, b(id: "x:a001", type: "primitive", artifact: "code:lib/a.ex#def read")]
+    assert status_of(Verifier.check(ok), "artifact-scheme enum") == :ok
+
+    bad = [scheme_enum, b(id: "x:a002", type: "primitive", artifact: "undeclared:thing")]
+    assert status_of(Verifier.check(bad), "artifact-scheme enum") == :fail
+  end
+
+  test "a malformed code: artifact fails the locator format check" do
+    beliefs = [
+      b(id: "x:a001", type: "primitive", artifact: "code:lib/a.ex#def read"),
+      b(id: "x:a002", type: "primitive", artifact: "code:lib/a.ex")
+    ]
+
+    assert status_of(Verifier.check(beliefs), "code: locator format") == :fail
+  end
+
+  test "well-formed code: artifacts pass the locator format check" do
+    beliefs = [b(id: "x:a001", type: "primitive", artifact: "code:lib/a.ex#def read@2")]
+    assert status_of(Verifier.check(beliefs), "code: locator format") == :ok
+  end
+
+  test "codepath targets are skipped when none are present" do
+    beliefs = [b(id: "x:a001", type: "primitive", kind: "fact")]
+    assert status_of(Verifier.check(beliefs), "codepath output-targets") == :skip
+  end
+
+  test "a valid codepath output-target passes; a broken one fails" do
+    anchored = b(id: "x:a001", type: "primitive", artifact: "code:lib/a.ex#def read")
+
+    target =
+      b(
+        id: "x:c100",
+        type: "implication",
+        kind: "output-target",
+        contract: true,
+        tags: ["output:codepath"],
+        deps: ["x:a001"],
+        rules: [
+          %{"entry" => "data"},
+          %{"render_steps" => [%{"id" => "data", "belief" => "x:a001"}]}
+        ]
+      )
+
+    assert status_of(Verifier.check([anchored, target]), "codepath output-targets") == :ok
+
+    broken = %{target | deps: []}
+    assert status_of(Verifier.check([anchored, broken]), "codepath output-targets") == :fail
+  end
+
   test "status falls back to framework canon when no status-lifecycle contract is present" do
     beliefs = [b(id: "x:a001", type: "primitive", kind: "rule", status: "active")]
     assert status_of(Verifier.check(beliefs), "status enum") == :ok
