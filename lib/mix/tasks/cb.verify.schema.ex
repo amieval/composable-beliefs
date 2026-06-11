@@ -53,7 +53,10 @@ defmodule Mix.Tasks.Cb.Verify.Schema do
       skipped = Enum.count(results, fn {_, status, _} -> status == :skip end)
 
       IO.puts("")
-      IO.puts("#{passes} passed, #{failures} failed, #{skipped} skipped (#{length(results)} checks)")
+
+      IO.puts(
+        "#{passes} passed, #{failures} failed, #{skipped} skipped (#{length(results)} checks)"
+      )
 
       if failures > 0, do: System.halt(1)
     else

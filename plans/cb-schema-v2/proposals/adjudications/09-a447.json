@@ -1,0 +1,22 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "claude-md",
+      "architecture"
+    ],
+    "claim": "Immutability makes change traceable: a belief is never edited in place; a changed belief is superseded by a new one and linked forward. Composition makes the whole greater than its parts - an inference concludes what none of its inputs states alone, and pays for that licence by being falsifiable on its own, independent of its deps.",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "subjects": [],
+    "deps": [
+      "cb:a470",
+      "cb:a473"
+    ]
+  },
+  "conflicting_id": "cb:a447",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2 D3: the concludes-beyond-inputs sentence belongs to the inference type; a compound states exactly what its deps jointly state (strict-aggregate doctrine, cb:a474).",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

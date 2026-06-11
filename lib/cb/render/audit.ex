@@ -112,7 +112,10 @@ defmodule CB.Render.Audit do
       subjects: Enum.map(b.subjects || [], &%{ref: &1["ref"], type: &1["type"]}),
       artifact: b.artifact,
       evidence:
-        Enum.map(b.evidence || [], &%{date: &1["date"], detail: &1["detail"], artifact: &1["artifact"]}),
+        Enum.map(
+          b.evidence || [],
+          &%{date: &1["date"], detail: &1["detail"], artifact: &1["artifact"]}
+        ),
       truncated: truncated,
       children: children
     }
@@ -220,13 +223,15 @@ defmodule CB.Render.Audit do
       tags: n.tags,
       subjects: Enum.map(n.subjects, &ordered(ref: &1.ref, type: &1.type)),
       artifact: n.artifact,
-      evidence: Enum.map(n.evidence, &ordered(date: &1.date, detail: &1.detail, artifact: &1.artifact)),
+      evidence:
+        Enum.map(n.evidence, &ordered(date: &1.date, detail: &1.detail, artifact: &1.artifact)),
       truncated: n.truncated,
       children: Enum.map(n.children, &json_node/1)
     )
   end
 
-  defp ordered(pairs), do: Jason.OrderedObject.new(Enum.map(pairs, fn {k, v} -> {Atom.to_string(k), v} end))
+  defp ordered(pairs),
+    do: Jason.OrderedObject.new(Enum.map(pairs, fn {k, v} -> {Atom.to_string(k), v} end))
 
   # --- HTML ---
 
@@ -282,7 +287,8 @@ defmodule CB.Render.Audit do
         ~s(<span class="badge type">#{esc(kind_label)}</span>),
         n.contract && ~s(<span class="badge contract">contract</span>),
         n.role == :link && ~s(<span class="badge link">#{esc(namespace(n.id))}: dep</span>),
-        n.status not in [nil, "active"] && ~s(<span class="badge #{esc(n.status)}">#{esc(n.status)}</span>),
+        n.status not in [nil, "active"] &&
+          ~s(<span class="badge #{esc(n.status)}">#{esc(n.status)}</span>),
         n.stale_deps != [] && ~s(<span class="badge stale">stale</span>)
       ]
       |> Enum.filter(& &1)

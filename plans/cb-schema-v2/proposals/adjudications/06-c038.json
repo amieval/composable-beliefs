@@ -1,0 +1,52 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "schema-discipline"
+    ],
+    "claim": "Schema discipline: belief provenance is carried by an artifact field; contract-grade directives carry contract:true with non-empty rules/invariants; the implication field is absent; enum-shaped fields (kind, domain, artifact-scheme) take values from c039/c041/c043 respectively; kind binds allowed structural types via the kind-type derivation table.",
+    "contract": true,
+    "rules": [
+      "The artifact field is the canonical provenance carrier on beliefs. Its value is null or a string matching scheme:id where scheme is declared by c043.",
+      "The kind field's value is null or one of the values declared by c039.",
+      "The domain field's value is null or one of the values declared by c041.",
+      "The contract field is a boolean. It is allowed only on type: directive.",
+      "contract: true is required iff rules or invariants are non-empty (bidirectional).",
+      "The implication field is absent on all beliefs.",
+      "Beliefs with kind: action-item have type: directive, contract: false, and empty rules/invariants.",
+      "The four structural types are distinct and are not merged: a compound states exactly what its deps jointly state, an inference may exceed them, a directive prescribes.",
+      "Artifacts (external documents, threads, files) are not promoted to belief nodes; they are referenced via the artifact field only."
+    ],
+    "invariants": [
+      "For all beliefs b: b.contract == true implies b.type == 'directive'.",
+      "For all beliefs b: ((b.rules // []) ++ (b.invariants // [])) non-empty iff b.contract == true.",
+      "For all beliefs b: b.artifact == null OR b.artifact matches /^[a-z][a-z0-9_-]*:.+/.",
+      "For all beliefs b: b.kind == null OR b.kind is in c039.enum.",
+      "For all beliefs b: b.artifact == null OR scheme(b.artifact) is in c043.enum.",
+      "For all beliefs b: b.domain == null OR b.domain is in c041.enum.",
+      "For all beliefs b: b does not have an `implication` field.",
+      "For all beliefs b with b.kind == 'action-item': b.type == 'directive' AND b.contract != true AND (b.rules // []) is empty AND (b.invariants // []) is empty."
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a397",
+      "cb:a398",
+      "cb:a399",
+      "cb:a400",
+      "cb:a401",
+      "cb:a402",
+      "cb:a403",
+      "cb:a404",
+      "cb:a405",
+      "cb:a408",
+      "cb:a470"
+    ]
+  },
+  "conflicting_id": "cb:c038",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: schema discipline restated for four types; contract attaches to directive; the stale c040 scheme-enum reference is corrected to its successor c043; the kind-type table joins the enum family.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

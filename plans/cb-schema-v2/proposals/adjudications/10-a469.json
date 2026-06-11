@@ -1,0 +1,21 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "claude-md",
+      "skills"
+    ],
+    "claim": "Skills coordinate authoring, query, and presentation: `/assert` adds beliefs from artifacts, entities, or reasoning; `/assert-session` persists session rules and agent error patterns; `/assertions` queries and traverses the graph; `/materialize` turns directives into concrete tasks; `/present-codepath` walks a codepath - a code-anchored collection rendered as a narrated, branching tour of real source that can also run as a test suite (`mix cb.verify.codepath`).",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "subjects": [],
+    "deps": [
+      "cb:a470"
+    ]
+  },
+  "conflicting_id": "cb:a469",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: /materialize operates on directives (you do not materialize a theory).",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

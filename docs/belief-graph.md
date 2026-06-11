@@ -8,18 +8,23 @@ The schema is expressed as contracts in the graph; the struct in `lib/cb/belief.
 
 | Contract | Governs |
 |---|---|
-| `c029` | Status lifecycle and immutability |
-| `c032` | Conflict scope - when two implications overlap |
-| `c038` | Schema discipline - `artifact` provenance, `contract: true` flag, no `implication` field, enum-shaped `kind`/`domain`/`artifact-scheme` |
+| `c051` | The four structural types - primitive, compound, inference, directive - one per epistemic operation |
+| `c052` | Field presence by type; the grounding requirements |
+| `c053` | Status lifecycle and immutability; retired is the directive-only exit |
+| `c055` | Conflict scope - when two directives overlap |
+| `c056` | Schema discipline - `artifact` provenance, `contract: true` flag, no `implication` field, enum-shaped `kind`/`domain`/`artifact-scheme`, kind-type binding |
+| `c057` | Kind-type derivation table - each kind's allowed structural types |
+| `c058` | Subject containment - compound subjects stay inside the dep union |
+| `c059` | Directive grounding - deps or a stipulation artifact |
 | `c039` | Closed enum of `belief.kind` values |
 | `c043` | Closed enum of artifact URI schemes (supersedes `c040`; added the `code:` locator) |
 | `c041` | Closed enum of `belief.domain` values |
 
-Query any contract for its rules and invariants - e.g. `mix bs show cb:c038`, `mix bs tree cb:c029`. Verification:
+Query any contract for its rules and invariants - e.g. `mix bs show cb:c056`, `mix bs tree cb:c053`. Verification:
 
 - `mix cb.verify.schema` - check a collection against the contracts it carries
 - `mix cb.verify.collection <ns>` - check a collection together with its declared dependency collections
-- `mix cb.audit.conflicts` - surface overlapping implications per `c032`
+- `mix cb.audit.conflicts` - surface overlapping directives per `c055`
 
 These run in CI on every push (`.github/workflows/composable-beliefs.yml`), alongside the test suite and a docs-freshness gate (`mix cb.generate.claude_md --check`) that fails if the committed CLAUDE.md no longer matches the graph - structural, not procedural, freshness per `cb:a386`.
 
@@ -29,10 +34,10 @@ The reasoning is in the graph. Entry points:
 
 | Topic | Query |
 |---|---|
-| Three structural types (primitive / compound / implication) | `mix bs show cb:a298`; contract form `cb:c026` / `cb:c031` |
-| Contract = formalized implication | `mix bs show cb:a300` / `cb:c038` |
+| Four structural types (primitive / compound / inference / directive) | `mix bs show cb:a470`; the direction-of-fit test `cb:a471`; contract form `cb:c051` / `cb:c054` |
+| Contract = the machine-checkable grade of a directive | `mix bs show cb:a300` / `cb:c054` |
 | Kind semantics and the `kind: policy` test | `cb:a399` / `cb:a439` / `cb:c039` |
-| Immutability and the status lifecycle | `cb:a302` / `cb:c029` |
+| Immutability and the status lifecycle | `cb:a302` / `cb:c053` |
 | No confidence score (structural support instead) | `cb:a448`; `CB.Belief.support/1` returns artifact / evidence / dep counts |
 | Artifacts and URI schemes | `cb:a398` / `cb:a400` / `cb:a407` / `cb:c043` |
 | Shared prosthetic; composition over retrieval | `cb:a460` / `cb:a462` |
@@ -42,12 +47,12 @@ For the full chain behind any node, `mix bs tree <id>`.
 
 ## Field reference
 
-Full field definitions and types are the struct in `lib/cb/belief.ex` (SSOT), governed by `c038`. In brief:
+Full field definitions and types are the struct in `lib/cb/belief.ex` (SSOT), governed by `c056`. In brief:
 
-- **All types:** `id` (namespaced, `cb:a001` / `cb:c029`), `type`, `kind` (enum per `c039`), `domain` (enum per `c041`), `tags`, `claim`, `subjects` (`{ref, type}`), `status`, `created`.
+- **All types:** `id` (namespaced, `cb:a001` / `cb:c053`), `type`, `kind` (enum per `c039`), `domain` (enum per `c041`), `tags`, `claim`, `subjects` (`{ref, type}`), `status`, `created`.
 - **Primitive:** `artifact` (URI, scheme enum per `c043`) + `evidence` (`{date, artifact, detail}` entries).
-- **Compound / implication:** `deps` (upstream belief ids).
-- **Implication:** `materialized` (`null` or `{date, tasks}`); contract-grade adds non-empty `rules` + `invariants` with `contract: true` (biconditional per `c038`).
+- **Compound / inference:** `deps` (upstream belief ids). Directives carry `deps` and/or a stipulation `artifact` (per `c059`).
+- **Directive:** `materialized` (`null` or `{date, tasks}`); contract-grade adds non-empty `rules` + `invariants` with `contract: true` (biconditional per `c056`).
 - **Terminal:** `superseded_by` (on `superseded`), `retracted_on` + `retracted_reason` (on `retracted`).
 
 ## Query patterns (CLI)
@@ -68,10 +73,10 @@ mix bs stats                # graph statistics
 # All active beliefs
 jq '[.[] | select(.status == "active")]' beliefs/beliefs.json
 
-# Unmaterialized implications (no tasks created yet)
-jq '[.[] | select(.type == "implication" and .materialized == null)]' beliefs/beliefs.json
+# Unmaterialized directives (no tasks created yet)
+jq '[.[] | select(.type == "directive" and .materialized == null)]' beliefs/beliefs.json
 
-# Contract-grade implications
+# Contract-grade directives
 jq '[.[] | select(.contract == true)]' beliefs/beliefs.json
 
 # Beliefs about a subject ref
@@ -100,4 +105,4 @@ The DAG does not replace existing systems; it adds a reasoning layer that connec
 
 ## Skills and authoring
 
-Query with `/assertions` (or `mix bs`). Author with `/assert` and `/assert-session`, which preflight a proposed belief for conflicts before writing; `/materialize` turns an implication into tasks. The framework CLAUDE.md (generated from the graph) carries the current command and skill set.
+Query with `/assertions` (or `mix bs`). Author with `/assert` and `/assert-session`, which preflight a proposed belief for conflicts before writing; `/materialize` turns a directive into tasks. The framework CLAUDE.md (generated from the graph) carries the current command and skill set.

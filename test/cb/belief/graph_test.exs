@@ -7,37 +7,109 @@ defmodule CB.Belief.GraphTest do
   # A small DAG:
   #   a001, a002 (primitives)
   #   a010 compound deps [a001, a002]
-  #   a020 implication deps [a010]
+  #   a020 directive deps [a010]
   #   a001 was superseded by a003
   defp dag do
     [
-      %Belief{id: "a001", type: "primitive", kind: "rule", claim: "fact one", status: "active", deps: []},
-      %Belief{id: "a002", type: "primitive", kind: "rule", claim: "fact two", status: "active", deps: []},
-      %Belief{id: "a010", type: "compound", kind: "observation", claim: "combined", status: "active", deps: ["a001", "a002"]},
-      %Belief{id: "a020", type: "implication", kind: "rule", claim: "action", status: "active", deps: ["a010"]}
+      %Belief{
+        id: "a001",
+        type: "primitive",
+        kind: "rule",
+        claim: "fact one",
+        status: "active",
+        deps: []
+      },
+      %Belief{
+        id: "a002",
+        type: "primitive",
+        kind: "rule",
+        claim: "fact two",
+        status: "active",
+        deps: []
+      },
+      %Belief{
+        id: "a010",
+        type: "compound",
+        kind: "observation",
+        claim: "combined",
+        status: "active",
+        deps: ["a001", "a002"]
+      },
+      %Belief{
+        id: "a020",
+        type: "directive",
+        kind: "rule",
+        claim: "action",
+        status: "active",
+        deps: ["a010"]
+      }
     ]
   end
 
   describe "resolve_id" do
     test "an exact id resolves to itself" do
-      beliefs = [%Belief{id: "cb:c029", type: "implication", kind: "rule", claim: "x", status: "active", deps: []}]
+      beliefs = [
+        %Belief{
+          id: "cb:c029",
+          type: "directive",
+          kind: "rule",
+          claim: "x",
+          status: "active",
+          deps: []
+        }
+      ]
+
       assert Graph.resolve_id(beliefs, "cb:c029") == {:ok, "cb:c029"}
     end
 
     test "a bare local id resolves to its single namespaced form" do
-      beliefs = [%Belief{id: "cb:c029", type: "implication", kind: "rule", claim: "x", status: "active", deps: []}]
+      beliefs = [
+        %Belief{
+          id: "cb:c029",
+          type: "directive",
+          kind: "rule",
+          claim: "x",
+          status: "active",
+          deps: []
+        }
+      ]
+
       assert Graph.resolve_id(beliefs, "c029") == {:ok, "cb:c029"}
     end
 
     test "an unknown id is not found" do
-      beliefs = [%Belief{id: "cb:c029", type: "implication", kind: "rule", claim: "x", status: "active", deps: []}]
+      beliefs = [
+        %Belief{
+          id: "cb:c029",
+          type: "directive",
+          kind: "rule",
+          claim: "x",
+          status: "active",
+          deps: []
+        }
+      ]
+
       assert Graph.resolve_id(beliefs, "z999") == {:error, :not_found}
     end
 
     test "a bare id matching multiple namespaces is ambiguous" do
       beliefs = [
-        %Belief{id: "cb:c029", type: "implication", kind: "rule", claim: "x", status: "active", deps: []},
-        %Belief{id: "ops:c029", type: "implication", kind: "rule", claim: "y", status: "active", deps: []}
+        %Belief{
+          id: "cb:c029",
+          type: "directive",
+          kind: "rule",
+          claim: "x",
+          status: "active",
+          deps: []
+        },
+        %Belief{
+          id: "ops:c029",
+          type: "directive",
+          kind: "rule",
+          claim: "y",
+          status: "active",
+          deps: []
+        }
       ]
 
       assert Graph.resolve_id(beliefs, "c029") == {:error, {:ambiguous, ["cb:c029", "ops:c029"]}}
@@ -89,7 +161,14 @@ defmodule CB.Belief.GraphTest do
       d =
         dag() ++
           [
-            %Belief{id: "a003", type: "primitive", kind: "rule", claim: "newer fact", status: "active", deps: []},
+            %Belief{
+              id: "a003",
+              type: "primitive",
+              kind: "rule",
+              claim: "newer fact",
+              status: "active",
+              deps: []
+            },
             %Belief{
               id: "a001",
               type: "primitive",
@@ -114,10 +193,39 @@ defmodule CB.Belief.GraphTest do
 
     test "cascade surfaces transitively stale nodes" do
       d = [
-        %Belief{id: "p1", type: "primitive", kind: "rule", claim: "p", status: "superseded", superseded_by: "p2", deps: []},
-        %Belief{id: "p2", type: "primitive", kind: "rule", claim: "p2", status: "active", deps: []},
-        %Belief{id: "co", type: "compound", kind: "observation", claim: "co", status: "active", deps: ["p1"]},
-        %Belief{id: "im", type: "implication", kind: "rule", claim: "im", status: "active", deps: ["co"]}
+        %Belief{
+          id: "p1",
+          type: "primitive",
+          kind: "rule",
+          claim: "p",
+          status: "superseded",
+          superseded_by: "p2",
+          deps: []
+        },
+        %Belief{
+          id: "p2",
+          type: "primitive",
+          kind: "rule",
+          claim: "p2",
+          status: "active",
+          deps: []
+        },
+        %Belief{
+          id: "co",
+          type: "compound",
+          kind: "observation",
+          claim: "co",
+          status: "active",
+          deps: ["p1"]
+        },
+        %Belief{
+          id: "im",
+          type: "directive",
+          kind: "rule",
+          claim: "im",
+          status: "active",
+          deps: ["co"]
+        }
       ]
 
       direct = Graph.stale(d) |> Enum.map(fn {n, _} -> n.id end)
@@ -160,9 +268,35 @@ defmodule CB.Belief.GraphTest do
   describe "history" do
     test "returns predecessors and successors of a supersession chain" do
       d = [
-        %Belief{id: "v1", type: "primitive", kind: "rule", claim: "v1", status: "superseded", superseded_by: "v2", deps: [], created: "2024-01-01"},
-        %Belief{id: "v2", type: "primitive", kind: "rule", claim: "v2", status: "superseded", superseded_by: "v3", deps: [], created: "2024-02-01"},
-        %Belief{id: "v3", type: "primitive", kind: "rule", claim: "v3", status: "active", deps: [], created: "2024-03-01"}
+        %Belief{
+          id: "v1",
+          type: "primitive",
+          kind: "rule",
+          claim: "v1",
+          status: "superseded",
+          superseded_by: "v2",
+          deps: [],
+          created: "2024-01-01"
+        },
+        %Belief{
+          id: "v2",
+          type: "primitive",
+          kind: "rule",
+          claim: "v2",
+          status: "superseded",
+          superseded_by: "v3",
+          deps: [],
+          created: "2024-02-01"
+        },
+        %Belief{
+          id: "v3",
+          type: "primitive",
+          kind: "rule",
+          claim: "v3",
+          status: "active",
+          deps: [],
+          created: "2024-03-01"
+        }
       ]
 
       {predecessors, successors} = Graph.history("v2", d)
@@ -180,20 +314,40 @@ defmodule CB.Belief.GraphTest do
   describe "by_subject / stats" do
     test "by_subject finds nodes by ref" do
       d = [
-        %Belief{id: "a1", type: "primitive", kind: "rule", claim: "c", status: "active", deps: [], subjects: [%{"ref" => "policy/x", "type" => "policy"}]},
-        %Belief{id: "a2", type: "primitive", kind: "rule", claim: "c", status: "active", deps: [], subjects: [%{"ref" => "policy/y", "type" => "policy"}]}
+        %Belief{
+          id: "a1",
+          type: "primitive",
+          kind: "rule",
+          claim: "c",
+          status: "active",
+          deps: [],
+          subjects: [%{"ref" => "policy/x", "type" => "policy"}]
+        },
+        %Belief{
+          id: "a2",
+          type: "primitive",
+          kind: "rule",
+          claim: "c",
+          status: "active",
+          deps: [],
+          subjects: [%{"ref" => "policy/y", "type" => "policy"}]
+        }
       ]
 
       assert Graph.by_subject(d, ref: "policy/x") |> Enum.map(& &1.id) == ["a1"]
-      assert Graph.by_subject(d, type: "policy") |> Enum.map(& &1.id) |> Enum.sort() == ["a1", "a2"]
+
+      assert Graph.by_subject(d, type: "policy") |> Enum.map(& &1.id) |> Enum.sort() == [
+               "a1",
+               "a2"
+             ]
     end
 
     test "stats reports type and status frequencies" do
       s = Graph.stats(dag())
       assert s.total == 4
-      assert s.by_type == %{"primitive" => 2, "compound" => 1, "implication" => 1}
+      assert s.by_type == %{"primitive" => 2, "compound" => 1, "directive" => 1}
       assert s.stale_count == 0
-      assert s.unlinked_implications == 1
+      assert s.unlinked_directives == 1
     end
   end
 end

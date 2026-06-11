@@ -1,0 +1,8 @@
+{
+  "resolutions": {
+    "agent-behavior:a072": {
+      "type": "inference",
+      "note": "pure theory: RLHF deference produces epistemic collapse - falsifiable, 10 deps, prescribes nothing"
+    }
+  }
+}

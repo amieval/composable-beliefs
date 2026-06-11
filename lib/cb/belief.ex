@@ -28,21 +28,24 @@ defmodule CB.Belief do
   earlier revisions of the schema: confidence as a subjective metric doing
   no load-bearing work, `source` renamed to the structured `:artifact`
   field, and `:implication` deleted in favor of a structural `:contract`
-  boolean marking contract-grade implications. Use `CB.Belief.support/1`
+  boolean marking contract-grade beliefs. Use `CB.Belief.support/1`
   for structural-support metrics derived from the belief's own graph
   position.
 
   ## Struct summary
 
-  Three structural types (`primitive`, `compound`, `implication`) are the
-  only values of the `type` field. Contract-grade implications carry
-  `contract: true` and non-empty `rules` and/or `invariants`; detect them
-  via `CB.Belief.contract?/1`. `kind`, `domain`, and the artifact's scheme
-  are enum-validated. `tags` is a flat list of strings for cross-cutting
-  concerns.
+  Four structural types, one per epistemic operation, are the only values
+  of the `type` field: `primitive` (attest - what a single source said),
+  `compound` (aggregate - states exactly what its deps jointly state),
+  `inference` (infer - a descriptive conclusion licensed to exceed its
+  deps), and `directive` (prescribe - something that should happen or must
+  hold). Contract-grade directives carry `contract: true` and non-empty
+  `rules` and/or `invariants`; detect them via `CB.Belief.contract?/1`.
+  `kind`, `domain`, and the artifact's scheme are enum-validated. `tags`
+  is a flat list of strings for cross-cutting concerns.
   """
 
-  @types ~w(primitive compound implication)
+  @types ~w(primitive compound inference directive)
   @statuses ~w(active superseded retracted retired)
 
   @fields [

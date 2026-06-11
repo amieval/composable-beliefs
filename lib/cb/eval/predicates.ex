@@ -102,7 +102,7 @@ defmodule CB.Eval.Predicates do
   # --- the v1 predicate library ---
 
   @doc """
-  m-corroboration: every active `kind:verdict` implication depends,
+  m-corroboration: every active `kind:verdict` inference depends,
   directly or transitively, on at least one active compound tagged
   `cross-ruler-agreement`, or carries the tag `single-ruler` explicitly.
   """
@@ -158,7 +158,7 @@ defmodule CB.Eval.Predicates do
   end
 
   @doc """
-  m-runs: every active `kind:verdict` implication cites at least
+  m-runs: every active `kind:verdict` inference cites at least
   `params["min"]` distinct run subject refs across itself and its
   transitive dep closure. `min` must be a positive integer; there is no
   escape hatch - a result that cannot cite the minimum is authored as
@@ -257,7 +257,7 @@ defmodule CB.Eval.Predicates do
   defp active?(b), do: b.status == "active"
 
   defp verdicts(beliefs) do
-    Enum.filter(beliefs, &(active?(&1) and &1.type == "implication" and &1.kind == "verdict"))
+    Enum.filter(beliefs, &(active?(&1) and &1.type == "inference" and &1.kind == "verdict"))
   end
 
   defp observation_primitives(beliefs) do

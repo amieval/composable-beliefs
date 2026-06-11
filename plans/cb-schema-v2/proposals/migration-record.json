@@ -1,0 +1,32 @@
+{
+  "new_beliefs": [
+    {
+      "id": "cb:a483",
+      "type": "primitive",
+      "kind": "observation",
+      "domain": "system",
+      "tags": [
+        "dag-schema",
+        "schema-v2",
+        "migration-record"
+      ],
+      "claim": "The cb ecosystem migrated to the four-type v2 schema on 2026-06-10: the framework graph (76 nodes re-typed, the c026/c027/c029/c031/c032/c038 contract family superseded by c051-c056, new contracts c057/c058/c059, CLAUDE.md render beliefs superseded and regenerated) and all seven sibling collections (codepath, method, sdl, toy, lib, agent-behavior, paradigm) via mix cb.migrate.v2, with adjudicated splits sdl:a006 -> a008+a009, toy:a9 -> a10+a11, the D3 trim sdl:a3 -> a010, and six agent-behavior mood re-homes (a396-a401). All eight collections verify under v2; sdl reproduces exactly its two teaching method-check failures.",
+      "artifact": "document:plans/cb-schema-v2/design.md",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "Executed under Mark's proceed authorization following D1-D6 resolution (D1 'inference' confirmed by Mark for launch, overriding the immutable-history consideration). Execution amendments recorded in the design doc: c026/c027 added to the supersession list (found via plan-0 preflight); document: admitted as a stipulation scheme (the design's own worked re-homes are document-grounded). History re-typed by best fit, never split; dep re-points on a387/c047/c049/a007 recorded in their evidence or here.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [
+        {
+          "ref": "plans/cb-schema-v2/design.md",
+          "type": "doc"
+        }
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "audit-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "conflicts"
+    ],
+    "name": "conflict-scope-definition",
+    "claim": "Two active directives share conflict scope when they occupy overlapping territory along at least one axis (tag, subject ref, subject type) within the same domain - overlap signals the pair is close enough that a contradiction would be meaningful. Contradictory prescriptions are actionable conflicts; contradictory inferences are dissent and live outside this audit's scope.",
+    "contract": true,
+    "rules": [
+      {
+        "scenario": "Domain gate",
+        "given": "Two active directives",
+        "when": "Overlap is evaluated",
+        "then": "They overlap only if they are in the same domain or both have no domain; distinct non-nil domains never overlap"
+      },
+      {
+        "scenario": "Overlap axes",
+        "given": "Two active directives in the same domain",
+        "when": "Overlap is evaluated",
+        "then": "They overlap if they share a tag, share a subject ref, share a subject type, or both carry empty tags and subjects (domain-global)"
+      },
+      {
+        "scenario": "Candidates, not verdicts",
+        "given": "A pair flagged by the audit",
+        "when": "The result is interpreted",
+        "then": "The audit surfaces the candidate pair; whether the pair actually contradicts, is redundant, or is compatible requires reviewer judgment"
+      }
+    ],
+    "invariants": [
+      "Overlap is symmetric - overlap(a,b) iff overlap(b,a)",
+      "A node does not overlap with itself",
+      "Cross-domain pairs with distinct non-nil domains never overlap",
+      "Overlap is a necessary but not sufficient condition for contradiction",
+      "The audit surfaces candidates; resolution requires reviewer judgment"
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a304",
+      "cb:a471"
+    ]
+  },
+  "conflicting_id": "cb:c032",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: conflict scope re-attaches to active directives - the audit is response-to-violation machinery and a theory cannot be violated. Inference-conflict (structured dissent) is consensus-thread work, explicitly out of scope.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

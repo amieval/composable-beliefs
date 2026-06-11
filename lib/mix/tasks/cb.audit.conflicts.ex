@@ -2,7 +2,7 @@ defmodule Mix.Tasks.Cb.Audit.Conflicts do
   @moduledoc """
   Detect potential conflicts in the DAG.
 
-  Makes contradictions expensive by surfacing pairs of implications that
+  Makes contradictions expensive by surfacing pairs of directives that
   share scope, plus stale dependencies on superseded/retracted nodes.
 
   Overlap is structural (same domain, shared tags/subjects). Whether
@@ -16,7 +16,7 @@ defmodule Mix.Tasks.Cb.Audit.Conflicts do
       mix cb.audit.conflicts --tag git         # Scope to a tag
       mix cb.audit.conflicts --domain agent    # Scope to a domain
       mix cb.audit.conflicts --related c030    # Show pairs involving c030
-      mix cb.audit.conflicts --contracts       # Contract-grade implications only
+      mix cb.audit.conflicts --contracts       # Contract-grade directives only
       mix cb.audit.conflicts --summary         # Counts only, no pair listing
       mix cb.audit.conflicts --limit 3         # Limit pairs shown per category
 
@@ -24,7 +24,7 @@ defmodule Mix.Tasks.Cb.Audit.Conflicts do
 
   0 = no conflicts found, 1 = one or more conflicts
   """
-  @shortdoc "Surface potential conflicts between active DAG implications"
+  @shortdoc "Surface potential conflicts between active DAG directives"
 
   use Mix.Task
 
@@ -65,7 +65,7 @@ defmodule Mix.Tasks.Cb.Audit.Conflicts do
               %{
                 stale_overrides: [],
                 scope_overlaps: pairs,
-                total_implications: length(pairs),
+                total_directives: length(pairs),
                 total_nodes: nil,
                 related_to: node_id
               }
@@ -132,11 +132,12 @@ defmodule Mix.Tasks.Cb.Audit.Conflicts do
     end
 
     IO.puts("")
+
     summary_line =
       if result[:related_to] do
-        "Related to #{result.related_to}: #{length(overlaps)} overlapping implications"
+        "Related to #{result.related_to}: #{length(overlaps)} overlapping directives"
       else
-        "#{length(stale) + length(overlaps)} potential conflicts across #{result.total_implications} active implications"
+        "#{length(stale) + length(overlaps)} potential conflicts across #{result.total_directives} active directives"
       end
 
     IO.puts("Summary: #{summary_line}")

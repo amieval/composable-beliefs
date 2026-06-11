@@ -1,0 +1,21 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "schema"
+    ],
+    "claim": "The schema's single source of truth is `lib/cb/belief.ex`. The graph's own schema is expressed as contracts in the graph: c051 (the four structural types), c053 (status lifecycle and immutability), c056 (schema discipline), c039/c043/c041 (the closed kind/artifact-scheme/domain enums), c057 (the kind-type table), c058 (subject containment), c059 (directive grounding), and c055 (conflict scope). Read one with `mix bs show cb:c051`.",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "subjects": [],
+    "deps": [
+      "cb:a470"
+    ]
+  },
+  "conflicting_id": "cb:a468",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: the contract id map regenerates after the c026-family supersessions; the three new v2 contracts join the family.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

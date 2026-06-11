@@ -31,10 +31,10 @@ defmodule Mix.Tasks.Bs do
 
   ## Filters (for list)
 
-      primitive|compound|implication    Filter by structural type
+      primitive|compound|inference|directive    Filter by structural type
       active|superseded|retracted|all   Filter by status (default: active)
-      contracts                         Contract-grade implications only
-      unlinked                          Implications with no materialized items
+      contracts                         Contract-grade directives only
+      unlinked                          Directives with no materialized items
       tag:<tag> / --tag <tag>           Filter by tag
       kind:<kind>                       Filter by semantic kind
       domain:<domain>                   Filter by domain
@@ -56,18 +56,41 @@ defmodule Mix.Tasks.Bs do
     {flags, positional} = extract_flags(args)
 
     case positional do
-      ["list" | rest] -> cmd_list(rest ++ flag_args(flags))
-      ["show", id | _] -> cmd_show(id)
-      ["tree", id | _] -> cmd_tree(id)
-      ["deps", id | _] -> cmd_deps(id, flags)
-      ["dependents", id | _] -> cmd_dependents(id, flags)
-      ["stale" | _] -> cmd_stale(flags)
-      ["path", id1, id2 | _] -> cmd_path(id1, id2)
-      ["history", id | _] -> cmd_history(id)
-      ["subjects" | rest] -> cmd_subjects(rest)
-      ["stats" | _] -> cmd_stats()
-      ["help" | _] -> cmd_help()
-      [] -> cmd_help()
+      ["list" | rest] ->
+        cmd_list(rest ++ flag_args(flags))
+
+      ["show", id | _] ->
+        cmd_show(id)
+
+      ["tree", id | _] ->
+        cmd_tree(id)
+
+      ["deps", id | _] ->
+        cmd_deps(id, flags)
+
+      ["dependents", id | _] ->
+        cmd_dependents(id, flags)
+
+      ["stale" | _] ->
+        cmd_stale(flags)
+
+      ["path", id1, id2 | _] ->
+        cmd_path(id1, id2)
+
+      ["history", id | _] ->
+        cmd_history(id)
+
+      ["subjects" | rest] ->
+        cmd_subjects(rest)
+
+      ["stats" | _] ->
+        cmd_stats()
+
+      ["help" | _] ->
+        cmd_help()
+
+      [] ->
+        cmd_help()
 
       [cmd | _] ->
         if Regex.match?(~r/^([a-z][a-z0-9-]*:)?[ac]\d+$/, cmd) do
@@ -304,7 +327,7 @@ defmodule Mix.Tasks.Bs do
     IO.puts("")
 
     IO.puts("Stale: #{s.stale_count}")
-    IO.puts("Unlinked implications: #{s.unlinked_implications}")
+    IO.puts("Unlinked directives: #{s.unlinked_directives}")
     IO.puts("")
 
     if s.artifact_schemes != %{} do
@@ -355,10 +378,10 @@ defmodule Mix.Tasks.Bs do
       stats                Graph-level statistics
 
     FILTERS (for list)
-      primitive|compound|implication   Filter by structural type
+      primitive|compound|inference|directive   Filter by structural type
       active|superseded|retracted|all  Filter by status (default: active)
-      contracts                        Contract-grade implications only
-      unlinked                         Implications with no materialized items
+      contracts                        Contract-grade directives only
+      unlinked                         Directives with no materialized items
       tag:<tag> / kind:<kind> / domain:<domain> / subject_type:<type>
 
     FLAGS

@@ -1,0 +1,48 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "derivation-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "contracts"
+    ],
+    "name": "contract-identity",
+    "claim": "A node is contract-grade iff its type is directive and its rules or invariants array is non-empty - contract is the machine-checkable grade of a directive, not a type. The c-prefix ID convention is a naming reflection of this structural property, not the definition of contract identity. Code that operates on contracts must detect them via Belief.contract?/1 and never by ID prefix matching.",
+    "contract": true,
+    "rules": [
+      {
+        "scenario": "Contract detection",
+        "given": "An arbitrary DAG node",
+        "when": "Belief.contract?/1 is called",
+        "then": "The function returns true iff the node has non-empty rules or non-empty invariants"
+      },
+      {
+        "scenario": "c-prefix convention",
+        "given": "A new contract-grade directive is being assigned an ID",
+        "when": "An ID is generated",
+        "then": "The ID should use the c-prefix convention (c001, c002, ...) to flag the contract nature to human readers"
+      },
+      {
+        "scenario": "Contract structure cannot be retrofitted to descriptive types",
+        "given": "A primitive, compound, or inference is being edited to add rules",
+        "when": "The mutation is validated",
+        "then": "The write is rejected - contract grade exists only on directives; mint a directive that deps on the descriptive node instead"
+      }
+    ],
+    "invariants": [
+      "Belief.contract?/1 is the canonical check for contract identity",
+      "Contract-grade directives may use retired status (per the status lifecycle)",
+      "c-prefix is a convention, not a structural guarantee - always check rules/invariants, not the ID"
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a300",
+      "cb:a470"
+    ]
+  },
+  "conflicting_id": "cb:c031",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: contract-grade re-attaches to the directive type (c031's biconditional preserved verbatim); the retired-status invariant rewords per the c029 successor's widening.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

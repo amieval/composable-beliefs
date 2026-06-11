@@ -70,7 +70,11 @@ defmodule CB.Belief.Conflict do
   ))
 
   @type reason :: :subject_overlap | :tag_overlap | :claim_overlap
-  @type entry :: %{required(:id) => String.t(), required(:reasons) => [reason()], optional(:priority) => :contract_level}
+  @type entry :: %{
+          required(:id) => String.t(),
+          required(:reasons) => [reason()],
+          optional(:priority) => :contract_level
+        }
   @type result :: %{supportive: [entry()], neutral: [entry()], conflicting: [entry()]}
 
   @doc """

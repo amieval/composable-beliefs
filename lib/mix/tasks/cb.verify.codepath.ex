@@ -67,16 +67,24 @@ defmodule Mix.Tasks.Cb.Verify.Codepath do
 
   defp select_targets(beliefs, [id | _]) do
     case Codepath.find_target(beliefs, id) do
-      {:ok, target} -> {:ok, [target]}
-      {:error, :not_found} -> {:error, "no codepath output-target with id #{inspect(id)}"}
-      {:error, {:ambiguous, ids}} -> {:error, "id #{inspect(id)} is ambiguous: #{Enum.join(ids, ", ")}"}
+      {:ok, target} ->
+        {:ok, [target]}
+
+      {:error, :not_found} ->
+        {:error, "no codepath output-target with id #{inspect(id)}"}
+
+      {:error, {:ambiguous, ids}} ->
+        {:error, "id #{inspect(id)} is ambiguous: #{Enum.join(ids, ", ")}"}
     end
   end
 
   defp run_target(target, beliefs) do
     case CB.OutputTarget.validate_codepath(target, beliefs) do
-      :ok -> Assertions.run(target, beliefs)
-      {:error, messages} -> halt("invalid codepath target #{target.id}:\n  " <> Enum.join(messages, "\n  "))
+      :ok ->
+        Assertions.run(target, beliefs)
+
+      {:error, messages} ->
+        halt("invalid codepath target #{target.id}:\n  " <> Enum.join(messages, "\n  "))
     end
   end
 
@@ -94,7 +102,9 @@ defmodule Mix.Tasks.Cb.Verify.Codepath do
       results
       |> Enum.group_by(& &1.belief)
       |> Map.new(fn {belief_id, rows} ->
-        items = Enum.map(rows, &%{"action" => "invoke #{&1.predicate}", "predicate" => &1.predicate})
+        items =
+          Enum.map(rows, &%{"action" => "invoke #{&1.predicate}", "predicate" => &1.predicate})
+
         belief = Enum.find(beliefs, &(&1.id == belief_id))
         {:ok, refs} = Sink.Test.persist(belief, items, [])
         {belief_id, %{"date" => today, "todos" => refs}}
@@ -109,8 +119,11 @@ defmodule Mix.Tasks.Cb.Verify.Codepath do
       end)
 
     case Store.write(updated) do
-      {:ok, path} -> IO.puts("Recorded #{map_size(refs_by_belief)} materialized test record(s) -> #{path}")
-      {:error, reason} -> halt("failed to record results: #{inspect(reason)}")
+      {:ok, path} ->
+        IO.puts("Recorded #{map_size(refs_by_belief)} materialized test record(s) -> #{path}")
+
+      {:error, reason} ->
+        halt("failed to record results: #{inspect(reason)}")
     end
   end
 

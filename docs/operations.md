@@ -12,7 +12,7 @@ A productive extraction session processes source documents and produces concrete
 
 2. **Read with decomposition intent.** Instead of reading linearly and coming away with "mostly handled," parse each section for irreducible claims and evaluate each for composition with existing beliefs.
 
-3. **Layer beliefs.** Primitives first (grounded in source evidence), then compounds (composed beliefs), then implications (actions). The layering surfaces insights no single document contains - e.g. three scattered policy statements composing into one lifecycle rule that no file states on its own.
+3. **Layer beliefs.** Primitives first (grounded in source evidence), then compounds (composed beliefs), then inferences (conclusions) and directives (actions). The layering surfaces insights no single document contains - e.g. three scattered policy statements composing into one lifecycle rule that no file states on its own.
 
 4. **User-relayed primitives.** Information relayed in conversation becomes a belief with `artifact: "user:<owner>:YYYY-MM-DD"` and `evidence` citing the session - honest provenance that says "the user told me this" rather than inventing a document.
 

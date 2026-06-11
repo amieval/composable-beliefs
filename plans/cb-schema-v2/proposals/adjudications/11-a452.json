@@ -1,0 +1,26 @@
+{
+  "proposed": {
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "schema"
+    ],
+    "claim": "Schema rules in force: no `confidence` field; no `patch` kind; no separate `implication` prose field, since meaning is carried by `claim` plus `deps`; primitives ground their claim with an `artifact` URI and dated `evidence`; non-contract directives ground in deps or a stipulation artifact; and `contract: true` is biconditional with non-empty `rules`/`invariants` (per c056).",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "CLAUDE.md schema-rules sentence updated for v2: the c038 reference moves to its successor c056 and the D4 grounding rule joins the in-force list.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [],
+    "deps": []
+  },
+  "conflicting_id": "cb:a452",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: the referenced schema-discipline contract id changes with the c038 supersession; the grounding rule joins the rules in force.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

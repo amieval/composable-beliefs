@@ -1,12 +1,12 @@
 defmodule CB.Belief.Materializer do
   @moduledoc """
-  Materialize a belief implication into action items via a pluggable sink.
+  Materialize a belief directive into action items via a pluggable sink.
 
   The flow is host-agnostic:
 
-      implication belief -> action items -> sink -> link belief.materialized
+      directive belief -> action items -> sink -> link belief.materialized
 
-  An implication says *what needs to happen*. Materialization turns that
+  A directive says *what needs to happen*. Materialization turns that
   into concrete action items and hands them to a `CB.Materializer.Sink`,
   which persists them wherever the host wants (a todo file, a ticket
   tracker, a table). The sink returns one ref per persisted item, and
@@ -26,10 +26,10 @@ defmodule CB.Belief.Materializer do
   @default_sink Sink.JSON
 
   @doc """
-  Materialize a belief implication into action items.
+  Materialize a belief directive into action items.
 
   `spec` is a string-keyed map with:
-  - `"belief_id"` - the implication node ID to materialize (aXXX/cXXX)
+  - `"belief_id"` - the directive node ID to materialize (aXXX/cXXX)
   - `"action_items"` (or legacy `"todos"`) - a list of action-item maps,
     each with at least an `"action"` key (free text). Any extra keys are
     passed through to the sink untouched.
@@ -68,8 +68,8 @@ defmodule CB.Belief.Materializer do
     end
   end
 
-  defp validate_node(%{type: "implication", materialized: nil}), do: :ok
-  defp validate_node(%{type: type}) when type != "implication", do: {:error, {:not_implication, type}}
+  defp validate_node(%{type: "directive", materialized: nil}), do: :ok
+  defp validate_node(%{type: type}) when type != "directive", do: {:error, {:not_directive, type}}
   defp validate_node(%{materialized: m}) when m != nil, do: {:error, :already_materialized}
 
   defp run_sink(sink, node, action_items, sink_opts) do
@@ -84,9 +84,10 @@ defmodule CB.Belief.Materializer do
     materialized = %{"date" => today, "todos" => entries}
 
     with {:ok, all} <- BeliefStore.read() do
-      updated = Enum.map(all, fn a ->
-        if a.id == node_id, do: %{a | materialized: materialized}, else: a
-      end)
+      updated =
+        Enum.map(all, fn a ->
+          if a.id == node_id, do: %{a | materialized: materialized}, else: a
+        end)
 
       case BeliefStore.write(updated) do
         {:ok, _path} -> :ok

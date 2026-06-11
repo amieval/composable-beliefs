@@ -138,15 +138,40 @@ defmodule CB.Collection do
     end
   end
 
+  # The schema version this loader speaks. The cutover is hard: a corrected
+  # collection is a migrated collection - there is no quiet coexistence of
+  # v1 and v2 graphs in one union.
+  @schema_version 2
+
   @doc "Load one collection's beliefs as `Belief` structs."
   @spec load(String.t(), Registry.t()) :: {:ok, [Belief.t()]} | {:error, term()}
   def load(ns, %Registry{} = reg) do
-    with {:ok, path} <- collection_path(ns, reg) do
+    with {:ok, path} <- collection_path(ns, reg),
+         :ok <- check_schema_version(ns, path) do
       case JSON.read(path) do
         {:ok, data} when is_list(data) -> {:ok, Enum.map(data, &Belief.from_map/1)}
         {:ok, _} -> {:error, {:not_an_array, ns, path}}
         {:error, reason} -> {:error, {:collection_unreadable, ns, path, reason}}
       end
+    end
+  end
+
+  defp check_schema_version(ns, beliefs_path) do
+    manifest = beliefs_path |> Path.dirname() |> Path.join("manifest.json")
+
+    found =
+      case JSON.read(manifest) do
+        {:ok, %{"schema_version" => v}} -> v
+        _ -> nil
+      end
+
+    if found == @schema_version do
+      :ok
+    else
+      {:error,
+       {:schema_version, ns,
+        "manifest declares schema_version #{inspect(found)}, loader requires #{@schema_version}; " <>
+          "migrate with `mix cb.migrate.v2 --collection <path>`"}}
     end
   end
 

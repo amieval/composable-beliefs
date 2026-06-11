@@ -108,9 +108,7 @@ defmodule CB.Belief.Mutation do
 
       belief
       |> put_field(:deps, new_deps)
-      |> append_evidence(
-        evidence_entry("deps + #{m.dep} via dag-proposal #{m.id}", opts)
-      )
+      |> append_evidence(evidence_entry("deps + #{m.dep} via dag-proposal #{m.id}", opts))
     end)
   end
 
@@ -120,9 +118,7 @@ defmodule CB.Belief.Mutation do
 
       belief
       |> put_field(:deps, new_deps)
-      |> append_evidence(
-        evidence_entry("deps − #{m.dep} via dag-proposal #{m.id}", opts)
-      )
+      |> append_evidence(evidence_entry("deps − #{m.dep} via dag-proposal #{m.id}", opts))
     end)
   end
 
@@ -172,9 +168,7 @@ defmodule CB.Belief.Mutation do
       belief
       |> Map.put(atom_key, nil)
       |> remove_key(atom_key)
-      |> append_evidence(
-        evidence_entry("#{m.field} dropped via dag-proposal #{m.id}", opts)
-      )
+      |> append_evidence(evidence_entry("#{m.field} dropped via dag-proposal #{m.id}", opts))
     end)
   end
 

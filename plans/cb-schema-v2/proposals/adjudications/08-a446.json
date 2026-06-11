@@ -1,0 +1,21 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "claude-md",
+      "architecture"
+    ],
+    "claim": "The mechanism is a directed acyclic graph of beliefs with four structural types: primitive (what a single source said), compound (what its deps jointly state), inference (a conclusion licensed to exceed its deps), and directive (what should happen or must hold - a prescription the house stands behind).",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "subjects": [],
+    "deps": [
+      "cb:a470"
+    ]
+  },
+  "conflicting_id": "cb:a446",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: the CLAUDE.md architecture sentence states four types with their one-line definitions from the design's summary table.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

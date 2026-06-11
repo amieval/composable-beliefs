@@ -32,9 +32,9 @@ defmodule CB.Belief.FilterTest do
     created: "2024-09-15"
   }
 
-  @implication %Belief{
+  @directive %Belief{
     id: "a015",
-    type: "implication",
+    type: "directive",
     kind: "rule",
     tags: ["hold-queue", "lifecycle"],
     claim: "Action needed",
@@ -47,7 +47,7 @@ defmodule CB.Belief.FilterTest do
 
   @contract %Belief{
     id: "c001",
-    type: "implication",
+    type: "directive",
     kind: "state-machine",
     tags: ["loan-lifecycle"],
     contract: true,
@@ -71,35 +71,35 @@ defmodule CB.Belief.FilterTest do
 
   test "type filter selects by structural type" do
     {filters, _opts} = Filter.parse_args(["compound"])
-    result = Filter.apply_filters([@primitive, @compound, @implication], filters)
+    result = Filter.apply_filters([@primitive, @compound, @directive], filters)
     assert length(result) == 1
     assert hd(result).id == "a013"
   end
 
   test "kind filter selects by semantic kind" do
     {filters, _opts} = Filter.parse_args(["kind:observation"])
-    result = Filter.apply_filters([@primitive, @compound, @implication], filters)
+    result = Filter.apply_filters([@primitive, @compound, @directive], filters)
     assert length(result) == 1
     assert hd(result).id == "a013"
   end
 
   test "tag filter selects by tag" do
     {filters, _opts} = Filter.parse_args(["tag:hold-queue"])
-    result = Filter.apply_filters([@primitive, @compound, @implication], filters)
+    result = Filter.apply_filters([@primitive, @compound, @directive], filters)
     assert length(result) == 1
     assert hd(result).id == "a015"
   end
 
   test "--tag flag selects by tag" do
     {filters, _opts} = Filter.parse_args(["--tag", "loan-policy"])
-    result = Filter.apply_filters([@primitive, @compound, @implication], filters)
+    result = Filter.apply_filters([@primitive, @compound, @directive], filters)
     assert length(result) == 1
     assert hd(result).id == "a001"
   end
 
-  test "contracts filter selects contract-grade implications" do
+  test "contracts filter selects contract-grade directives" do
     {filters, _opts} = Filter.parse_args(["contracts"])
-    result = Filter.apply_filters([@primitive, @compound, @implication, @contract], filters)
+    result = Filter.apply_filters([@primitive, @compound, @directive, @contract], filters)
     assert length(result) == 1
     assert hd(result).id == "c001"
   end
@@ -117,16 +117,21 @@ defmodule CB.Belief.FilterTest do
     assert length(result) == 2
   end
 
-  test "unlinked filter finds implications without materialized items" do
-    linked = %Belief{@implication | id: "a016", materialized: %{"date" => "x", "todos" => []}}
+  test "unlinked filter finds directives without materialized items" do
+    linked = %Belief{@directive | id: "a016", materialized: %{"date" => "x", "todos" => []}}
     {filters, _opts} = Filter.parse_args(["unlinked"])
-    result = Filter.apply_filters([@implication, linked], filters)
+    result = Filter.apply_filters([@directive, linked], filters)
     assert length(result) == 1
     assert hd(result).id == "a015"
   end
 
   test "subject ref filter matches by ref path" do
-    other = %Belief{@primitive | id: "a011", subjects: [%{"ref" => "policy/fines", "type" => "policy"}]}
+    other = %Belief{
+      @primitive
+      | id: "a011",
+        subjects: [%{"ref" => "policy/fines", "type" => "policy"}]
+    }
+
     {filters, _opts} = Filter.parse_args(["policy/loan-period"])
     result = Filter.apply_filters([@primitive, other], filters)
     assert length(result) == 1
@@ -134,7 +139,12 @@ defmodule CB.Belief.FilterTest do
   end
 
   test "subject_type filter matches by subject type" do
-    member = %Belief{@primitive | id: "a011", subjects: [%{"ref" => "members/m-001", "type" => "member"}]}
+    member = %Belief{
+      @primitive
+      | id: "a011",
+        subjects: [%{"ref" => "members/m-001", "type" => "member"}]
+    }
+
     {filters, _opts} = Filter.parse_args(["subject_type:member"])
     result = Filter.apply_filters([@compound, member], filters)
     assert length(result) == 1
@@ -142,7 +152,7 @@ defmodule CB.Belief.FilterTest do
   end
 
   test "sort orders by type then id" do
-    sorted = Filter.sort([@implication, @primitive, @compound])
+    sorted = Filter.sort([@directive, @primitive, @compound])
     assert Enum.map(sorted, & &1.id) == ["a001", "a013", "a015"]
   end
 

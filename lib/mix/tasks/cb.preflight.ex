@@ -6,8 +6,8 @@ defmodule Mix.Tasks.Cb.Preflight do
   runs it through `CB.Belief.Conflict.preflight/1` against the live DAG,
   and prints the categorized result for the agent to render to the user.
 
-  Preflight examines all active beliefs (primitives + compounds +
-  implications) at authoring time so a proposal cannot land in silent
+  Preflight examines all active beliefs across all four structural types
+  at authoring time so a proposal cannot land in silent
   contradiction with an existing node.
 
   Performs no writes. Adjudication is captured separately and applied by

@@ -1,0 +1,17 @@
+{
+  "backfills": [
+    {
+      "id": "cb:a304",
+      "updates": {
+        "artifact": "plan:cb-schema-v2",
+        "evidence": [
+          {
+            "date": "2026-06-10",
+            "detail": "Grounding backfill during the v2 migration: a304's adoption predates the artifact discipline (created 2026-04-12, no artifact, no deps). The cb-schema-v2 design record reaffirms the principle - the conflict audit it motivates is re-scoped to active directives there - so the plan stands as its stipulation artifact under the D4 grounding rule. Backfill fills empty fields only; the claim is untouched.",
+            "artifact": "document:plans/cb-schema-v2/design.md"
+          }
+        ]
+      }
+    }
+  ]
+}

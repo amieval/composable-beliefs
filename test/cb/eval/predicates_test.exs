@@ -22,7 +22,11 @@ defmodule CB.Eval.PredicatesTest do
           "tags" => ["aggregate"],
           "artifact" => "eval:e1/#{run}/#{ruler}",
           "evidence" => [
-            %{"date" => "2026-06-09", "detail" => "fixture", "artifact" => "document:logs/#{run}.eval"}
+            %{
+              "date" => "2026-06-09",
+              "detail" => "fixture",
+              "artifact" => "document:logs/#{run}.eval"
+            }
           ],
           "subjects" => [
             %{"ref" => "eval/e1", "type" => "eval"},
@@ -50,7 +54,7 @@ defmodule CB.Eval.PredicatesTest do
   defp verdict(id, deps, attrs \\ %{}) do
     belief(
       Map.merge(
-        %{"id" => id, "type" => "implication", "kind" => "verdict", "deps" => deps},
+        %{"id" => id, "type" => "inference", "kind" => "verdict", "deps" => deps},
         attrs
       )
     )
@@ -143,7 +147,11 @@ defmodule CB.Eval.PredicatesTest do
     end
 
     test "passes a verdict carrying the single-ruler escape tag" do
-      beliefs = [observation("t:o", "r1", "det"), verdict("t:v", ["t:o"], %{"tags" => ["single-ruler"]})]
+      beliefs = [
+        observation("t:o", "r1", "det"),
+        verdict("t:v", ["t:o"], %{"tags" => ["single-ruler"]})
+      ]
+
       assert Predicates.verdicts_corroborated?(beliefs, %{}) == true
     end
 
@@ -197,7 +205,11 @@ defmodule CB.Eval.PredicatesTest do
 
     test "ignores superseded observations and non-observations" do
       beliefs = [
-        observation("t:o", "r1", "det", %{"artifact" => "document:x", "status" => "superseded", "superseded_by" => "t:o2"}),
+        observation("t:o", "r1", "det", %{
+          "artifact" => "document:x",
+          "status" => "superseded",
+          "superseded_by" => "t:o2"
+        }),
         belief(%{"id" => "t:c", "type" => "primitive", "kind" => "convention"})
       ]
 
@@ -231,7 +243,10 @@ defmodule CB.Eval.PredicatesTest do
     end
 
     test "fails an observation missing core subjects" do
-      beliefs = [observation("t:o", "r1", "det", %{"subjects" => [%{"ref" => "eval/e1", "type" => "eval"}]})]
+      beliefs = [
+        observation("t:o", "r1", "det", %{"subjects" => [%{"ref" => "eval/e1", "type" => "eval"}]})
+      ]
+
       assert {false, detail} = Predicates.observation_subjects_complete?(beliefs, %{})
       assert detail =~ "ruler"
       assert detail =~ "model_version"

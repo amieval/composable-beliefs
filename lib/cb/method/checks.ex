@@ -4,7 +4,7 @@ defmodule CB.Method.Checks do
   contracts as a static verification step.
 
   Discovery is role-based, like everything else in the verifier: from
-  the loaded union, the pass selects active contract-grade implications
+  the loaded union, the pass selects active contract-grade directives
   of the catalogued `implies` kind whose rules route on
   `{"when": {"verify": "collection"}, "requires": "<predicate>"}` - by
   rule shape, not by namespace or id, so any collection may declare such
@@ -66,7 +66,8 @@ defmodule CB.Method.Checks do
 
     for contract <- contracts(beliefs),
         predicate <- Implies.applicable(contract, @route_fields) do
-      {result, detail} = Predicates.invoke(module, predicate, beliefs, params_for(contract, predicate))
+      {result, detail} =
+        Predicates.invoke(module, predicate, beliefs, params_for(contract, predicate))
 
       %{
         contract: contract.id,

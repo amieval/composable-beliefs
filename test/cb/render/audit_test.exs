@@ -22,7 +22,11 @@ defmodule CB.Render.AuditTest do
         "tags" => ["eval-verdict"],
         "claim" => "Model <m> drops fields & nobody notices.",
         "evidence" => [
-          %{"date" => "2026-06-08", "detail" => "Derived from g:c1.", "artifact" => "https://example.org/post"}
+          %{
+            "date" => "2026-06-08",
+            "detail" => "Derived from g:c1.",
+            "artifact" => "https://example.org/post"
+          }
         ],
         "subjects" => [%{"ref" => "model/m", "type" => "model"}],
         "deps" => ["g:c1", "x:doc1", "g:gone"],
@@ -47,7 +51,11 @@ defmodule CB.Render.AuditTest do
         "claim" => "Ruler det scored case c1 fail.",
         "artifact" => "eval:e/r1/c1/det",
         "evidence" => [
-          %{"date" => "2026-06-07", "detail" => "Raw log.", "artifact" => "document:logs/r1/c1.json"}
+          %{
+            "date" => "2026-06-07",
+            "detail" => "Raw log.",
+            "artifact" => "document:logs/r1/c1.json"
+          }
         ],
         "subjects" => [
           %{"ref" => "eval/e", "type" => "eval"},
@@ -94,7 +102,9 @@ defmodule CB.Render.AuditTest do
   end
 
   defp build!(opts \\ []) do
-    {:ok, tree} = Audit.build("g:v1", union(), Keyword.merge([source: "g", date: "2026-06-10"], opts))
+    {:ok, tree} =
+      Audit.build("g:v1", union(), Keyword.merge([source: "g", date: "2026-06-10"], opts))
+
     tree
   end
 
@@ -145,8 +155,20 @@ defmodule CB.Render.AuditTest do
     test "circular references terminate as marked leaves" do
       loop =
         [
-          %{"id" => "g:a", "type" => "compound", "claim" => "a", "deps" => ["g:b"], "status" => "active"},
-          %{"id" => "g:b", "type" => "compound", "claim" => "b", "deps" => ["g:a"], "status" => "active"}
+          %{
+            "id" => "g:a",
+            "type" => "compound",
+            "claim" => "a",
+            "deps" => ["g:b"],
+            "status" => "active"
+          },
+          %{
+            "id" => "g:b",
+            "type" => "compound",
+            "claim" => "b",
+            "deps" => ["g:a"],
+            "status" => "active"
+          }
         ]
         |> Enum.map(&Belief.from_map/1)
 

@@ -26,7 +26,9 @@ defmodule CB.Belief.MutationTest do
 
   test "context mutation is a no-op" do
     bs = beliefs()
-    assert Mutation.apply_one(%{type: "context", id: "m1", belief_id: "a001"}, bs, @opts) == {:ok, bs}
+
+    assert Mutation.apply_one(%{type: "context", id: "m1", belief_id: "a001"}, bs, @opts) ==
+             {:ok, bs}
   end
 
   test "reclassify-kind updates kind and appends evidence" do
@@ -92,7 +94,13 @@ defmodule CB.Belief.MutationTest do
   end
 
   test "new-belief rejects id collisions" do
-    m = %{type: "new-belief", id: "m1", belief_id: "a001", after: %{"id" => "a001", "type" => "primitive"}}
+    m = %{
+      type: "new-belief",
+      id: "m1",
+      belief_id: "a001",
+      after: %{"id" => "a001", "type" => "primitive"}
+    }
+
     assert {:error, {:belief_id_conflict, "a001"}} = Mutation.apply_one(m, beliefs(), @opts)
   end
 
@@ -113,7 +121,8 @@ defmodule CB.Belief.MutationTest do
       %{type: "set-name", id: "m2", belief_id: "missing", after: %{"name" => "x"}}
     ]
 
-    assert {:error, {"m2", {:belief_not_found, "missing"}}} = Mutation.apply_batch(ms, beliefs(), @opts)
+    assert {:error, {"m2", {:belief_not_found, "missing"}}} =
+             Mutation.apply_batch(ms, beliefs(), @opts)
   end
 
   test "apply_batch applies a clean batch" do

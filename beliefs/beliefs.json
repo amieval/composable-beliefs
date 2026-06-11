@@ -1,7 +1,7 @@
 [
   {
     "id": "cb:a098",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "tags": [],
     "claim": "Assertions express extractable behavioral patterns as beliefs, not individual occurrences. Incidents that evidence the pattern belong in the evidence array, not as the claim itself.",
@@ -139,7 +139,7 @@
   },
   {
     "id": "cb:a118",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "tags": [],
     "claim": "Every primitive sourced from a document or email carries an evidence array with source details including dates and specific descriptions of what was observed. The claim is the agent's interpretation; the evidence carries the factual basis. The gap between claim and evidence is where misinterpretation lives and can be audited.",
@@ -158,7 +158,7 @@
   },
   {
     "id": "cb:a119",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "tags": [],
     "claim": "Beliefs are created at extraction time - when the agent is actively reading a source or reasoning about entities - not backfilled retroactively. The exception is an explicit invocation to formalize prior reasoning from a conversation.",
@@ -177,7 +177,7 @@
   },
   {
     "id": "cb:a120",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "tags": [],
     "claim": "Beliefs and contracts are two roles sharing one store. Ordinary beliefs become stale and get superseded. Contracts are behavioral invariants that get violated or upheld, not superseded. A belief says 'this is true'; a contract says 'this will remain true.'",
@@ -215,7 +215,7 @@
   },
   {
     "id": "cb:a125",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "tags": [],
     "claim": "Provenance _source attribution must only be assigned at extraction time - when the agent is actively reading the source document and pulling data from it. Retroactive attribution ('this data probably came from that document') is unreliable and prohibited. Unsourced data gets 'manual' and must be re-extracted from a candidate source to be upgraded.",
@@ -234,7 +234,7 @@
   },
   {
     "id": "cb:a131",
-    "type": "compound",
+    "type": "inference",
     "kind": "design-rationale",
     "tags": [],
     "claim": "The extraction-time discipline applies across all data layers: provenance attribution happens when reading source documents (a125), assertions are created when reading sources or reasoning about entities (a119), and event log entries are written at mutation time (a128). Retroactive attribution is prohibited at every layer because post-hoc source assignment is inherently unreliable.",
@@ -305,7 +305,7 @@
   },
   {
     "id": "cb:a138",
-    "type": "compound",
+    "type": "inference",
     "kind": "design-rationale",
     "tags": [],
     "claim": "The contract layer exists because: (1) implicit contracts were scattered across structs, skills, and the agent-instruction file with no unified representation (a133), (2) contracts must be domain-bound, surviving code rewrites while remaining mechanically verifiable (a134), (3) the same contract representation must govern behavior across different substrates - compiled code and LLM reasoning (a135). This positions contracts as the abstraction layer between domain expertise and implementation.",
@@ -320,7 +320,7 @@
   },
   {
     "id": "cb:a173",
-    "type": "compound",
+    "type": "inference",
     "kind": "composable-belief",
     "tags": [],
     "name": "implications-as-contract-prototypes",
@@ -494,7 +494,7 @@
   },
   {
     "id": "cb:c026",
-    "type": "implication",
+    "type": "directive",
     "kind": "state-machine",
     "domain": "system",
     "tags": [
@@ -541,12 +541,13 @@
       "cb:a298",
       "cb:a300"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:c051",
     "created": "2026-04-12"
   },
   {
     "id": "cb:c027",
-    "type": "implication",
+    "type": "directive",
     "kind": "domain-rule",
     "domain": "system",
     "tags": [
@@ -605,12 +606,13 @@
     "deps": [
       "cb:a298"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:c052",
     "created": "2026-04-12"
   },
   {
     "id": "cb:c029",
-    "type": "implication",
+    "type": "directive",
     "kind": "state-machine",
     "domain": "system",
     "tags": [
@@ -662,12 +664,13 @@
     "deps": [
       "cb:a302"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:c053",
     "created": "2026-04-12"
   },
   {
     "id": "cb:c030",
-    "type": "implication",
+    "type": "directive",
     "kind": "domain-rule",
     "domain": "system",
     "tags": [
@@ -713,7 +716,7 @@
   },
   {
     "id": "cb:c031",
-    "type": "implication",
+    "type": "directive",
     "kind": "derivation-rule",
     "domain": "system",
     "tags": [
@@ -752,12 +755,13 @@
     "deps": [
       "cb:a300"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:c054",
     "created": "2026-04-12"
   },
   {
     "id": "cb:a304",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "system",
     "tags": [
@@ -766,6 +770,7 @@
     ],
     "name": "contradictions-must-be-expensive",
     "claim": "Contradictions in the governance substrate must be expensive to introduce - if contradictions are free, agent behavior drifts silently as competing rules accumulate and no mechanism surfaces the tension",
+    "artifact": "plan:cb-schema-v2",
     "evidence": [
       {
         "date": "2026-04-12",
@@ -780,7 +785,7 @@
   },
   {
     "id": "cb:c032",
-    "type": "implication",
+    "type": "directive",
     "kind": "audit-rule",
     "domain": "system",
     "tags": [
@@ -841,12 +846,13 @@
       "cb:a304"
     ],
     "materialized": null,
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:c055",
     "created": "2026-04-12"
   },
   {
     "id": "cb:c035",
-    "type": "implication",
+    "type": "directive",
     "kind": "derivation-table",
     "domain": "system",
     "tags": [
@@ -1033,7 +1039,7 @@
   },
   {
     "id": "cb:a364",
-    "type": "implication",
+    "type": "directive",
     "kind": "convention",
     "domain": "system",
     "tags": [
@@ -1094,7 +1100,7 @@
   },
   {
     "id": "cb:a375",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "dev",
     "tags": [
@@ -1147,7 +1153,7 @@
   },
   {
     "id": "cb:a381",
-    "type": "implication",
+    "type": "directive",
     "kind": "rule",
     "domain": "agent",
     "tags": [
@@ -1177,7 +1183,7 @@
   },
   {
     "id": "cb:a382",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "dev",
     "tags": [
@@ -1225,7 +1231,7 @@
   },
   {
     "id": "cb:a384",
-    "type": "implication",
+    "type": "directive",
     "kind": "rule",
     "domain": "system",
     "tags": [
@@ -1282,7 +1288,7 @@
   },
   {
     "id": "cb:a387",
-    "type": "compound",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "system",
     "tags": [
@@ -1308,15 +1314,15 @@
     "deps": [
       "cb:a375",
       "cb:a380",
-      "cb:c029",
-      "cb:c031"
+      "cb:c053",
+      "cb:c054"
     ],
     "status": "active",
     "created": "2026-04-21"
   },
   {
     "id": "cb:c037",
-    "type": "implication",
+    "type": "directive",
     "kind": "rule",
     "domain": "system",
     "tags": [
@@ -1549,7 +1555,7 @@
   },
   {
     "id": "cb:a402",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "system",
     "tags": [
@@ -1634,7 +1640,7 @@
   },
   {
     "id": "cb:a405",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "system",
     "tags": [
@@ -1663,7 +1669,7 @@
   },
   {
     "id": "cb:a406",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "system",
     "tags": [
@@ -1775,7 +1781,7 @@
   },
   {
     "id": "cb:c038",
-    "type": "implication",
+    "type": "directive",
     "kind": "schema",
     "domain": "system",
     "tags": [
@@ -1828,12 +1834,13 @@
       "cb:a405",
       "cb:a408"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:c056",
     "created": "2026-05-15"
   },
   {
     "id": "cb:c039",
-    "type": "implication",
+    "type": "directive",
     "kind": "enum-registry",
     "domain": "system",
     "tags": [
@@ -1957,7 +1964,7 @@
   },
   {
     "id": "cb:c040",
-    "type": "implication",
+    "type": "directive",
     "kind": "enum-registry",
     "domain": "system",
     "tags": [
@@ -2022,7 +2029,7 @@
   },
   {
     "id": "cb:c041",
-    "type": "implication",
+    "type": "directive",
     "kind": "enum-registry",
     "domain": "system",
     "tags": [
@@ -2080,7 +2087,7 @@
   },
   {
     "id": "cb:a416",
-    "type": "implication",
+    "type": "directive",
     "kind": "rule",
     "domain": "system",
     "tags": [],
@@ -2100,7 +2107,7 @@
   },
   {
     "id": "cb:a417",
-    "type": "implication",
+    "type": "directive",
     "kind": "rule",
     "domain": "system",
     "tags": [],
@@ -2121,7 +2128,7 @@
   },
   {
     "id": "cb:a424",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "system",
     "tags": [
@@ -2150,7 +2157,7 @@
   },
   {
     "id": "cb:a425",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "system",
     "tags": [
@@ -2179,7 +2186,7 @@
   },
   {
     "id": "cb:a427",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "system",
     "tags": [
@@ -2208,7 +2215,7 @@
   },
   {
     "id": "cb:a428",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "system",
     "tags": [
@@ -2238,7 +2245,7 @@
   },
   {
     "id": "cb:a436",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "system",
     "tags": [
@@ -2290,7 +2297,7 @@
   },
   {
     "id": "cb:a438",
-    "type": "compound",
+    "type": "directive",
     "kind": "convention",
     "tags": [
       "dag-schema",
@@ -2316,7 +2323,7 @@
   },
   {
     "id": "cb:a439",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "system",
     "tags": [
@@ -2334,7 +2341,7 @@
   },
   {
     "id": "cb:a440",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "dev",
     "tags": [
@@ -2358,7 +2365,7 @@
   },
   {
     "id": "cb:a441",
-    "type": "implication",
+    "type": "directive",
     "kind": "rule",
     "domain": "dev",
     "tags": [
@@ -2433,7 +2440,7 @@
   },
   {
     "id": "cb:a443",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "dev",
     "tags": [
@@ -2456,7 +2463,7 @@
   },
   {
     "id": "cb:a444",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "dev",
     "tags": [
@@ -2479,7 +2486,7 @@
   },
   {
     "id": "cb:a445",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "system",
     "tags": [
@@ -2497,12 +2504,13 @@
     ],
     "subjects": [],
     "deps": [],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:a477",
     "created": "2026-06-07"
   },
   {
     "id": "cb:a446",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "design",
     "tags": [
@@ -2520,12 +2528,13 @@
     ],
     "subjects": [],
     "deps": [],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:a478",
     "created": "2026-06-07"
   },
   {
     "id": "cb:a447",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "design",
     "tags": [
@@ -2543,12 +2552,13 @@
     ],
     "subjects": [],
     "deps": [],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:a479",
     "created": "2026-06-07"
   },
   {
     "id": "cb:a448",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "design",
     "tags": [
@@ -2571,7 +2581,7 @@
   },
   {
     "id": "cb:a449",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "dev",
     "tags": [
@@ -2594,7 +2604,7 @@
   },
   {
     "id": "cb:a450",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "dev",
     "tags": [
@@ -2617,7 +2627,7 @@
   },
   {
     "id": "cb:a451",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "system",
     "tags": [
@@ -2659,12 +2669,13 @@
     ],
     "subjects": [],
     "deps": [],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:a481",
     "created": "2026-06-07"
   },
   {
     "id": "cb:a453",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "dev",
     "tags": [
@@ -2688,7 +2699,7 @@
   },
   {
     "id": "cb:a454",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "system",
     "tags": [
@@ -2711,7 +2722,7 @@
   },
   {
     "id": "cb:a455",
-    "type": "primitive",
+    "type": "directive",
     "kind": "formatting-rule",
     "domain": "dev",
     "tags": [
@@ -2734,7 +2745,7 @@
   },
   {
     "id": "cb:a456",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "dev",
     "tags": [
@@ -2757,7 +2768,7 @@
   },
   {
     "id": "cb:a457",
-    "type": "primitive",
+    "type": "directive",
     "kind": "policy",
     "domain": "system",
     "tags": [
@@ -2803,7 +2814,7 @@
   },
   {
     "id": "cb:c042",
-    "type": "implication",
+    "type": "directive",
     "kind": "output-target",
     "domain": "system",
     "tags": [
@@ -2927,7 +2938,7 @@
   },
   {
     "id": "cb:a459",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "dev",
     "tags": [
@@ -2949,7 +2960,7 @@
   },
   {
     "id": "cb:a460",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "design",
     "tags": [
@@ -2972,7 +2983,7 @@
   },
   {
     "id": "cb:a461",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "design",
     "tags": [
@@ -2995,7 +3006,7 @@
   },
   {
     "id": "cb:a462",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "design",
     "tags": [
@@ -3018,7 +3029,7 @@
   },
   {
     "id": "cb:a463",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "system",
     "tags": [
@@ -3041,7 +3052,7 @@
   },
   {
     "id": "cb:a464",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "system",
     "tags": [
@@ -3064,7 +3075,7 @@
   },
   {
     "id": "cb:a465",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "design",
     "tags": [
@@ -3088,7 +3099,7 @@
   },
   {
     "id": "cb:a466",
-    "type": "primitive",
+    "type": "directive",
     "kind": "design-principle",
     "domain": "design",
     "tags": [
@@ -3139,7 +3150,7 @@
   },
   {
     "id": "cb:c043",
-    "type": "implication",
+    "type": "directive",
     "kind": "enum-registry",
     "domain": "system",
     "tags": [
@@ -3211,7 +3222,7 @@
   },
   {
     "id": "cb:c044",
-    "type": "implication",
+    "type": "directive",
     "kind": "schema",
     "domain": "system",
     "tags": [
@@ -3259,7 +3270,7 @@
   },
   {
     "id": "cb:c045",
-    "type": "implication",
+    "type": "directive",
     "kind": "rule",
     "domain": "system",
     "tags": [
@@ -3305,7 +3316,7 @@
   },
   {
     "id": "cb:a468",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "system",
     "tags": [
@@ -3333,12 +3344,13 @@
     ],
     "subjects": [],
     "deps": [],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:a482",
     "created": "2026-06-09"
   },
   {
     "id": "cb:a469",
-    "type": "primitive",
+    "type": "directive",
     "kind": "convention",
     "domain": "dev",
     "tags": [
@@ -3366,12 +3378,13 @@
     ],
     "subjects": [],
     "deps": [],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:a480",
     "created": "2026-06-09"
   },
   {
     "id": "cb:c046",
-    "type": "implication",
+    "type": "directive",
     "kind": "derivation-table",
     "domain": "system",
     "tags": [
@@ -3475,7 +3488,7 @@
   },
   {
     "id": "cb:c047",
-    "type": "implication",
+    "type": "directive",
     "kind": "rule",
     "domain": "system",
     "tags": [
@@ -3532,7 +3545,7 @@
     "subjects": [],
     "deps": [
       "cb:a300",
-      "cb:c031",
+      "cb:c054",
       "cb:c046"
     ],
     "status": "active",
@@ -3540,7 +3553,7 @@
   },
   {
     "id": "cb:c048",
-    "type": "implication",
+    "type": "directive",
     "kind": "output-target",
     "domain": "system",
     "tags": [
@@ -3670,12 +3683,13 @@
       "cb:a457",
       "cb:a458"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:c060",
     "created": "2026-06-09"
   },
   {
     "id": "cb:c049",
-    "type": "implication",
+    "type": "directive",
     "kind": "schema",
     "domain": "system",
     "tags": [
@@ -3725,14 +3739,14 @@
     ],
     "deps": [
       "cb:a467",
-      "cb:c048"
+      "cb:c060"
     ],
     "status": "active",
     "created": "2026-06-09"
   },
   {
     "id": "cb:c050",
-    "type": "implication",
+    "type": "directive",
     "kind": "rule",
     "domain": "system",
     "tags": [
@@ -3784,5 +3798,1277 @@
     ],
     "status": "active",
     "created": "2026-06-09"
+  },
+  {
+    "id": "cb:a470",
+    "type": "primitive",
+    "kind": "design-rationale",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "schema-v2"
+    ],
+    "claim": "The cb-schema-v2 design (plans/cb-schema-v2/design.md, decided 2026-06-10) replaces the three-type schema with four structural types, one per epistemic operation: primitive (attest), compound (aggregate), inference (infer), directive (prescribe). The v1 implication type conflated two moods - descriptive conclusions licensed to exceed their deps, and prescriptions the house stands behind - and the machinery already sorted by that hidden boundary: materialization, the conflict audit, and contract grading attach only to prescriptions, while staleness and supersession-on-evidence respond to falsification of descriptions. Contract remains a structural grade, in v2 the machine-checkable grade of a directive.",
+    "artifact": "document:plans/cb-schema-v2/design.md",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Design record written and stress-tested 2026-06-10 (worked sdl migration, per-collection inventory, code touch points); decisions D1-D6 resolved the same day, D1 (type name 'inference') confirmed by Mark for launch with the immutable-history consideration explicitly overridden in favor of long-term terminology. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "plans/cb-schema-v2/design.md",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a471",
+    "type": "primitive",
+    "kind": "definition",
+    "domain": "design",
+    "tags": [
+      "dag-schema",
+      "schema-v2",
+      "direction-of-fit"
+    ],
+    "claim": "The boundary between inference and directive is direction of fit made operational. Ask what would count as the belief being wrong: an inference is falsified - if the world disagrees, the belief is defective and is superseded or retracted (mind fits world); a directive is violated - the world disobeys and the response is to flag the violation rather than revise the rule - or withdrawn - the house stops standing behind it, superseding it with a successor or retiring it (world fits mind). Author-facing trichotomy: falsified means inference; violated means directive; withdrawn means directive.",
+    "artifact": "document:plans/cb-schema-v2/design.md",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "The membership test from the v2 design, with its trap rules: evaluations name the standard or move up; conditional prescriptions decompose into a means-end inference plus a goal-adopting directive; reportive definitions are descriptive while stipulative definitions are directives; deontic must is directive while alethic/structural must is inference. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "plans/cb-schema-v2/design.md",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a472",
+    "type": "primitive",
+    "kind": "design-rationale",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "schema-v2"
+    ],
+    "claim": "In schema v2, type is a near-function of three checkable properties: type = f(mood(kind), grounding(artifact/deps), scope(subjects)). Mood is bound by the kind-type derivation table contract; grounding separates the descriptive types (artifact with no deps means primitive, deps mean compound or inference); subject containment separates compound from inference - a compound's subjects must be a subset of the union of its deps' subjects, with empty subjects passing vacuously, while an inference is licensed to widen scope. What stays judgment: choosing the kind, and the residual gray zone where a claim is subject-contained yet synthesizing; the write flow owns that residue.",
+    "artifact": "document:plans/cb-schema-v2/design.md",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "The type function elevates the inference/directive boundary from authoring discipline to enforcement: the kind-type table is a derivation-table contract interpreted by CB.Belief.Contract.Table and checked by the verifier by role; subject containment is a deterministic verifier check on compounds. Containment earns its power only where subjects are populated (six-subject eval collections, agent-behavior); in subject-sparse graphs the compound triage stays judgment. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "plans/cb-schema-v2/design.md",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a473",
+    "type": "primitive",
+    "kind": "design-rationale",
+    "domain": "design",
+    "tags": [
+      "dag-schema",
+      "schema-v2",
+      "naming"
+    ],
+    "claim": "The inference type is named for the ampliative move it records. A deduction's conclusion is contained in its premises and can fail only when a premise fails; deductive consequences are infinite and free, so the graph never stores them. An inference's conclusion outruns its deps - a generalization or an abduction - which is why it can be falsified while every dep stays true, and why the supersession-on-falsification lifecycle exists for it. The compound is the one entailment the schema stores (conjunction introduction), with subject containment as its formal shadow; the epistemic work a compound records is the selection of what to assemble. Type membership tracks the deps-to-claim relation, never the author's mental act, which is why the verifier interrogates scope rather than asking what kind of reasoning the author believes they performed.",
+    "artifact": "document:plans/cb-schema-v2/why-inference.md",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Naming rationale from the D1 debate, decided for 'inference' over retaining 'implication': an implication licensed to state more than its premises imply is a contradiction in terms; the falsified-while-deps-stand lifecycle is the structural proof these nodes exceed their premises; the contract kind 'implies' sits on the prescriptive side, so reusing 'implication' descriptively would put one lexeme on both sides of the is/ought boundary. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+        "artifact": "document:plans/cb-schema-v2/why-inference.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "plans/cb-schema-v2/why-inference.md",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a474",
+    "type": "directive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "schema-v2",
+      "authoring"
+    ],
+    "claim": "Strict-aggregate doctrine: a compound's claim states exactly what its deps jointly state. Commentary beyond the conjunction - significance, interpretation, generalization - is inference content; when found on a compound it is trimmed by superseding with the conjunction-only claim and, where the commentary deserves to survive, minting an inference that deps on the compound.",
+    "artifact": "plan:cb-schema-v2",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "D3 resolved as trim: tolerating descriptive commentary within subject containment reopens the boundary the inference type exists to close. First application: sdl:a3's second sentence trims into the a006 split during the v2 migration. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "plans/cb-schema-v2/design.md",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a475",
+    "type": "directive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "schema-v2",
+      "authoring"
+    ],
+    "claim": "Primitive atomicity doctrine: a primitive is one atomic statement of what a single source said, leaning verbatim. A primitive whose claim conjoins separable assertions is a mis-authored compound and is split at authoring time. Atomicity is judgment, enforced in the write flow rather than by a verifier check; source-checkable verbatim predicates are future work for cached sources.",
+    "artifact": "plan:cb-schema-v2",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "D5 resolved: keep the type name 'primitive' and encode atomicity plus verbatim-leaning discipline as authoring convention; a rename to 'atomic' stacked on an already-breaking format change fails a397's one-structural-change batching discipline for near-zero gain. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "plans/cb-schema-v2/design.md",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a476",
+    "type": "primitive",
+    "kind": "design-rationale",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "schema-v2",
+      "grounding"
+    ],
+    "claim": "A prescription is adopted, and adoption grounds in one of two places: in beliefs (deps - guidance resting on a verdict) or in a stipulation event (an artifact citing plan:, user:, or session: - a convention fixed by decision rather than derived from evidence). Schema v2 therefore requires of a non-contract directive deps or a stipulation artifact. This legitimizes conventions as directives without manufacturing fake deps; contract-grade directives keep their existing empty-deps exemption.",
+    "artifact": "document:plans/cb-schema-v2/design.md",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "D4 confirmed and D6 confirmed with it: the method: collection's five convention primitives and toy:a7's protocol re-home to directive under this rule during the v2 migration - their direction of fit is violated-not-falsified, and their claims are purely prescriptive, so they re-type rather than split. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "plans/cb-schema-v2/design.md",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c051",
+    "type": "directive",
+    "kind": "state-machine",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "type-system"
+    ],
+    "name": "dag-structural-types",
+    "claim": "DAG node type field accepts exactly four values - primitive, compound, inference, directive - one per epistemic operation (attest, aggregate, infer, prescribe) - and determines which other fields are meaningful",
+    "rules": [
+      {
+        "given": "A node is being written to the DAG",
+        "scenario": "Structural type validation",
+        "then": "The type must be one of: primitive, compound, inference, directive",
+        "when": "The type field is validated"
+      },
+      {
+        "given": "A node has type: primitive",
+        "scenario": "Primitive carries an artifact",
+        "then": "The node must have a non-null artifact field",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has type: compound or type: inference",
+        "scenario": "Compound and inference carry deps",
+        "then": "The node must have a non-empty deps array",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has rules or invariants populated",
+        "scenario": "Only directives carry contracts",
+        "then": "The node must have type: directive (descriptive types cannot carry contracts)",
+        "when": "The node is validated"
+      }
+    ],
+    "invariants": [
+      "Every active node has exactly one type",
+      "type is a closed enum: primitive | compound | inference | directive",
+      "Only directives can carry rules or invariants",
+      "Structural type determines valid operations (only directives are materialized)"
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:c026. Reasoning: cb-schema-v2 D1-D6 (plans/cb-schema-v2/design.md): the type enum opens to four values, one per epistemic operation; rules and materialization re-attach to directives. The stale v1 'source' field reference is corrected to 'artifact' in passing.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a298",
+      "cb:a470"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c052",
+    "type": "directive",
+    "kind": "domain-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "field-presence"
+    ],
+    "name": "dag-field-presence",
+    "claim": "Field presence on a DAG node is determined by structural type; compounds and inferences require deps, non-contract directives require deps or a stipulation artifact, declared contracts may be standalone, and contract fields are directive-only",
+    "rules": [
+      {
+        "given": "A node of any type",
+        "scenario": "Shared fields are always valid",
+        "then": "id, type, kind, domain, tags, claim, subjects, status, created are all valid fields",
+        "when": "Shared fields are accessed"
+      },
+      {
+        "given": "A node has type: primitive",
+        "scenario": "Primitive-specific fields",
+        "then": "artifact (required) and evidence (dated, append-only) are valid; deps, materialized, rules, invariants are not meaningful",
+        "when": "Type-specific fields are considered"
+      },
+      {
+        "given": "A node has type: compound",
+        "scenario": "Compound requires deps",
+        "then": "The node must have a non-empty deps array - a compound by definition composes multiple deps",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has type: inference",
+        "scenario": "Inference requires deps",
+        "then": "The node must have a non-empty deps array - a conclusion traces its grounding even when its claim exceeds it",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has type: directive and does not carry rules or invariants",
+        "scenario": "Non-contract directive grounds in deps or stipulation",
+        "then": "The node must have non-empty deps or a stipulation artifact (plan:/user:/session:/document:) - adoption is grounded in beliefs or in the record of the adoption event",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A node has type: directive and carries non-empty rules or invariants",
+        "scenario": "Declared contract may omit deps",
+        "then": "The node may have empty deps - contracts can be declared (formalize policy standalone) or derived; both forms are valid",
+        "when": "The node is validated"
+      }
+    ],
+    "invariants": [
+      "Compounds cannot have empty deps",
+      "Inferences cannot have empty deps",
+      "Active non-contract directives carry deps or a stipulation artifact",
+      "Contract fields (contract, rules, invariants) are directive-only",
+      "Fields are emitted in a stable schema-defined order",
+      "Fields absent in the source JSON are not emitted on round-trip (presence tracked via _keys)",
+      "tags defaults to empty list when absent from source"
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:c027. Reasoning: cb-schema-v2: deps requirements re-attach per type (compounds, inferences, non-contract directives under the D4 grounding rule); contract fields are directive-only. The stale 'confidence' shared-field reference is dropped in passing.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a298",
+      "cb:a476"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c053",
+    "type": "directive",
+    "kind": "state-machine",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "status-lifecycle"
+    ],
+    "name": "dag-status-lifecycle",
+    "claim": "DAG node status follows a directed transition: active -> superseded | retracted | retired, with all non-active states terminal and requiring the appropriate linkage fields; retired is the directive-only exit - a withdrawn rule, never a falsified claim",
+    "rules": [
+      {
+        "from": "active",
+        "requires": [
+          "superseded_by"
+        ],
+        "to": "superseded"
+      },
+      {
+        "from": "active",
+        "requires": [
+          "retracted_on",
+          "retracted_reason"
+        ],
+        "to": "retracted"
+      },
+      {
+        "from": "active",
+        "requires": [],
+        "to": "retired"
+      }
+    ],
+    "invariants": [
+      "status is a closed enum: active | superseded | retracted | retired",
+      "superseded_by is non-null iff status is superseded",
+      "retracted_on and retracted_reason are non-null iff status is retracted",
+      "retired status is exclusive to directives - descriptive claims are superseded or retracted, never retired; an inference is falsified, a directive is violated or withdrawn",
+      "terminal states (superseded, retracted, retired) have no outgoing transitions and are immutable except for appending to evidence"
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:c029. Reasoning: cb-schema-v2: retired widens from contract-grade implications to any directive (a withdrawn rule retires whether or not it carries machine-checkable teeth); the contract-field transition requirement drops accordingly. Direction-of-fit grounding via cb:a471.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a302",
+      "cb:a471"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c054",
+    "type": "directive",
+    "kind": "derivation-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "contracts"
+    ],
+    "name": "contract-identity",
+    "claim": "A node is contract-grade iff its type is directive and its rules or invariants array is non-empty - contract is the machine-checkable grade of a directive, not a type. The c-prefix ID convention is a naming reflection of this structural property, not the definition of contract identity. Code that operates on contracts must detect them via Belief.contract?/1 and never by ID prefix matching.",
+    "rules": [
+      {
+        "given": "An arbitrary DAG node",
+        "scenario": "Contract detection",
+        "then": "The function returns true iff the node has non-empty rules or non-empty invariants",
+        "when": "Belief.contract?/1 is called"
+      },
+      {
+        "given": "A new contract-grade directive is being assigned an ID",
+        "scenario": "c-prefix convention",
+        "then": "The ID should use the c-prefix convention (c001, c002, ...) to flag the contract nature to human readers",
+        "when": "An ID is generated"
+      },
+      {
+        "given": "A primitive, compound, or inference is being edited to add rules",
+        "scenario": "Contract structure cannot be retrofitted to descriptive types",
+        "then": "The write is rejected - contract grade exists only on directives; mint a directive that deps on the descriptive node instead",
+        "when": "The mutation is validated"
+      }
+    ],
+    "invariants": [
+      "Belief.contract?/1 is the canonical check for contract identity",
+      "Contract-grade directives may use retired status (per the status lifecycle)",
+      "c-prefix is a convention, not a structural guarantee - always check rules/invariants, not the ID"
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:c031. Reasoning: cb-schema-v2: contract-grade re-attaches to the directive type (c031's biconditional preserved verbatim); the retired-status invariant rewords per the c029 successor's widening.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a300",
+      "cb:a470"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c055",
+    "type": "directive",
+    "kind": "audit-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "conflicts"
+    ],
+    "name": "conflict-scope-definition",
+    "claim": "Two active directives share conflict scope when they occupy overlapping territory along at least one axis (tag, subject ref, subject type) within the same domain - overlap signals the pair is close enough that a contradiction would be meaningful. Contradictory prescriptions are actionable conflicts; contradictory inferences are dissent and live outside this audit's scope.",
+    "rules": [
+      {
+        "given": "Two active directives",
+        "scenario": "Domain gate",
+        "then": "They overlap only if they are in the same domain or both have no domain; distinct non-nil domains never overlap",
+        "when": "Overlap is evaluated"
+      },
+      {
+        "given": "Two active directives in the same domain",
+        "scenario": "Overlap axes",
+        "then": "They overlap if they share a tag, share a subject ref, share a subject type, or both carry empty tags and subjects (domain-global)",
+        "when": "Overlap is evaluated"
+      },
+      {
+        "given": "A pair flagged by the audit",
+        "scenario": "Candidates, not verdicts",
+        "then": "The audit surfaces the candidate pair; whether the pair actually contradicts, is redundant, or is compatible requires reviewer judgment",
+        "when": "The result is interpreted"
+      }
+    ],
+    "invariants": [
+      "Overlap is symmetric - overlap(a,b) iff overlap(b,a)",
+      "A node does not overlap with itself",
+      "Cross-domain pairs with distinct non-nil domains never overlap",
+      "Overlap is a necessary but not sufficient condition for contradiction",
+      "The audit surfaces candidates; resolution requires reviewer judgment"
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:c032. Reasoning: cb-schema-v2: conflict scope re-attaches to active directives - the audit is response-to-violation machinery and a theory cannot be violated. Inference-conflict (structured dissent) is consensus-thread work, explicitly out of scope.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a304",
+      "cb:a471"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c056",
+    "type": "directive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "schema-discipline"
+    ],
+    "claim": "Schema discipline: belief provenance is carried by an artifact field; contract-grade directives carry contract:true with non-empty rules/invariants; the implication field is absent; enum-shaped fields (kind, domain, artifact-scheme) take values from c039/c041/c043 respectively; kind binds allowed structural types via the kind-type derivation table.",
+    "rules": [
+      "The artifact field is the canonical provenance carrier on beliefs. Its value is null or a string matching scheme:id where scheme is declared by c043.",
+      "The kind field's value is null or one of the values declared by c039.",
+      "The domain field's value is null or one of the values declared by c041.",
+      "The contract field is a boolean. It is allowed only on type: directive.",
+      "contract: true is required iff rules or invariants are non-empty (bidirectional).",
+      "The implication field is absent on all beliefs.",
+      "Beliefs with kind: action-item have type: directive, contract: false, and empty rules/invariants.",
+      "The four structural types are distinct and are not merged: a compound states exactly what its deps jointly state, an inference may exceed them, a directive prescribes.",
+      "Artifacts (external documents, threads, files) are not promoted to belief nodes; they are referenced via the artifact field only."
+    ],
+    "invariants": [
+      "For all beliefs b: b.contract == true implies b.type == 'directive'.",
+      "For all beliefs b: ((b.rules // []) ++ (b.invariants // [])) non-empty iff b.contract == true.",
+      "For all beliefs b: b.artifact == null OR b.artifact matches /^[a-z][a-z0-9_-]*:.+/.",
+      "For all beliefs b: b.kind == null OR b.kind is in c039.enum.",
+      "For all beliefs b: b.artifact == null OR scheme(b.artifact) is in c043.enum.",
+      "For all beliefs b: b.domain == null OR b.domain is in c041.enum.",
+      "For all beliefs b: b does not have an `implication` field.",
+      "For all beliefs b with b.kind == 'action-item': b.type == 'directive' AND b.contract != true AND (b.rules // []) is empty AND (b.invariants // []) is empty."
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:c038. Reasoning: cb-schema-v2: schema discipline restated for four types; contract attaches to directive; the stale c040 scheme-enum reference is corrected to its successor c043; the kind-type table joins the enum family.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a397",
+      "cb:a398",
+      "cb:a399",
+      "cb:a400",
+      "cb:a401",
+      "cb:a402",
+      "cb:a403",
+      "cb:a404",
+      "cb:a405",
+      "cb:a408",
+      "cb:a470"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c057",
+    "type": "directive",
+    "kind": "derivation-table",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "kind-type"
+    ],
+    "name": "kind-type-table",
+    "claim": "Kind binds mood: each belief kind maps to the structural types it may inhabit, converting the prescriptive/descriptive boundary from prose to a deterministic check. Prescriptive kinds bind to directive only; descriptive kinds may never be directives; dual kinds (definition, schema) carry both moods and the choice is per belief by direction of fit.",
+    "rules": [
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "policy"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "rule"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "action-item"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "convention"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "formatting-rule"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "domain-rule"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "domain-enum"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "governance"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "design-principle"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "derivation-rule"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "audit-rule"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "enum-registry"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "state-machine"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "derivation-table"
+      },
+      {
+        "allowed_types": [
+          "directive"
+        ],
+        "kind": "output-target"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "observation"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "fact"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "error"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "error-pattern"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "reasoning-error"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "meta-observation"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "design-observation"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "design-property"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "design-gap"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "design-rationale"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "analogical-claim"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "structural-parallel"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "architectural-synthesis"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "feedback-loop"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "outcome-claim"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "training-distribution"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "training-incentive"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "agent-architecture"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "composable-belief"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "human-factor"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference"
+        ],
+        "kind": "edit-pair"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference",
+          "directive"
+        ],
+        "kind": "definition"
+      },
+      {
+        "allowed_types": [
+          "primitive",
+          "compound",
+          "inference",
+          "directive"
+        ],
+        "kind": "schema"
+      }
+    ],
+    "invariants": [
+      "For all active beliefs b with kind k present in this table: b.type is in row(k).allowed_types",
+      "Prescriptive kinds never appear on descriptive types; descriptive kinds never appear on directives",
+      "A kind absent from the table is unchecked, not failed - the kind enum is the closure authority"
+    ],
+    "contract": true,
+    "artifact": "plan:cb-schema-v2",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "The mood half of the v2 type function (type = f(mood(kind), grounding, scope)), landed with the c026-family supersessions. Bindings per design.md's three groups over the 38 c039 kinds. Preflight review per the a467/c040 precedent recorded on the plan-0 primitives this contract rests on.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a472"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c058",
+    "type": "directive",
+    "kind": "derivation-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "subject-containment"
+    ],
+    "name": "subject-containment",
+    "claim": "A conjunction cannot be about something its parts are not about: an active compound's subject refs must be a subset of the union of its deps' subject refs. Scope widening is the structural signature of inference - a claim whose subjects escape its deps is an inference or carries commentary to trim, never a compound. Empty subjects pass vacuously; the check earns its discriminating power only where subjects are populated.",
+    "rules": [
+      {
+        "given": "An active compound with non-empty subjects",
+        "scenario": "Containment on active compounds",
+        "then": "Every subject ref appears in the union of its deps' subject refs",
+        "when": "The collection is verified"
+      },
+      {
+        "given": "A compound whose subjects escape the dep union",
+        "scenario": "Escape is re-homed",
+        "then": "The node is re-typed as an inference, or its claim is trimmed to the conjunction and the widened content minted as an inference depping on it",
+        "when": "Triage resolves it"
+      },
+      {
+        "given": "A compound with a dep outside the loaded belief set",
+        "scenario": "Unresolvable deps skip",
+        "then": "The compound is skipped, not failed - the union cannot be computed without the dep's subjects",
+        "when": "The collection is verified standalone"
+      }
+    ],
+    "invariants": [
+      "For all active compounds c with subjects: subject_refs(c) is a subset of the union of subject_refs over deps(c)",
+      "A compound with empty subjects passes vacuously",
+      "Containment is checked on refs; subject types classify and do not partition scope"
+    ],
+    "contract": true,
+    "artifact": "plan:cb-schema-v2",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "The scope half of the v2 type function, with the strict-aggregate doctrine (D3, cb:a474) as its authoring-side companion. Deterministic verifier check; subject-sparse graphs triage compounds by judgment instead.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a472",
+      "cb:a474"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c059",
+    "type": "directive",
+    "kind": "derivation-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "grounding"
+    ],
+    "name": "directive-grounding",
+    "claim": "A prescription is adopted: an active non-contract directive grounds in deps (the beliefs it rests on) or in a stipulation artifact citing plan:, user:, session:, or document: - the record of the adoption event. Contract-grade directives may be declared standalone from policy. External-source schemes never ground a directive.",
+    "rules": [
+      {
+        "given": "An active non-contract directive with non-empty deps",
+        "scenario": "Grounded in beliefs",
+        "then": "The directive is grounded - it rests on the beliefs it cites",
+        "when": "The node is validated"
+      },
+      {
+        "given": "An active non-contract directive with empty deps",
+        "scenario": "Grounded in stipulation",
+        "then": "The artifact must carry a stipulation scheme (plan:, user:, session:, document:) recording where the prescription was adopted",
+        "when": "The node is validated"
+      },
+      {
+        "given": "A contract-grade directive",
+        "scenario": "Contracts may stand alone",
+        "then": "Both deps and stipulation artifact may be absent - contracts can be declared from policy",
+        "when": "The node is validated"
+      }
+    ],
+    "invariants": [
+      "For all active non-contract directives d: deps(d) non-empty OR scheme(d.artifact) in {plan, user, session, document}",
+      "Stipulation schemes are a closed set: plan | user | session | document",
+      "External-source schemes (source, https, gmail) never ground a directive"
+    ],
+    "contract": true,
+    "artifact": "plan:cb-schema-v2",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "D4 confirmed, with the execution amendment admitting document: - the design's own worked re-homes (method:a1-a5, the lib: rules) are document-grounded stipulations. Legitimizes conventions as directives without manufacturing fake deps.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a476"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a477",
+    "type": "directive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "active-implications"
+    ],
+    "claim": "Active behavioral directives are not cached to a digest file; load them live from the graph by querying active directives (`mix bs list directive`). Per cb:a386, a digest whose freshness depends on remembering to regenerate it is an antipattern that embeds the staleness it was meant to solve - render live from the DAG instead.",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:a445. Reasoning: cb-schema-v2: the query token changes with the type rename (bs list implication -> bs list directive); content otherwise unchanged.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a386"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a478",
+    "type": "directive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "claude-md",
+      "architecture"
+    ],
+    "claim": "The mechanism is a directed acyclic graph of beliefs with four structural types: primitive (what a single source said), compound (what its deps jointly state), inference (a conclusion licensed to exceed its deps), and directive (what should happen or must hold - a prescription the house stands behind).",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:a446. Reasoning: cb-schema-v2: the CLAUDE.md architecture sentence states four types with their one-line definitions from the design's summary table.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a470"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a479",
+    "type": "directive",
+    "kind": "design-principle",
+    "domain": "design",
+    "tags": [
+      "claude-md",
+      "architecture"
+    ],
+    "claim": "Immutability makes change traceable: a belief is never edited in place; a changed belief is superseded by a new one and linked forward. Composition makes the whole greater than its parts - an inference concludes what none of its inputs states alone, and pays for that licence by being falsifiable on its own, independent of its deps.",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:a447. Reasoning: cb-schema-v2 D3: the concludes-beyond-inputs sentence belongs to the inference type; a compound states exactly what its deps jointly state (strict-aggregate doctrine, cb:a474).",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a470",
+      "cb:a473"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a480",
+    "type": "directive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "claude-md",
+      "skills"
+    ],
+    "claim": "Skills coordinate authoring, query, and presentation: `/assert` adds beliefs from artifacts, entities, or reasoning; `/assert-session` persists session rules and agent error patterns; `/assertions` queries and traverses the graph; `/materialize` turns directives into concrete tasks; `/present-codepath` walks a codepath - a code-anchored collection rendered as a narrated, branching tour of real source that can also run as a test suite (`mix cb.verify.codepath`).",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:a469. Reasoning: cb-schema-v2: /materialize operates on directives (you do not materialize a theory).",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a470"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a481",
+    "type": "primitive",
+    "kind": "schema",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "schema"
+    ],
+    "claim": "Schema rules in force: no `confidence` field; no `patch` kind; no separate `implication` prose field, since meaning is carried by `claim` plus `deps`; primitives ground their claim with an `artifact` URI and dated `evidence`; non-contract directives ground in deps or a stipulation artifact; and `contract: true` is biconditional with non-empty `rules`/`invariants` (per c056).",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "CLAUDE.md schema-rules sentence updated for v2: the c038 reference moves to its successor c056 and the D4 grounding rule joins the in-force list.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      },
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:a452. Reasoning: cb-schema-v2: the referenced schema-discipline contract id changes with the c038 supersession; the grounding rule joins the rules in force.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a482",
+    "type": "directive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "schema"
+    ],
+    "claim": "The schema's single source of truth is `lib/cb/belief.ex`. The graph's own schema is expressed as contracts in the graph: c051 (the four structural types), c053 (status lifecycle and immutability), c056 (schema discipline), c039/c043/c041 (the closed kind/artifact-scheme/domain enums), c057 (the kind-type table), c058 (subject containment), c059 (directive grounding), and c055 (conflict scope). Read one with `mix bs show cb:c051`.",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:a468. Reasoning: cb-schema-v2: the contract id map regenerates after the c026-family supersessions; the three new v2 contracts join the family.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a470"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:c060",
+    "type": "directive",
+    "kind": "output-target",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "output:claude-md"
+    ],
+    "name": null,
+    "claim": "The framework CLAUDE.md compiles from the beliefs listed in this contract's render_sections. The file is read-only and regenerated from the cb: graph by `mix cb.generate.claude_md`. Authoring happens by creating beliefs (via /assert) and by editing this contract's render_sections; hand-edits to CLAUDE.md are overwritten on the next generation.",
+    "rules": [
+      {
+        "output_path": "CLAUDE.md"
+      },
+      {
+        "header_comment": "<!-- Generated by mix cb.generate.claude_md from the cb: DAG. Do not edit; run the task to regenerate. -->\n\n# Composable Beliefs\n\nA framework for giving AI agents persistent, source-grounded, inspectable reasoning that survives session boundaries and composes into understanding the agent never explicitly derived."
+      },
+      {
+        "render_sections": [
+          {
+            "beliefs": [
+              "cb:a459",
+              "cb:a444"
+            ],
+            "title": "Quick Start"
+          },
+          {
+            "beliefs": [
+              "cb:a477"
+            ],
+            "title": "Active directives"
+          },
+          {
+            "beliefs": [
+              "cb:a478",
+              "cb:a479",
+              "cb:a448"
+            ],
+            "title": "Architecture"
+          },
+          {
+            "beliefs": [
+              "cb:a449",
+              "cb:a450"
+            ],
+            "title": "Operations"
+          },
+          {
+            "beliefs": [
+              "cb:a482",
+              "cb:a481"
+            ],
+            "title": "Schema"
+          },
+          {
+            "beliefs": [
+              "cb:a480"
+            ],
+            "title": "Skills"
+          },
+          {
+            "beliefs": [
+              "cb:a454"
+            ],
+            "title": "Collections"
+          },
+          {
+            "beliefs": [
+              "cb:a455"
+            ],
+            "title": "Formatting"
+          },
+          {
+            "beliefs": [
+              "cb:a456"
+            ],
+            "title": "Git Policy"
+          },
+          {
+            "beliefs": [
+              "cb:a457"
+            ],
+            "title": "Data Protection"
+          },
+          {
+            "beliefs": [
+              "cb:a458"
+            ],
+            "title": "Origin"
+          }
+        ]
+      }
+    ],
+    "invariants": [
+      "CLAUDE.md is read-only - edits are overwritten on next generation",
+      "Every line of output traces to exactly one belief's claim field",
+      "deps equals the union of all beliefs referenced in render_sections",
+      "Section titles are human-readable; tags remain free for cross-cutting audit queries"
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Accepted via human adjudication against cb:c048. Reasoning: cb-schema-v2: render_sections re-point to the v2 successors of the six superseded CLAUDE.md render beliefs (a445/a446/a447/a452/a468/a469 -> a477-a482); the contract's own claim and rules shape are unchanged - editing render_sections is this contract's documented authoring path, done by supersession.",
+        "artifact": "adjudication:human:session:2026-06-10-cb-schema-v2-landing"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a459",
+      "cb:a444",
+      "cb:a477",
+      "cb:a478",
+      "cb:a479",
+      "cb:a448",
+      "cb:a449",
+      "cb:a450",
+      "cb:a482",
+      "cb:a481",
+      "cb:a480",
+      "cb:a454",
+      "cb:a455",
+      "cb:a456",
+      "cb:a457",
+      "cb:a458"
+    ],
+    "status": "active",
+    "created": "2026-06-10"
+  },
+  {
+    "id": "cb:a483",
+    "type": "primitive",
+    "kind": "observation",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "schema-v2",
+      "migration-record"
+    ],
+    "claim": "The cb ecosystem migrated to the four-type v2 schema on 2026-06-10: the framework graph (76 nodes re-typed, the c026/c027/c029/c031/c032/c038 contract family superseded by c051-c056, new contracts c057/c058/c059, CLAUDE.md render beliefs superseded and regenerated) and all seven sibling collections (codepath, method, sdl, toy, lib, agent-behavior, paradigm) via mix cb.migrate.v2, with adjudicated splits sdl:a006 -> a008+a009, toy:a9 -> a10+a11, the D3 trim sdl:a3 -> a010, and six agent-behavior mood re-homes (a396-a401). All eight collections verify under v2; sdl reproduces exactly its two teaching method-check failures.",
+    "artifact": "document:plans/cb-schema-v2/design.md",
+    "evidence": [
+      {
+        "date": "2026-06-10",
+        "detail": "Executed under Mark's proceed authorization following D1-D6 resolution (D1 'inference' confirmed by Mark for launch, overriding the immutable-history consideration). Execution amendments recorded in the design doc: c026/c027 added to the supersession list (found via plan-0 preflight); document: admitted as a stipulation scheme (the design's own worked re-homes are document-grounded). History re-typed by best fit, never split; dep re-points on a387/c047/c049/a007 recorded in their evidence or here.",
+        "artifact": "document:plans/cb-schema-v2/design.md"
+      }
+    ],
+    "subjects": [
+      {
+        "ref": "plans/cb-schema-v2/design.md",
+        "type": "doc"
+      }
+    ],
+    "status": "active",
+    "created": "2026-06-10"
   }
 ]

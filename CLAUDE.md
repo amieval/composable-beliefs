@@ -12,13 +12,13 @@ Query the graph with the belief shell, deterministic pure traversal with no LLM:
 
 ## Active directives
 
-Active behavioral directives are not cached to a digest file; load them live from the graph by querying active implications (`mix bs list implication`). Per cb:a386, a digest whose freshness depends on remembering to regenerate it is an antipattern that embeds the staleness it was meant to solve - render live from the DAG instead.
+Active behavioral directives are not cached to a digest file; load them live from the graph by querying active directives (`mix bs list directive`). Per cb:a386, a digest whose freshness depends on remembering to regenerate it is an antipattern that embeds the staleness it was meant to solve - render live from the DAG instead.
 
 ## Architecture
 
-The mechanism is a directed acyclic graph of beliefs with three structural types: primitive (what a source said), compound (what combining sources means), and implication (what must happen, or what a contract enforces).
+The mechanism is a directed acyclic graph of beliefs with four structural types: primitive (what a single source said), compound (what its deps jointly state), inference (a conclusion licensed to exceed its deps), and directive (what should happen or must hold - a prescription the house stands behind).
 
-Immutability makes change traceable: a belief is never edited in place; a changed belief is superseded by a new one and linked forward. Composition makes the whole greater than its parts - a compound concludes what none of its inputs states alone.
+Immutability makes change traceable: a belief is never edited in place; a changed belief is superseded by a new one and linked forward. Composition makes the whole greater than its parts - an inference concludes what none of its inputs states alone, and pays for that licence by being falsifiable on its own, independent of its deps.
 
 There are no confidence scores. Subjective scores synthesized without a deterministic basis do no load-bearing work; rely on specific evidence and dependency structure instead.
 
@@ -30,13 +30,13 @@ Verify with the graph's own tooling: `mix cb.verify.schema` checks a collection 
 
 ## Schema
 
-The schema's single source of truth is `lib/cb/belief.ex`. The graph's own schema is expressed as contracts in the graph: c029 (status lifecycle and immutability), c038 (schema discipline), c039/c043/c041 (the closed kind/artifact-scheme/domain enums), and c032 (conflict scope). Read one with `mix bs show cb:c038`.
+The schema's single source of truth is `lib/cb/belief.ex`. The graph's own schema is expressed as contracts in the graph: c051 (the four structural types), c053 (status lifecycle and immutability), c056 (schema discipline), c039/c043/c041 (the closed kind/artifact-scheme/domain enums), c057 (the kind-type table), c058 (subject containment), c059 (directive grounding), and c055 (conflict scope). Read one with `mix bs show cb:c051`.
 
-Schema rules in force: no `confidence` field; no `patch` kind; no separate `implication` prose field, since meaning is carried by `claim` plus `deps`; primitives ground their claim with an `artifact` URI and dated `evidence`; and `contract: true` is biconditional with non-empty `rules`/`invariants` (per c038).
+Schema rules in force: no `confidence` field; no `patch` kind; no separate `implication` prose field, since meaning is carried by `claim` plus `deps`; primitives ground their claim with an `artifact` URI and dated `evidence`; non-contract directives ground in deps or a stipulation artifact; and `contract: true` is biconditional with non-empty `rules`/`invariants` (per c056).
 
 ## Skills
 
-Skills coordinate authoring, query, and presentation: `/assert` adds beliefs from artifacts, entities, or reasoning; `/assert-session` persists session rules and agent error patterns; `/assertions` queries and traverses the graph; `/materialize` turns implications into concrete tasks; `/present-codepath` walks a codepath - a code-anchored collection rendered as a narrated, branching tour of real source that can also run as a test suite (`mix cb.verify.codepath`).
+Skills coordinate authoring, query, and presentation: `/assert` adds beliefs from artifacts, entities, or reasoning; `/assert-session` persists session rules and agent error patterns; `/assertions` queries and traverses the graph; `/materialize` turns directives into concrete tasks; `/present-codepath` walks a codepath - a code-anchored collection rendered as a narrated, branching tour of real source that can also run as a test suite (`mix cb.verify.codepath`).
 
 ## Collections
 

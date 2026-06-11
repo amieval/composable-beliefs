@@ -12,7 +12,7 @@ defmodule CB.Method.ChecksTest do
 
     belief(%{
       "id" => id,
-      "type" => "implication",
+      "type" => "directive",
       "kind" => "implies",
       "name" => "m-#{requires}",
       "contract" => true,
@@ -37,7 +37,7 @@ defmodule CB.Method.ChecksTest do
       enum =
         belief(%{
           "id" => "m:c2",
-          "type" => "implication",
+          "type" => "directive",
           "kind" => "enum-registry",
           "contract" => true,
           "rules" => [%{"field" => "kind", "values" => ["observation"]}],
@@ -51,7 +51,7 @@ defmodule CB.Method.ChecksTest do
       codepath =
         belief(%{
           "id" => "m:c3",
-          "type" => "implication",
+          "type" => "directive",
           "kind" => "implies",
           "contract" => true,
           "rules" => [%{"when" => %{"assertions" => "on"}, "requires" => "always_pass?"}],
@@ -65,7 +65,7 @@ defmodule CB.Method.ChecksTest do
       superseded =
         belief(%{
           "id" => "m:c4",
-          "type" => "implication",
+          "type" => "directive",
           "kind" => "implies",
           "contract" => true,
           "rules" => [%{"when" => %{"verify" => "collection"}, "requires" => "always_pass?"}],
@@ -92,7 +92,12 @@ defmodule CB.Method.ChecksTest do
 
       assert [
                %{contract: "m:c1", predicate: "always_pass?", result: "pass", detail: nil},
-               %{contract: "m:c2", predicate: "always_fail?", result: "fail", detail: "t:bad is the culprit"},
+               %{
+                 contract: "m:c2",
+                 predicate: "always_fail?",
+                 result: "fail",
+                 detail: "t:bad is the culprit"
+               },
                %{contract: "m:c3", predicate: "min_check?", result: "pass"}
              ] = rows
 

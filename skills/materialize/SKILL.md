@@ -1,22 +1,22 @@
-Materialize a belief implication into concrete work items in the task collection.
+Materialize a belief directive into concrete work items in the task collection.
 
-An implication identifies work that needs doing. Materializing it means turning that into concrete action items, handing them to the configured sink, and linking the belief back to the items it produced so it is never materialized twice.
+A directive identifies work that needs doing. Materializing it means turning that into concrete action items, handing them to the configured sink, and linking the belief back to the items it produced so it is never materialized twice.
 
 ## Input
 
-`$ARGUMENTS` is a belief ID (e.g. `a820` or `c080`) - it must resolve to an `implication` node.
+`$ARGUMENTS` is a belief ID (e.g. `a820` or `c080`) - it must resolve to a `directive` node (you do not materialize a theory: inferences and compounds describe, directives prescribe).
 
 ## Steps
 
 1. **Read the node** (`mix bs show $ARGUMENTS`). Verify it is:
-   - Type: `implication`
+   - Type: `directive`
    - Status: `active`
    - Not already materialized (`materialized: null`)
 
 2. **Read the belief's deps** to understand the full reasoning chain. Use `mix bs tree $ARGUMENTS` for context.
 
 3. **Reason about what action items to create.** This is the LLM judgment step:
-   - What concrete actions does the implication demand?
+   - What concrete actions does the directive demand?
    - On which objects, if the host sink couples items to objects?
    - Anything the sink needs (owner, due date, priority) carried as extra keys.
 
@@ -53,7 +53,7 @@ An implication identifies work that needs doing. Materializing it means turning 
    ```
 
    The module:
-   - Validates the node is an unmaterialized `implication`
+   - Validates the node is an unmaterialized `directive`
    - Hands the action items to the sink (default `CB.Materializer.Sink.JSON`, which appends `{id, action, source, created, status}` todo records to `CB.Config.todos_path/0`)
    - Records the returned refs on the belief's `materialized` field (date + entries)
 
@@ -69,7 +69,7 @@ The spec map passed to `CB.Belief.Materializer.materialize/1`:
   "action_items" => [
     %{
       "action" => "Implement hold-expiry state transition handler",
-      "notes" => "context linking back to the implication's reasoning"
+      "notes" => "context linking back to the directive's reasoning"
     }
   ]
 }
@@ -85,6 +85,6 @@ Each action item:
 
 - Never materialize without user confirmation
 - Never materialize a belief that is already materialized
-- Only materialize implications (not primitives or compounds)
+- Only materialize directives (never primitives, compounds, or inferences)
 - The skill reasons about what action items to create; the module writes deterministically
-- Notes on each item should reference the implication's reasoning for traceability
+- Notes on each item should reference the directive's reasoning for traceability

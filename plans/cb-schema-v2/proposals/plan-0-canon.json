@@ -1,0 +1,198 @@
+{
+  "new_beliefs": [
+    {
+      "id": "cb:a470",
+      "type": "primitive",
+      "kind": "design-rationale",
+      "domain": "system",
+      "tags": [
+        "dag-schema",
+        "schema-v2"
+      ],
+      "claim": "The cb-schema-v2 design (plans/cb-schema-v2/design.md, decided 2026-06-10) replaces the three-type schema with four structural types, one per epistemic operation: primitive (attest), compound (aggregate), inference (infer), directive (prescribe). The v1 implication type conflated two moods - descriptive conclusions licensed to exceed their deps, and prescriptions the house stands behind - and the machinery already sorted by that hidden boundary: materialization, the conflict audit, and contract grading attach only to prescriptions, while staleness and supersession-on-evidence respond to falsification of descriptions. Contract remains a structural grade, in v2 the machine-checkable grade of a directive.",
+      "artifact": "document:plans/cb-schema-v2/design.md",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "Design record written and stress-tested 2026-06-10 (worked sdl migration, per-collection inventory, code touch points); decisions D1-D6 resolved the same day, D1 (type name 'inference') confirmed by Mark for launch with the immutable-history consideration explicitly overridden in favor of long-term terminology. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [
+        {
+          "ref": "plans/cb-schema-v2/design.md",
+          "type": "doc"
+        }
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    },
+    {
+      "id": "cb:a471",
+      "type": "primitive",
+      "kind": "definition",
+      "domain": "design",
+      "tags": [
+        "dag-schema",
+        "schema-v2",
+        "direction-of-fit"
+      ],
+      "claim": "The boundary between inference and directive is direction of fit made operational. Ask what would count as the belief being wrong: an inference is falsified - if the world disagrees, the belief is defective and is superseded or retracted (mind fits world); a directive is violated - the world disobeys and the response is to flag the violation rather than revise the rule - or withdrawn - the house stops standing behind it, superseding it with a successor or retiring it (world fits mind). Author-facing trichotomy: falsified means inference; violated means directive; withdrawn means directive.",
+      "artifact": "document:plans/cb-schema-v2/design.md",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "The membership test from the v2 design, with its trap rules: evaluations name the standard or move up; conditional prescriptions decompose into a means-end inference plus a goal-adopting directive; reportive definitions are descriptive while stipulative definitions are directives; deontic must is directive while alethic/structural must is inference. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [
+        {
+          "ref": "plans/cb-schema-v2/design.md",
+          "type": "doc"
+        }
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    },
+    {
+      "id": "cb:a472",
+      "type": "primitive",
+      "kind": "design-rationale",
+      "domain": "system",
+      "tags": [
+        "dag-schema",
+        "schema-v2"
+      ],
+      "claim": "In schema v2, type is a near-function of three checkable properties: type = f(mood(kind), grounding(artifact/deps), scope(subjects)). Mood is bound by the kind-type derivation table contract; grounding separates the descriptive types (artifact with no deps means primitive, deps mean compound or inference); subject containment separates compound from inference - a compound's subjects must be a subset of the union of its deps' subjects, with empty subjects passing vacuously, while an inference is licensed to widen scope. What stays judgment: choosing the kind, and the residual gray zone where a claim is subject-contained yet synthesizing; the write flow owns that residue.",
+      "artifact": "document:plans/cb-schema-v2/design.md",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "The type function elevates the inference/directive boundary from authoring discipline to enforcement: the kind-type table is a derivation-table contract interpreted by CB.Belief.Contract.Table and checked by the verifier by role; subject containment is a deterministic verifier check on compounds. Containment earns its power only where subjects are populated (six-subject eval collections, agent-behavior); in subject-sparse graphs the compound triage stays judgment. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [
+        {
+          "ref": "plans/cb-schema-v2/design.md",
+          "type": "doc"
+        }
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    },
+    {
+      "id": "cb:a473",
+      "type": "primitive",
+      "kind": "design-rationale",
+      "domain": "design",
+      "tags": [
+        "dag-schema",
+        "schema-v2",
+        "naming"
+      ],
+      "claim": "The inference type is named for the ampliative move it records. A deduction's conclusion is contained in its premises and can fail only when a premise fails; deductive consequences are infinite and free, so the graph never stores them. An inference's conclusion outruns its deps - a generalization or an abduction - which is why it can be falsified while every dep stays true, and why the supersession-on-falsification lifecycle exists for it. The compound is the one entailment the schema stores (conjunction introduction), with subject containment as its formal shadow; the epistemic work a compound records is the selection of what to assemble. Type membership tracks the deps-to-claim relation, never the author's mental act, which is why the verifier interrogates scope rather than asking what kind of reasoning the author believes they performed.",
+      "artifact": "document:plans/cb-schema-v2/why-inference.md",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "Naming rationale from the D1 debate, decided for 'inference' over retaining 'implication': an implication licensed to state more than its premises imply is a contradiction in terms; the falsified-while-deps-stand lifecycle is the structural proof these nodes exceed their premises; the contract kind 'implies' sits on the prescriptive side, so reusing 'implication' descriptively would put one lexeme on both sides of the is/ought boundary. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+          "artifact": "document:plans/cb-schema-v2/why-inference.md"
+        }
+      ],
+      "subjects": [
+        {
+          "ref": "plans/cb-schema-v2/why-inference.md",
+          "type": "doc"
+        }
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    },
+    {
+      "id": "cb:a474",
+      "type": "primitive",
+      "kind": "convention",
+      "domain": "system",
+      "tags": [
+        "dag-schema",
+        "schema-v2",
+        "authoring"
+      ],
+      "claim": "Strict-aggregate doctrine: a compound's claim states exactly what its deps jointly state. Commentary beyond the conjunction - significance, interpretation, generalization - is inference content; when found on a compound it is trimmed by superseding with the conjunction-only claim and, where the commentary deserves to survive, minting an inference that deps on the compound.",
+      "artifact": "plan:cb-schema-v2",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "D3 resolved as trim: tolerating descriptive commentary within subject containment reopens the boundary the inference type exists to close. First application: sdl:a3's second sentence trims into the a006 split during the v2 migration. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [
+        {
+          "ref": "plans/cb-schema-v2/design.md",
+          "type": "doc"
+        }
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    },
+    {
+      "id": "cb:a475",
+      "type": "primitive",
+      "kind": "convention",
+      "domain": "system",
+      "tags": [
+        "dag-schema",
+        "schema-v2",
+        "authoring"
+      ],
+      "claim": "Primitive atomicity doctrine: a primitive is one atomic statement of what a single source said, leaning verbatim. A primitive whose claim conjoins separable assertions is a mis-authored compound and is split at authoring time. Atomicity is judgment, enforced in the write flow rather than by a verifier check; source-checkable verbatim predicates are future work for cached sources.",
+      "artifact": "plan:cb-schema-v2",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "D5 resolved: keep the type name 'primitive' and encode atomicity plus verbatim-leaning discipline as authoring convention; a rename to 'atomic' stacked on an already-breaking format change fails a397's one-structural-change batching discipline for near-zero gain. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [
+        {
+          "ref": "plans/cb-schema-v2/design.md",
+          "type": "doc"
+        }
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    },
+    {
+      "id": "cb:a476",
+      "type": "primitive",
+      "kind": "design-rationale",
+      "domain": "system",
+      "tags": [
+        "dag-schema",
+        "schema-v2",
+        "grounding"
+      ],
+      "claim": "A prescription is adopted, and adoption grounds in one of two places: in beliefs (deps - guidance resting on a verdict) or in a stipulation event (an artifact citing plan:, user:, or session: - a convention fixed by decision rather than derived from evidence). Schema v2 therefore requires of a non-contract directive deps or a stipulation artifact. This legitimizes conventions as directives without manufacturing fake deps; contract-grade directives keep their existing empty-deps exemption.",
+      "artifact": "document:plans/cb-schema-v2/design.md",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "D4 confirmed and D6 confirmed with it: the method: collection's five convention primitives and toy:a7's protocol re-home to directive under this rule during the v2 migration - their direction of fit is violated-not-falsified, and their claims are purely prescriptive, so they re-type rather than split. Preflight 2026-06-10: tag/claim-overlap matches only (dag-schema contract family, 14 contract-level / 24 schema); reviewed per c032 - overlap is necessary but not sufficient for contradiction: no semantic conflict with active structure, since this primitive attests the v2 design record and prescribes nothing; the genuine tension with c026's three-value type enum resolves through the staged c026/c027/c029/c031/c032/c038 supersessions this primitive feeds in plan-2, per the a467/c040 precedent.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [
+        {
+          "ref": "plans/cb-schema-v2/design.md",
+          "type": "doc"
+        }
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    }
+  ]
+}

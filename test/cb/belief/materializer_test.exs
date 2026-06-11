@@ -38,7 +38,7 @@ defmodule CB.Belief.MaterializerTest do
     nodes = [
       %{
         "id" => "a020",
-        "type" => "implication",
+        "type" => "directive",
         "kind" => "rule",
         "domain" => "ops",
         "tags" => ["hold-queue"],
@@ -65,7 +65,10 @@ defmodule CB.Belief.MaterializerTest do
     Application.put_env(:cb, :beliefs_path, beliefs)
 
     on_exit(fn ->
-      if prev, do: Application.put_env(:cb, :beliefs_path, prev), else: Application.delete_env(:cb, :beliefs_path)
+      if prev,
+        do: Application.put_env(:cb, :beliefs_path, prev),
+        else: Application.delete_env(:cb, :beliefs_path)
+
       File.rm(beliefs)
       File.rm(todos)
     end)
@@ -85,7 +88,7 @@ defmodule CB.Belief.MaterializerTest do
     assert {:ok, %{belief_id: "a020", entries: entries}} =
              Materializer.materialize(spec, sink: EchoSink)
 
-    # Sink received the implication belief + action items.
+    # Sink received the directive belief + action items.
     assert_received {:echo, "a020", [%{"action" => "Notify next member in queue"} | _], _opts}
 
     assert entries == [
@@ -116,9 +119,11 @@ defmodule CB.Belief.MaterializerTest do
     assert String.match?(record["id"], ~r/^t\d+$/)
   end
 
-  test "refuses to materialize a non-implication" do
+  test "refuses to materialize a non-directive" do
     spec = %{"belief_id" => "a001", "action_items" => [%{"action" => "x"}]}
-    assert {:error, {:not_implication, "primitive"}} = Materializer.materialize(spec, sink: EchoSink)
+
+    assert {:error, {:not_directive, "primitive"}} =
+             Materializer.materialize(spec, sink: EchoSink)
   end
 
   test "refuses to materialize twice" do
@@ -134,7 +139,9 @@ defmodule CB.Belief.MaterializerTest do
 
   test "empty action items are rejected" do
     assert {:error, :no_action_items} =
-             Materializer.materialize(%{"belief_id" => "a020", "action_items" => []}, sink: EchoSink)
+             Materializer.materialize(%{"belief_id" => "a020", "action_items" => []},
+               sink: EchoSink
+             )
   end
 
   test "sink failure surfaces and the belief is not linked" do
@@ -153,7 +160,7 @@ defmodule CB.Belief.MaterializerTest do
 
   # Sanity: the Belief alias is used so the module compiles cleanly even
   # if future edits reference it directly.
-  test "implication belief shape" do
-    assert %Belief{type: "implication"} = Belief.from_map(%{"id" => "x", "type" => "implication"})
+  test "directive belief shape" do
+    assert %Belief{type: "directive"} = Belief.from_map(%{"id" => "x", "type" => "directive"})
   end
 end

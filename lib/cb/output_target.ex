@@ -2,7 +2,7 @@ defmodule CB.OutputTarget do
   @moduledoc """
   Shared logic for compiling output-target contracts into markdown files.
 
-  An output-target contract is a `type: "implication"` node with
+  An output-target contract is a `type: "directive"` node with
   `kind: "output-target"` that declares:
   - `output_path` (in rules): where to write the file
   - `header_comment` (in rules, optional): top-of-file comment
@@ -241,9 +241,13 @@ defmodule CB.OutputTarget do
 
     deps_errors =
       case deps_mismatch(target, Enum.map(steps, & &1["belief"])) do
-        :ok -> []
+        :ok ->
+          []
+
         {:error, {:deps_mismatch, missing, extra}} ->
-          ["deps do not equal referenced belief ids - missing: #{inspect(missing)}, extra: #{inspect(extra)}"]
+          [
+            "deps do not equal referenced belief ids - missing: #{inspect(missing)}, extra: #{inspect(extra)}"
+          ]
       end
 
     entry_errors =

@@ -1,0 +1,16 @@
+{
+  "resolutions": {
+    "paradigm:a063": {
+      "type": "inference",
+      "note": "candidate-answer theory about the abstraction set; falsifiable, prescribes nothing"
+    },
+    "paradigm:a355": {
+      "type": "inference",
+      "note": "structural analogy (DAG : subagents :: ETS/GenServers : BEAM processes); descriptive synthesis"
+    },
+    "paradigm:a357": {
+      "type": "inference",
+      "note": "architectural synthesis of the coordination-problem analogy; descriptive"
+    }
+  }
+}

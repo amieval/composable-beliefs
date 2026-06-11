@@ -4,10 +4,12 @@ defmodule CB.Schema.Verifier do
 
   The verifier is collection-agnostic. Two kinds of rule are checked:
 
-  - **Framework-universal structure** - the three structural types, the
-    `contract: true` biconditional, the `c`-prefix convention, artifact
-    format, status linkage. These hold for any well-formed collection and
-    are checked against `CB.Belief`'s own canon, not against ids.
+  - **Framework-universal structure** - the four structural types, the
+    `contract: true` biconditional, the `c`-prefix convention, the
+    grounding rule (deps, or a stipulation artifact for directives),
+    subject containment on compounds, artifact format, status linkage.
+    These hold for any well-formed collection and are checked against
+    `CB.Belief`'s own canon, not against ids.
   - **Collection-specific vocabulary** - the closed enums for `kind`,
     `domain`, and `artifact-scheme`, plus the status lifecycle. These are
     *discovered* from the collection's own contracts by role: an enum is
@@ -30,6 +32,7 @@ defmodule CB.Schema.Verifier do
   alias CB.Belief
   alias CB.Belief.Contract.Enum, as: EnumContract
   alias CB.Belief.Contract.StateMachine
+  alias CB.Belief.Contract.Table
 
   @type status :: :ok | :fail | :skip
   @type result :: {String.t(), status(), String.t()}
@@ -40,9 +43,10 @@ defmodule CB.Schema.Verifier do
     [
       check_schema_roles(beliefs),
       check_type_enum(beliefs),
-      check_contract_requires_implication(beliefs),
+      check_contract_requires_directive(beliefs),
       check_contract_biconditional(beliefs),
       check_kind_enum(beliefs),
+      check_kind_type_table(beliefs),
       check_domain_enum(beliefs),
       check_artifact_format(beliefs),
       check_artifact_scheme_enum(beliefs),
@@ -50,7 +54,9 @@ defmodule CB.Schema.Verifier do
       check_codepath_targets(beliefs),
       check_no_implication_field(beliefs),
       check_action_item_shape(beliefs),
-      check_compound_implication_have_deps(beliefs),
+      check_grounding(beliefs),
+      check_subject_containment(beliefs),
+      check_retired_is_directive(beliefs),
       check_status_enum(beliefs),
       check_superseded_linkage(beliefs),
       check_retracted_linkage(beliefs),
@@ -114,17 +120,64 @@ defmodule CB.Schema.Verifier do
 
   # --- contract structural rules (framework-universal) ---
 
-  defp check_contract_requires_implication(beliefs) do
+  defp check_contract_requires_directive(beliefs) do
     violations =
       beliefs
       |> Enum.filter(&(&1.contract == true))
-      |> Enum.reject(&(&1.type == "implication"))
+      |> Enum.reject(&(&1.type == "directive"))
       |> Enum.map(& &1.id)
 
     if violations == [] do
-      {"contract requires implication", :ok, "all contract-grade beliefs are implications"}
+      {"contract requires directive", :ok, "all contract-grade beliefs are directives"}
     else
-      {"contract requires implication", :fail, "contract: true on non-implication: #{inspect(violations)}"}
+      {"contract requires directive", :fail,
+       "contract: true on non-directive: #{inspect(violations)}"}
+    end
+  end
+
+  # --- kind-type derivation table (discovered by columns) ---
+
+  # The active derivation-table contract binding kinds to allowed types,
+  # identified by its columns (kind + allowed_types), or nil. Mood becomes
+  # a deterministic check only when a collection carries this table.
+  defp kind_type_table(beliefs) do
+    beliefs
+    |> active_contracts()
+    |> Enum.filter(&(&1.kind == "derivation-table"))
+    |> Enum.find(fn c ->
+      cols = Table.columns(c)
+      "kind" in cols and "allowed_types" in cols
+    end)
+  end
+
+  defp check_kind_type_table(beliefs) do
+    case kind_type_table(beliefs) do
+      nil ->
+        {"kind-type table", :skip,
+         "no active derivation-table contract binds kind to allowed_types"}
+
+      table ->
+        violations =
+          beliefs
+          |> Enum.filter(&(&1.status == "active" and not is_nil(&1.kind)))
+          |> Enum.flat_map(fn b ->
+            case Table.lookup(table, %{"kind" => b.kind}) do
+              [] ->
+                []
+
+              rows ->
+                allowed = Enum.flat_map(rows, &(&1["allowed_types"] || []))
+                if b.type in allowed, do: [], else: [{b.id, b.kind, b.type}]
+            end
+          end)
+
+        if violations == [] do
+          {"kind-type table", :ok,
+           "all active beliefs with table-bound kinds use an allowed type (#{table.id})"}
+        else
+          {"kind-type table", :fail,
+           "kind/type violations per #{table.id}: #{inspect(violations)}"}
+        end
     end
   end
 
@@ -170,7 +223,8 @@ defmodule CB.Schema.Verifier do
           {"#{field} enum", :ok,
            "all active beliefs use #{field} values declared in #{contract.id} (#{MapSet.size(allowed)} values)"}
         else
-          {"#{field} enum", :fail, "#{field} values outside #{contract.id} enum: #{inspect(violations)}"}
+          {"#{field} enum", :fail,
+           "#{field} values outside #{contract.id} enum: #{inspect(violations)}"}
         end
     end
   end
@@ -197,7 +251,8 @@ defmodule CB.Schema.Verifier do
   defp check_artifact_scheme_enum(beliefs) do
     case enum_contract_for(beliefs, "artifact-scheme") do
       nil ->
-        {"artifact-scheme enum", :skip, "no active enum-registry contract declares artifact-scheme"}
+        {"artifact-scheme enum", :skip,
+         "no active enum-registry contract declares artifact-scheme"}
 
       contract ->
         allowed = MapSet.new(EnumContract.values_for(contract, "artifact-scheme"))
@@ -279,7 +334,8 @@ defmodule CB.Schema.Verifier do
     if violations == [] do
       {"no implication field", :ok, "no belief carries the deleted implication field"}
     else
-      {"no implication field", :fail, "beliefs still carrying implication: #{inspect(violations)}"}
+      {"no implication field", :fail,
+       "beliefs still carrying implication: #{inspect(violations)}"}
     end
   end
 
@@ -290,40 +346,129 @@ defmodule CB.Schema.Verifier do
       beliefs
       |> Enum.filter(&(&1.kind == "action-item"))
       |> Enum.filter(fn a ->
-        a.type != "implication" or a.contract == true or
+        a.type != "directive" or a.contract == true or
           (is_list(a.rules) and a.rules != []) or
           (is_list(a.invariants) and a.invariants != [])
       end)
       |> Enum.map(& &1.id)
 
     if violations == [] do
-      {"action-item shape", :ok, "all action-items are non-contract implications with empty rules/invariants"}
+      {"action-item shape", :ok,
+       "all action-items are non-contract directives with empty rules/invariants"}
     else
       {"action-item shape", :fail, "action-items violating shape: #{inspect(violations)}"}
     end
   end
 
-  # --- compounds and derived implications have deps ---
+  # --- grounding rule ---
 
-  defp check_compound_implication_have_deps(beliefs) do
-    # Compounds must have deps. Implications must have deps UNLESS they are
-    # contract-grade - contracts may be declared from policy without composing.
+  # Artifact schemes that count as stipulation events for directive
+  # grounding: a prescription is adopted, and adoption grounds either in
+  # beliefs (deps) or in a stipulation (a plan, a user decision, a session,
+  # or a house document - a policy file is where its rules were fixed).
+  # External-source schemes (source:, https:) never ground a directive.
+  @stipulation_schemes ~w(plan user session document)
+
+  defp check_grounding(beliefs) do
+    # Compounds and inferences must have deps. Directives must have deps
+    # or a stipulation artifact, UNLESS they are contract-grade - contracts
+    # may be declared from policy without composing.
     violations =
       beliefs
       |> Enum.filter(&(&1.status == "active"))
       |> Enum.filter(fn a ->
-        cond do
-          a.type == "compound" -> not (is_list(a.deps) and a.deps != [])
-          a.type == "implication" -> a.contract != true and not (is_list(a.deps) and a.deps != [])
-          true -> false
+        has_deps = is_list(a.deps) and a.deps != []
+
+        case a.type do
+          "compound" -> not has_deps
+          "inference" -> not has_deps
+          "directive" -> a.contract != true and not (has_deps or stipulation_artifact?(a))
+          _ -> false
         end
       end)
       |> Enum.map(& &1.id)
 
     if violations == [] do
-      {"compound/implication deps", :ok, "all active compounds and non-contract implications have non-empty deps"}
+      {"grounding", :ok,
+       "compounds and inferences have deps; non-contract directives have deps or a stipulation artifact"}
     else
-      {"compound/implication deps", :fail, "nodes without deps: #{inspect(violations)}"}
+      {"grounding", :fail, "ungrounded nodes: #{inspect(violations)}"}
+    end
+  end
+
+  defp stipulation_artifact?(%{artifact: a}) when is_binary(a) do
+    scheme(a) in @stipulation_schemes
+  end
+
+  defp stipulation_artifact?(_), do: false
+
+  # --- subject containment (compound = conjunction) ---
+
+  defp check_subject_containment(beliefs) do
+    # A conjunction cannot be about something its parts are not about: an
+    # active compound's subject refs must be a subset of the union of its
+    # deps' subject refs. Empty subjects pass vacuously; a compound with an
+    # unresolvable dep (cross-namespace, not in this list) is skipped, since
+    # its union cannot be computed here.
+    by_id = Map.new(beliefs, &{&1.id, &1})
+
+    {checked, skipped, violations} =
+      beliefs
+      |> Enum.filter(&(&1.status == "active" and &1.type == "compound"))
+      |> Enum.reduce({0, 0, []}, fn c, {checked, skipped, violations} ->
+        refs = subject_refs(c)
+        deps = c.deps || []
+        resolved = Enum.map(deps, &Map.get(by_id, &1))
+
+        cond do
+          refs == [] ->
+            {checked + 1, skipped, violations}
+
+          Enum.any?(resolved, &is_nil/1) ->
+            {checked, skipped + 1, violations}
+
+          true ->
+            union = resolved |> Enum.flat_map(&subject_refs/1) |> MapSet.new()
+            escaped = Enum.reject(refs, &MapSet.member?(union, &1))
+
+            if escaped == [] do
+              {checked + 1, skipped, violations}
+            else
+              {checked + 1, skipped, [{c.id, escaped} | violations]}
+            end
+        end
+      end)
+
+    if violations == [] do
+      {"subject containment", :ok,
+       "compound subjects contained in dep subject union (#{checked} checked, #{skipped} skipped on unresolvable deps)"}
+    else
+      {"subject containment", :fail,
+       "compound subjects escape their deps: #{inspect(Enum.reverse(violations))}"}
+    end
+  end
+
+  defp subject_refs(%{subjects: subjects}) when is_list(subjects) do
+    subjects |> Enum.map(& &1["ref"]) |> Enum.reject(&is_nil/1)
+  end
+
+  defp subject_refs(_), do: []
+
+  # --- retired is a directive state ---
+
+  defp check_retired_is_directive(beliefs) do
+    # A directive is withdrawn, never falsified: superseded by a successor
+    # rule, or retired. Descriptive types have no "in force" to leave.
+    violations =
+      beliefs
+      |> Enum.filter(&(&1.status == "retired"))
+      |> Enum.reject(&(&1.type == "directive"))
+      |> Enum.map(& &1.id)
+
+    if violations == [] do
+      {"retired is directive", :ok, "retired status appears only on directives"}
+    else
+      {"retired is directive", :fail, "retired non-directives: #{inspect(violations)}"}
     end
   end
 
@@ -409,7 +554,8 @@ defmodule CB.Schema.Verifier do
     if mismatches == [] do
       {"c-prefix is contract-grade", :ok, "all c-prefix IDs carry contract: true"}
     else
-      {"c-prefix is contract-grade", :fail, "c-prefix IDs without contract: true: #{inspect(mismatches)}"}
+      {"c-prefix is contract-grade", :fail,
+       "c-prefix IDs without contract: true: #{inspect(mismatches)}"}
     end
   end
 

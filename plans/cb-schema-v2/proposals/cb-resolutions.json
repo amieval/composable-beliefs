@@ -1,0 +1,8 @@
+{
+  "description": "Judgment re-homes for the cb: graph v2 migration, per design.md's inventory. a131/a138/a173 are inference-shaped compounds (subject-sparse, so containment passes vacuously and the call is judgment): a131 generalizes the extraction-time discipline across layers ('applies across all data layers' exceeds the conjunction of a119+a125); a138 is a causal explanation of why the contract layer exists (abduction from a133/a134/a135); a173 is a theory ('implications are prototypes for contracts') exceeding its single dep. a387 and a438 re-home mechanically (prescriptive kinds on compounds). Decided 2026-06-10 under Mark's proceed authorization.",
+  "resolutions": {
+    "cb:a131": {"type": "inference", "note": "synthesis exceeds conjunction - generalizes discipline across data layers"},
+    "cb:a138": {"type": "inference", "note": "causal explanation (abduction) of the contract layer's existence"},
+    "cb:a173": {"type": "inference", "note": "theory: implications are prototypes for contracts; exceeds its dep"}
+  }
+}

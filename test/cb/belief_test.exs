@@ -12,7 +12,11 @@ defmodule CB.BeliefTest do
     "claim" => "Standard loan period is 21 days",
     "artifact" => "document:policy/loan-policy-v3.md",
     "evidence" => [
-      %{"date" => "2024-09-01", "artifact" => "document:policy/loan-policy-v3.md", "detail" => "Section 4.1 verbatim"}
+      %{
+        "date" => "2024-09-01",
+        "artifact" => "document:policy/loan-policy-v3.md",
+        "detail" => "Section 4.1 verbatim"
+      }
     ],
     "subjects" => [
       %{"ref" => "policy/loan-period", "type" => "policy"}
@@ -36,9 +40,9 @@ defmodule CB.BeliefTest do
     "created" => "2024-09-15"
   }
 
-  @implication_map %{
+  @directive_map %{
     "id" => "a015",
-    "type" => "implication",
+    "type" => "directive",
     "kind" => "rule",
     "tags" => ["hold-queue", "lifecycle:recurring"],
     "claim" => "When a hold expires the item returns to available",
@@ -53,14 +57,19 @@ defmodule CB.BeliefTest do
 
   @contract_map %{
     "id" => "c001",
-    "type" => "implication",
+    "type" => "directive",
     "kind" => "state-machine",
     "domain" => "ops",
     "tags" => ["loan-lifecycle"],
     "claim" => "Loan lifecycle state machine",
     "contract" => true,
     "rules" => [
-      %{"scenario" => "Checkout", "given" => "available", "when" => "borrowed", "then" => "checked-out"}
+      %{
+        "scenario" => "Checkout",
+        "given" => "available",
+        "when" => "borrowed",
+        "then" => "checked-out"
+      }
     ],
     "invariants" => ["An item cannot be both checked-out and available"],
     "subjects" => [],
@@ -94,9 +103,9 @@ defmodule CB.BeliefTest do
     assert length(a.subjects) == 2
   end
 
-  test "from_map/1 creates implication struct with materialized" do
-    a = Belief.from_map(@implication_map)
-    assert a.type == "implication"
+  test "from_map/1 creates directive struct with materialized" do
+    a = Belief.from_map(@directive_map)
+    assert a.type == "directive"
     assert a.materialized == nil
     assert a.deps == ["a014"]
   end
@@ -115,7 +124,7 @@ defmodule CB.BeliefTest do
 
   # --- Contract tests ---
 
-  test "contract?/1 returns true for implications with contract: true" do
+  test "contract?/1 returns true for directives with contract: true" do
     a = Belief.from_map(@contract_map)
     assert Belief.contract?(a)
   end
@@ -133,7 +142,7 @@ defmodule CB.BeliefTest do
   # --- Type/status tests ---
 
   test "types/0 returns the three structural types" do
-    assert Belief.types() == ~w(primitive compound implication)
+    assert Belief.types() == ~w(primitive compound inference directive)
   end
 
   test "statuses/0 returns the lifecycle statuses" do
@@ -197,7 +206,8 @@ defmodule CB.BeliefTest do
     decoded = Jason.decode!(json)
 
     for {key, val} <- @primitive_map do
-      assert decoded[key] == val, "Mismatch on #{key}: #{inspect(decoded[key])} != #{inspect(val)}"
+      assert decoded[key] == val,
+             "Mismatch on #{key}: #{inspect(decoded[key])} != #{inspect(val)}"
     end
   end
 
@@ -214,7 +224,7 @@ defmodule CB.BeliefTest do
     a = Belief.from_map(@contract_map)
     decoded = a |> Belief.to_map() |> Jason.encode!(pretty: true) |> Jason.decode!()
 
-    assert decoded["type"] == "implication"
+    assert decoded["type"] == "directive"
     assert decoded["contract"] == true
     assert decoded["rules"] == @contract_map["rules"]
     assert decoded["invariants"] == @contract_map["invariants"]
@@ -229,7 +239,7 @@ defmodule CB.BeliefTest do
   end
 
   test "null fields serialize as null, not omitted" do
-    a = Belief.from_map(@implication_map)
+    a = Belief.from_map(@directive_map)
     json = a |> Belief.to_map() |> Jason.encode!(pretty: true)
     assert String.contains?(json, "\"materialized\": null")
   end

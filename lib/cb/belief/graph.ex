@@ -92,7 +92,9 @@ defmodule CB.Belief.Graph do
   """
   def path(from_id, to_id, index, beliefs) do
     case bfs_path(from_id, to_id, index, :down, beliefs) do
-      {:ok, p} -> {:ok, p}
+      {:ok, p} ->
+        {:ok, p}
+
       :no_path ->
         case bfs_path(from_id, to_id, index, :up, beliefs) do
           {:ok, p} -> {:ok, p}
@@ -114,17 +116,19 @@ defmodule CB.Belief.Graph do
         :no_path
 
       {{:value, {current, path}}, rest} ->
-        neighbors = case dir do
-          :down ->
-            case Map.get(index, current) do
-              nil -> []
-              a -> a.deps || []
-            end
-          :up ->
-            beliefs
-            |> Enum.filter(fn a -> is_list(a.deps) and current in a.deps end)
-            |> Enum.map(& &1.id)
-        end
+        neighbors =
+          case dir do
+            :down ->
+              case Map.get(index, current) do
+                nil -> []
+                a -> a.deps || []
+              end
+
+            :up ->
+              beliefs
+              |> Enum.filter(fn a -> is_list(a.deps) and current in a.deps end)
+              |> Enum.map(& &1.id)
+          end
 
         case Enum.find(neighbors, &(&1 == to)) do
           nil ->
@@ -136,6 +140,7 @@ defmodule CB.Belief.Graph do
                   {:queue.in({n, path ++ [n]}, q), MapSet.put(v, n)}
                 end
               end)
+
             bfs_step(new_queue, to, index, dir, beliefs, new_visited)
 
           _ ->
@@ -161,10 +166,14 @@ defmodule CB.Belief.Graph do
       []
     else
       case Map.get(index, id) do
-        nil -> []
+        nil ->
+          []
+
         a ->
           case a.superseded_by do
-            nil -> []
+            nil ->
+              []
+
             next_id ->
               case Map.get(index, next_id) do
                 nil -> []
@@ -266,7 +275,7 @@ defmodule CB.Belief.Graph do
 
     unlinked =
       active
-      |> Enum.count(&(&1.type == "implication" and &1.materialized == nil))
+      |> Enum.count(&(&1.type == "directive" and &1.materialized == nil))
 
     artifact_schemes =
       beliefs
@@ -299,7 +308,7 @@ defmodule CB.Belief.Graph do
       by_type: by_type,
       by_status: by_status,
       stale_count: stale_count,
-      unlinked_implications: unlinked,
+      unlinked_directives: unlinked,
       artifact_schemes: artifact_schemes,
       dep_depths: dep_depths,
       most_depended: dep_counts
@@ -311,9 +320,12 @@ defmodule CB.Belief.Graph do
       0
     else
       case Map.get(index, id) do
-        nil -> 0
+        nil ->
+          0
+
         a ->
           deps = a.deps || []
+
           if deps == [] do
             0
           else

@@ -70,9 +70,14 @@ defmodule Mix.Tasks.Cb.Render.Audit do
 
     content =
       case Audit.build(id, beliefs, build_opts) do
-        {:ok, tree} -> if opts[:json], do: Audit.to_json(tree), else: Audit.to_html(tree)
-        {:error, :not_found} -> halt("no belief with id #{inspect(id)}")
-        {:error, {:ambiguous, ids}} -> halt("id #{inspect(id)} is ambiguous: #{Enum.join(ids, ", ")}")
+        {:ok, tree} ->
+          if opts[:json], do: Audit.to_json(tree), else: Audit.to_html(tree)
+
+        {:error, :not_found} ->
+          halt("no belief with id #{inspect(id)}")
+
+        {:error, {:ambiguous, ids}} ->
+          halt("id #{inspect(id)} is ambiguous: #{Enum.join(ids, ", ")}")
       end
 
     deliver(content, opts[:out], opts[:check] || false)

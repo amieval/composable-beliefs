@@ -9,7 +9,7 @@
 
 Composable Beliefs is a paradigm for giving AI agents persistent, source-grounded, inspectable reasoning that survives session boundaries and composes into understanding the agent never explicitly derived.
 
-The mechanism is a directed acyclic graph of assertions - atomic claims grounded in sources, composed into beliefs with explicit dependency chains, surfacing implications that drive action. Three kinds: primitive (what a source said), compound (what combining sources means), implication (what needs to happen). Structural support - the artifacts, evidence, and dependencies behind a belief - makes its grounding visible. Immutability makes change traceable. Composition makes the whole greater than the parts.
+The mechanism is a directed acyclic graph of assertions - atomic claims grounded in sources, composed into beliefs with explicit dependency chains, surfacing implications that drive action. Four types, one per epistemic operation: primitive (what a source said), compound (what its deps jointly state), inference (a conclusion licensed to exceed its deps), directive (what needs to happen). Structural support - the artifacts, evidence, and dependencies behind a belief - makes its grounding visible. Immutability makes change traceable. Composition makes the whole greater than the parts.
 
 The name is the paradigm. Not a company. Not a product. A category that doesn't exist yet.
 
@@ -67,7 +67,7 @@ Each pathology has a structural counterpart in Composable Beliefs:
 
 **Data leakage.** RLHF-trained patterns applied without source grounding. The agent "leaks" training distribution into reasoning - treating user statements as authoritative because the training rewards it, encoding speculation as high-confidence primitives. The DAG's integrity constraints (primitives need artifacts, evidence carries specific detail, claims are typed by kind) create structural pressure against this leakage.
 
-Chollet asked: what will be the Keras of agentic coding? The optimal set of high-level abstractions that let humans steer the process with minimal cognitive overhead? Composable Beliefs is a candidate answer - not for code generation, but for agent behavior. The abstraction set is small enough to hold in your head (primitive, compound, implication, artifact, evidence, deps), high-level enough for non-technical participation (observe a pattern, assert it), and structured enough to compose mechanically.
+Chollet asked: what will be the Keras of agentic coding? The optimal set of high-level abstractions that let humans steer the process with minimal cognitive overhead? Composable Beliefs is a candidate answer - not for code generation, but for agent behavior. The abstraction set is small enough to hold in your head (primitive, compound, inference, directive, artifact, evidence, deps), high-level enough for non-technical participation (observe a pattern, assert it), and structured enough to compose mechanically.
 
 Keras won not by being a product but by being the right abstraction at the right level. That's the aim.
 

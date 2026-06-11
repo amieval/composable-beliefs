@@ -1,0 +1,70 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "domain-rule",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "field-presence"
+    ],
+    "name": "dag-field-presence",
+    "claim": "Field presence on a DAG node is determined by structural type; compounds and inferences require deps, non-contract directives require deps or a stipulation artifact, declared contracts may be standalone, and contract fields are directive-only",
+    "contract": true,
+    "rules": [
+      {
+        "scenario": "Shared fields are always valid",
+        "given": "A node of any type",
+        "when": "Shared fields are accessed",
+        "then": "id, type, kind, domain, tags, claim, subjects, status, created are all valid fields"
+      },
+      {
+        "scenario": "Primitive-specific fields",
+        "given": "A node has type: primitive",
+        "when": "Type-specific fields are considered",
+        "then": "artifact (required) and evidence (dated, append-only) are valid; deps, materialized, rules, invariants are not meaningful"
+      },
+      {
+        "scenario": "Compound requires deps",
+        "given": "A node has type: compound",
+        "when": "The node is validated",
+        "then": "The node must have a non-empty deps array - a compound by definition composes multiple deps"
+      },
+      {
+        "scenario": "Inference requires deps",
+        "given": "A node has type: inference",
+        "when": "The node is validated",
+        "then": "The node must have a non-empty deps array - a conclusion traces its grounding even when its claim exceeds it"
+      },
+      {
+        "scenario": "Non-contract directive grounds in deps or stipulation",
+        "given": "A node has type: directive and does not carry rules or invariants",
+        "when": "The node is validated",
+        "then": "The node must have non-empty deps or a stipulation artifact (plan:/user:/session:/document:) - adoption is grounded in beliefs or in the record of the adoption event"
+      },
+      {
+        "scenario": "Declared contract may omit deps",
+        "given": "A node has type: directive and carries non-empty rules or invariants",
+        "when": "The node is validated",
+        "then": "The node may have empty deps - contracts can be declared (formalize policy standalone) or derived; both forms are valid"
+      }
+    ],
+    "invariants": [
+      "Compounds cannot have empty deps",
+      "Inferences cannot have empty deps",
+      "Active non-contract directives carry deps or a stipulation artifact",
+      "Contract fields (contract, rules, invariants) are directive-only",
+      "Fields are emitted in a stable schema-defined order",
+      "Fields absent in the source JSON are not emitted on round-trip (presence tracked via _keys)",
+      "tags defaults to empty list when absent from source"
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a298",
+      "cb:a476"
+    ]
+  },
+  "conflicting_id": "cb:c027",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: deps requirements re-attach per type (compounds, inferences, non-contract directives under the D4 grounding rule); contract fields are directive-only. The stale 'confidence' shared-field reference is dropped in passing.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

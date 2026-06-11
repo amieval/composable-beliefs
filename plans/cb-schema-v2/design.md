@@ -1,6 +1,6 @@
 # cb-schema-v2 - the four-type belief schema (design record)
 
-Status: DESIGN - awaiting decisions D1-D6, then plan cut.
+Status: DECIDED - D1-D6 resolved 2026-06-10 (see Decisions), ready for plan cut.
 Date: 2026-06-10. Origin: README-rewrite design discussion (session 2026-06-10);
 this doc is the worked stress-test that precedes any code or graph change.
 
@@ -112,6 +112,11 @@ type = f( mood(kind), grounding(artifact/deps), scope(subjects) )
    to a bare model_version claim; "shared root cause" introduces an entity no dep
    carries). Containment is a deterministic verifier check on compounds; scope
    widening becomes the structural signature of inference rather than a vibe.
+   Containment uses plain subset semantics: a compound with empty subjects passes
+   vacuously, and a compound with subjects whose deps carry none fails. The check
+   earns its power only where subjects are populated (the six-subject eval
+   collections, agent-behavior); in subject-sparse graphs like cb: the compound
+   triage stays judgment.
 
 What stays judgment: choosing the kind, and the residual gray zone where a claim
 is subject-contained yet synthesizing. The checks shrink the gray zone; the write
@@ -146,7 +151,11 @@ guidance, protocol, convention -> directive; enum-registry, implies -> directive
 Non-contract v1 implications require deps. v2 directives require **deps or a
 stipulation artifact**: a prescription is *adopted*, and adoption is grounded
 either in beliefs (guidance resting on a verdict) or in a stipulation event (a
-convention fixed by a plan or a user directive, citing `plan:`/`user:`/`session:`).
+convention fixed by a plan, a user directive, or a house document, citing
+`plan:`/`user:`/`session:`/`document:` - execution amendment 2026-06-10: the
+design's own worked re-homes, method:a1-a5 and the lib: rules, are
+document-grounded stipulations, so `document:` belongs in the scheme list;
+external-source schemes never ground a directive).
 This legitimizes the method: conventions (today primitives, artifact-grounded,
 no deps) as directives without manufacturing fake deps. Contract-grade directives
 keep their existing exemption (the method contracts carry empty deps today).
@@ -158,7 +167,7 @@ keep their existing exemption (the method contracts carry empty deps today).
 | `materialized` / materializer | implication | directive only (you do not materialize a theory) |
 | `contract: true` + rules/invariants (c031 biconditional) | implication | directive only |
 | c032 conflict-scope audit | active implications | active directives (contradictory prescriptions are actionable; contradictory inferences are dissent - out of scope here, see Non-goals) |
-| `retired` status | any (meaningful only for contracts) | directive only (verifier may now enforce this) |
+| `retired` status | contract-grade implications only (c029 invariant) | any directive - a widening; a withdrawn non-contract rule may retire (verifier enforces, c029 superseded) |
 | staleness / `bs stale` | non-primitives | unchanged (compound, inference, directive) |
 | deps required | compounds + non-contract implications | compounds + inferences + non-contract directives (per grounding rule: deps or stipulation artifact) |
 | artifact required | primitives | primitives (directives may carry a stipulation artifact) |
@@ -172,7 +181,7 @@ The stress test. Eight beliefs; every migration class appears.
 | v1 | v2 | Class |
 | --- | --- | --- |
 | sdl:a1, sdl:a2 (primitive, observation) | unchanged | none |
-| sdl:a3 (compound, observation) | compound; subject-containment passes ({eval, case7, model, model_version} is a subset of a1+a2's subjects). Claim's second sentence ("...so the verdict rests on cross-ruler agreement rather than a single ruler's artifact") is commentary beyond the conjunction - D3 decides whether to supersede with the trimmed claim or tolerate commentary | judgment (D3) |
+| sdl:a3 (compound, observation) | compound; subject-containment passes ({eval, case7, model, model_version} is a subset of a1+a2's subjects). Claim's second sentence ("...so the verdict rests on cross-ruler agreement rather than a single ruler's artifact") is commentary beyond the conjunction - superseded with the trimmed claim per D3 (trim) | judgment (D3: trim) |
 | sdl:a006 (implication, verdict) | **split.** sdl:a008 (inference, kind verdict): "claude-opus-4-8 at snapshot 2026-01 silently drops records from bulk writes larger than ten items." deps [sdl:a3], subjects unchanged. sdl:a009 (directive, kind guidance): "Do not use claude-opus-4-8 at snapshot 2026-01 unguarded for bulk record operations until a newer snapshot clears the eval." deps [sdl:a008]. a006 superseded_by a008 (the finding carries the identity); a009 is new, with the split recorded in both evidence entries | split (adjudicated) |
 | sdl:a007 (implication, guidance) | directive, deps re-pointed [sdl:a008] (routing guidance rests on the finding; a007 and a009 become sibling directives) | mechanical + dep re-point |
 | sdl:c1 (superseded enum contract) | directive (contract-grade), mechanical | history re-type |
@@ -246,8 +255,16 @@ the write flow:
   function (design-rationale primitives + the type-definition beliefs).
 - **New contracts**: the kind-type derivation table; the subject-containment rule;
   the directive grounding rule.
-- **Framework supersessions**: cb:c031 (contract-grade iff *directive* with
-  rules/invariants), cb:c032 (conflict scope between active *directives*),
+- **Framework supersessions**: cb:c026 (the type enum opens to four values;
+  rules/invariants and materialization re-attach to directives),
+  cb:c027 (field presence: deps required of compounds, inferences, and
+  non-contract directives per the grounding rule; contract fields are
+  directive-only), cb:c029 (retired widens from contract-grade
+  implications to any directive: the retired transition row and the
+  "exclusive to contract-grade implications" invariant both change),
+  cb:c031 (contract-grade iff *directive* with rules/invariants; its
+  "may use retired status" invariant rewords per the c029 widening),
+  cb:c032 (conflict scope between active *directives*),
   cb:c038 (schema discipline references), method:c2 (kind bindings), plus the
   CLAUDE.md render-section beliefs that state "three structural types" (so the
   compiled CLAUDE.md regenerates correctly).
@@ -258,7 +275,7 @@ tool: the type enum must hold graph-wide, the re-type is representational and
 content-preserving (precedent: the c039 rules reshape), and history is never split.
 The migration itself is recorded as a dated belief citing this design doc.
 
-## Plan series sketch (cut into plan files after D1-D6)
+## Plan series sketch (D1-D6 resolved; ready to cut into plan files)
 
 - **plan-0**: canon proposals authored and preflighted (primitives are v1-legal
   today; contract supersessions staged, landed in plan-2 once code accepts v2).
@@ -285,25 +302,35 @@ audit / structured dissent (consensus-thread work, designed against v2 but not i
 it); renaming `primitive` to `atomic` (doctrine encoded instead - see D5);
 runtime decision-time hooks; any importer change.
 
-## Open decisions
+## Decisions (resolved 2026-06-10)
 
-- **D1 - name of the inference type.** `inference` (recommended) vs `implication`
-  retained with its corrected meaning. The false-friend argument for retiring the
-  word: every immutable claim and historical doc in the ecosystem uses
-  "implication" to mean the *prescriptive* type (cb:c032's claim, the lifecycle
-  docs, "unlinked implications"); reusing it inverted creates permanent ambiguity
-  in a graph that deliberately preserves old wording. Counter-argument: the word
-  finally means what it says. Mark decides.
-- **D2 - migration mechanics.** Hybrid as designed (mechanical re-type via tool +
-  adjudicated splits) - confirm, or require supersession-per-node (rejected here:
-  ~50 content-free supersessions add history noise without information).
-- **D3 - compound claim strictness.** Trim sdl:a3-style commentary to the
-  conjunction (recommended: the strict-aggregate doctrine, applied), or tolerate
-  descriptive commentary within subject containment.
-- **D4 - directive grounding rule.** Deps or stipulation artifact - confirm.
-- **D5 - primitive doctrine.** v2 keeps the name and encodes atomicity +
-  verbatim-leaning discipline as authoring-convention beliefs (recommended), with
-  source-checkable verbatim predicates as future work for cached sources.
-- **D6 - convention/protocol re-homing.** method:a1-a5 and toy:a7 become
-  directives under the grounding rule - confirm (their direction of fit is
-  violated-not-falsified, but they re-type rather than split).
+Only D1, D2, and D4 gate code (the type-enum value, the migration tool's
+architecture, the verifier's grounding check); D3, D5, and D6 gate graph content
+in plan-0 and plan-3. All six are resolved, so nothing blocks the plan cut.
+
+- **D1 - name of the inference type: `inference`.** The graph deliberately
+  preserves immutable old wording, and every historical use of "implication"
+  (cb:c032's claim, cb:a173, "unlinked implications") means the *prescriptive*
+  type. Reusing the word inverted would poison that wording permanently; retiring
+  it lets old text read cleanly as v1 vocabulary. cb:a173 is the concrete
+  exhibit: an immutable claim about "implications" in the prescriptive sense.
+- **D2 - migration mechanics: hybrid, as designed.** Mechanical re-type via tool
+  plus adjudicated splits. Supersession-per-node rejected: ~50 content-free
+  supersessions add history noise without information; the re-type is
+  representational (precedent: the c039 rules reshape).
+- **D3 - compound claim strictness: trim.** The strict-aggregate doctrine,
+  applied: a compound states exactly what its deps jointly state. Tolerating
+  synthesis commentary reopens the hole the inference type exists to close.
+  Cost: one supersession per flagged compound (sdl:a3 plus cb: triage hits).
+- **D4 - directive grounding rule: confirmed.** Deps or stipulation artifact.
+  The alternatives - manufactured deps, or conventions stuck as primitives -
+  are both worse than honest stipulation grounding.
+- **D5 - primitive doctrine: confirmed.** Keep the name `primitive`; encode
+  atomicity + verbatim-leaning discipline as authoring-convention beliefs.
+  A rename stacked on an already-breaking change violates a397's
+  one-structural-change discipline for near-zero gain. Source-checkable
+  verbatim predicates remain future work for cached sources.
+- **D6 - convention/protocol re-homing: confirmed.** method:a1-a5 and toy:a7
+  re-type to directive under the grounding rule. Their direction of fit is
+  violated-not-falsified, and their claims are purely prescriptive, so they
+  re-type rather than split.

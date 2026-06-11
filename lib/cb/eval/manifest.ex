@@ -80,7 +80,9 @@ defmodule CB.Eval.Manifest do
   def to_beliefs(manifest, namespace) do
     for run <- manifest["runs"],
         scorer <- run["scorers"],
-        belief <- [aggregate_belief(manifest, namespace, run, scorer)] ++ case_beliefs(manifest, namespace, run, scorer) do
+        belief <-
+          [aggregate_belief(manifest, namespace, run, scorer)] ++
+            case_beliefs(manifest, namespace, run, scorer) do
       belief
     end
   end
@@ -96,7 +98,11 @@ defmodule CB.Eval.Manifest do
     immutable measurements - this is a hard error upstream; a corrected
     run is a new `run_id`.
   """
-  @spec plan([map()], [Belief.t()]) :: %{new: [map()], noop: [String.t()], conflicts: [String.t()]}
+  @spec plan([map()], [Belief.t()]) :: %{
+          new: [map()],
+          noop: [String.t()],
+          conflicts: [String.t()]
+        }
   def plan(generated, existing) do
     existing_canon = Map.new(existing, &{&1.id, canonical(&1)})
 
@@ -118,7 +124,8 @@ defmodule CB.Eval.Manifest do
   @doc "Render a named validation error as a human-readable message."
   @spec format_error(error()) :: String.t()
   def format_error({:unsupported_manifest_version, v}),
-    do: "unsupported manifest_version #{inspect(v)} (this importer reads version #{@supported_version}; refusing rather than best-effort parsing)"
+    do:
+      "unsupported manifest_version #{inspect(v)} (this importer reads version #{@supported_version}; refusing rather than best-effort parsing)"
 
   def format_error({:missing_field, path}), do: "missing required field: #{path}"
   def format_error({:invalid_field, path, why}), do: "invalid field #{path}: #{why}"
@@ -399,7 +406,8 @@ defmodule CB.Eval.Manifest do
           Enum.reduce_while(cases, :ok, fn c, :ok ->
             with :ok <- require_string(c, "case_id"),
                  :ok <- require_string(c, "outcome"),
-                 :ok <- optional_log_uri(c["log"], "#{path}.load_bearing_cases[#{c["case_id"]}].log") do
+                 :ok <-
+                   optional_log_uri(c["log"], "#{path}.load_bearing_cases[#{c["case_id"]}].log") do
               {:cont, :ok}
             else
               err -> {:halt, err}
@@ -438,7 +446,9 @@ defmodule CB.Eval.Manifest do
 
   defp require_positive_int(v, _path) when is_integer(v) and v > 0, do: :ok
   defp require_positive_int(nil, path), do: {:error, {:missing_field, path}}
-  defp require_positive_int(_, path), do: {:error, {:invalid_field, path, "must be a positive integer"}}
+
+  defp require_positive_int(_, path),
+    do: {:error, {:invalid_field, path, "must be a positive integer"}}
 
   defp unique(items, key, path) do
     values = Enum.map(items, & &1[key])

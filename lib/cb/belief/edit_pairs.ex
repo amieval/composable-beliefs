@@ -31,7 +31,7 @@ defmodule CB.Belief.EditPairs do
 
       implications =
         all
-        |> Enum.filter(&(&1["type"] == "implication"))
+        |> Enum.filter(&(&1["type"] == "directive"))
         |> Enum.filter(&(&1["status"] == "active"))
         |> Enum.filter(fn a ->
           deps = a["deps"] || []
@@ -104,6 +104,7 @@ defmodule CB.Belief.EditPairs do
 
   defp truncate(str, max) do
     str = String.replace(str, "\n", " ")
+
     if String.length(str) > max do
       String.slice(str, 0, max) <> "..."
     else

@@ -70,8 +70,7 @@ defmodule Mix.Tasks.Cb.Adjudicate do
       {:ok, summary}
     else
       {:error, :conflicting_already_terminal} ->
-        {:halt, 2,
-         "adjudicate: conflicting belief is already in a terminal state; refusing"}
+        {:halt, 2, "adjudicate: conflicting belief is already in a terminal state; refusing"}
 
       {:error, reason} ->
         {:halt, 1, "adjudicate error: #{inspect(reason)}"}

@@ -50,7 +50,10 @@ defmodule CB.Eval.ManifestTest do
       [r1 | rest] = m["runs"]
 
       assert {:error, {:invalid_field, "runs[run1].log", _}} =
-               Manifest.validate(%{m | "runs" => [Map.put(r1, "log", "file:///etc/passwd") | rest]})
+               Manifest.validate(%{
+                 m
+                 | "runs" => [Map.put(r1, "log", "file:///etc/passwd") | rest]
+               })
     end
 
     test "load-bearing cases cannot exceed the run's case count" do
@@ -58,7 +61,9 @@ defmodule CB.Eval.ManifestTest do
       [r1 | rest] = m["runs"]
       shrunk = Map.put(r1, "cases", 2)
 
-      assert {:error, {:invalid_field, path, _}} = Manifest.validate(%{m | "runs" => [shrunk | rest]})
+      assert {:error, {:invalid_field, path, _}} =
+               Manifest.validate(%{m | "runs" => [shrunk | rest]})
+
       assert path =~ "load_bearing_cases"
     end
 

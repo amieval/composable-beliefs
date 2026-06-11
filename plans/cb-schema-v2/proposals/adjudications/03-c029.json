@@ -1,0 +1,52 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "state-machine",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "status-lifecycle"
+    ],
+    "name": "dag-status-lifecycle",
+    "claim": "DAG node status follows a directed transition: active -> superseded | retracted | retired, with all non-active states terminal and requiring the appropriate linkage fields; retired is the directive-only exit - a withdrawn rule, never a falsified claim",
+    "contract": true,
+    "rules": [
+      {
+        "from": "active",
+        "to": "superseded",
+        "requires": [
+          "superseded_by"
+        ]
+      },
+      {
+        "from": "active",
+        "to": "retracted",
+        "requires": [
+          "retracted_on",
+          "retracted_reason"
+        ]
+      },
+      {
+        "from": "active",
+        "to": "retired",
+        "requires": []
+      }
+    ],
+    "invariants": [
+      "status is a closed enum: active | superseded | retracted | retired",
+      "superseded_by is non-null iff status is superseded",
+      "retracted_on and retracted_reason are non-null iff status is retracted",
+      "retired status is exclusive to directives - descriptive claims are superseded or retracted, never retired; an inference is falsified, a directive is violated or withdrawn",
+      "terminal states (superseded, retracted, retired) have no outgoing transitions and are immutable except for appending to evidence"
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a302",
+      "cb:a471"
+    ]
+  },
+  "conflicting_id": "cb:c029",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: retired widens from contract-grade implications to any directive (a withdrawn rule retires whether or not it carries machine-checkable teeth); the contract-field transition requirement drops accordingly. Direction-of-fit grounding via cb:a471.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

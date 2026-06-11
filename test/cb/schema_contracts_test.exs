@@ -11,7 +11,7 @@ defmodule CB.SchemaContractsTest do
 
   Covered:
 
-  - cb:c029 (state-machine): the StateMachine-derived state set equals
+  - cb:c053 (state-machine): the StateMachine-derived state set equals
     `CB.Belief.statuses()`, and each edge's `requires` matches the expected
     linkage slugs.
   - cb:c039 / cb:c043 / cb:c041 (enum-registry): `Enum.values_for/2` returns the
@@ -49,19 +49,19 @@ defmodule CB.SchemaContractsTest do
     end
   end
 
-  describe "cb:c029 status lifecycle (state-machine)" do
+  describe "cb:c053 status lifecycle (state-machine)" do
     test "is an active state-machine contract", %{by_id: by_id} do
-      c029 = fetch(by_id, "cb:c029")
-      assert c029.kind == "state-machine"
-      assert c029.status == "active"
-      assert c029.contract == true
+      c053 = fetch(by_id, "cb:c053")
+      assert c053.kind == "state-machine"
+      assert c053.status == "active"
+      assert c053.contract == true
     end
 
     test "StateMachine-derived state set equals CB.Belief.statuses/0", %{by_id: by_id} do
-      c029 = fetch(by_id, "cb:c029")
+      c053 = fetch(by_id, "cb:c053")
 
       derived =
-        c029
+        c053
         |> StateMachine.edges()
         |> Elixir.Enum.flat_map(fn e -> [e.from, e.to] end)
         |> Elixir.Enum.uniq()
@@ -71,30 +71,30 @@ defmodule CB.SchemaContractsTest do
     end
 
     test "requires/2 returns the expected linkage slugs for each edge", %{by_id: by_id} do
-      c029 = fetch(by_id, "cb:c029")
+      c053 = fetch(by_id, "cb:c053")
 
-      assert StateMachine.requires(c029, {"active", "superseded"}) == {:ok, ["superseded_by"]}
+      assert StateMachine.requires(c053, {"active", "superseded"}) == {:ok, ["superseded_by"]}
 
-      assert StateMachine.requires(c029, {"active", "retracted"}) ==
+      assert StateMachine.requires(c053, {"active", "retracted"}) ==
                {:ok, ["retracted_on", "retracted_reason"]}
 
-      assert StateMachine.requires(c029, {"active", "retired"}) == {:ok, ["contract"]}
+      assert StateMachine.requires(c053, {"active", "retired"}) == {:ok, []}
     end
 
     test "all transitions originate from the active state", %{by_id: by_id} do
-      c029 = fetch(by_id, "cb:c029")
+      c053 = fetch(by_id, "cb:c053")
 
       froms =
-        c029 |> StateMachine.edges() |> Elixir.Enum.map(& &1.from) |> Elixir.Enum.uniq()
+        c053 |> StateMachine.edges() |> Elixir.Enum.map(& &1.from) |> Elixir.Enum.uniq()
 
       assert froms == ["active"]
     end
 
     test "terminal states have no outgoing transitions", %{by_id: by_id} do
-      c029 = fetch(by_id, "cb:c029")
+      c053 = fetch(by_id, "cb:c053")
 
       for terminal <- ~w(superseded retracted retired) do
-        assert StateMachine.transitions_from(c029, terminal) == [],
+        assert StateMachine.transitions_from(c053, terminal) == [],
                "expected #{terminal} to be terminal"
       end
     end
@@ -103,10 +103,10 @@ defmodule CB.SchemaContractsTest do
       all: all,
       by_id: by_id
     } do
-      c029 = fetch(by_id, "cb:c029")
+      c053 = fetch(by_id, "cb:c053")
 
       admitted =
-        c029
+        c053
         |> StateMachine.edges()
         |> Elixir.Enum.flat_map(fn e -> [e.from, e.to] end)
         |> MapSet.new()

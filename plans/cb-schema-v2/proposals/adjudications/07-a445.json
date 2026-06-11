@@ -1,0 +1,21 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "convention",
+    "domain": "system",
+    "tags": [
+      "claude-md",
+      "active-implications"
+    ],
+    "claim": "Active behavioral directives are not cached to a digest file; load them live from the graph by querying active directives (`mix bs list directive`). Per cb:a386, a digest whose freshness depends on remembering to regenerate it is an antipattern that embeds the staleness it was meant to solve - render live from the DAG instead.",
+    "artifact": "session:2026-06-10-cb-schema-v2-landing",
+    "subjects": [],
+    "deps": [
+      "cb:a386"
+    ]
+  },
+  "conflicting_id": "cb:a445",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2: the query token changes with the type rename (bs list implication -> bs list directive); content otherwise unchanged.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

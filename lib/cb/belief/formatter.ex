@@ -7,8 +7,8 @@ defmodule CB.Belief.Formatter do
   Renders the CURRENT belief schema (structural `type`, `artifact`,
   `contract`, structural `support` counts). The tree view renders a
   belief's dependency graph using box-drawing characters, recursively
-  walking deps to show the full reasoning chain from implications down
-  to primitives.
+  walking deps to show the full reasoning chain from directives and
+  inferences down to primitives.
   """
 
   alias CB.Belief
@@ -20,14 +20,19 @@ defmodule CB.Belief.Formatter do
   defp color(:yellow), do: "\e[33m"
   defp color(:magenta), do: "\e[35m"
   defp color(:red), do: "\e[31m"
+  defp color(:green), do: "\e[32m"
 
   defp type_color("primitive"), do: color(:cyan)
   defp type_color("compound"), do: color(:yellow)
-  defp type_color("implication"), do: color(:magenta)
+  defp type_color("inference"), do: color(:magenta)
+  defp type_color("directive"), do: color(:green)
   defp type_color(_), do: color(:reset)
 
   defp status_indicator(%{status: "active"}), do: ""
-  defp status_indicator(%{status: "superseded"}), do: " #{color(:dim)}[superseded]#{color(:reset)}"
+
+  defp status_indicator(%{status: "superseded"}),
+    do: " #{color(:dim)}[superseded]#{color(:reset)}"
+
   defp status_indicator(%{status: "retracted"}), do: " #{color(:red)}[retracted]#{color(:reset)}"
   defp status_indicator(%{status: "retired"}), do: " #{color(:dim)}[retired]#{color(:reset)}"
   defp status_indicator(_), do: ""
@@ -43,12 +48,29 @@ defmodule CB.Belief.Formatter do
       claim_width = max(term_width - id_width - 41, 30)
 
       header = table_row("ID", "TYPE", "STATUS", "CLAIM", id_width, claim_width)
-      sep = table_row(String.duplicate("-", id_width), "-----------", "----------", "-----", id_width, claim_width)
+
+      sep =
+        table_row(
+          String.duplicate("-", id_width),
+          "-----------",
+          "----------",
+          "-----",
+          id_width,
+          claim_width
+        )
 
       rows =
         Enum.map(beliefs, fn b ->
           type_label = if Belief.contract?(b), do: "contract", else: b.type
-          table_row(b.id, type_label, b.status, trunc(b.claim, claim_width), id_width, claim_width)
+
+          table_row(
+            b.id,
+            type_label,
+            b.status,
+            trunc(b.claim, claim_width),
+            id_width,
+            claim_width
+          )
         end)
 
       count = length(beliefs)
@@ -92,7 +114,7 @@ defmodule CB.Belief.Formatter do
     lines = lines ++ evidence_lines(b.evidence)
 
     lines =
-      if b.type == "implication" do
+      if b.type == "directive" do
         mat =
           case b.materialized do
             nil -> "-"
@@ -152,7 +174,10 @@ defmodule CB.Belief.Formatter do
     |> Enum.flat_map(fn {e, idx} ->
       header = if length(evidence) == 1, do: "Evidence:", else: "Evidence #{idx}:"
       lines = ["#{String.pad_trailing(header, 13)}#{e["detail"] || "-"}"]
-      lines = if e["artifact"], do: lines ++ ["             artifact: #{e["artifact"]}"], else: lines
+
+      lines =
+        if e["artifact"], do: lines ++ ["             artifact: #{e["artifact"]}"], else: lines
+
       if e["date"], do: lines ++ ["             date: #{e["date"]}"], else: lines
     end)
   end
@@ -212,7 +237,9 @@ defmodule CB.Belief.Formatter do
               detail = e["detail"]
 
               if detail do
-                wrapped = wrap_text(detail, max(terminal_width() - String.length(meta_prefix) - 4, 40))
+                wrapped =
+                  wrap_text(detail, max(terminal_width() - String.length(meta_prefix) - 4, 40))
+
                 Enum.map(wrapped, fn l -> "#{meta_prefix}  #{color(:dim)}> #{l}#{rst}" end)
               else
                 []
@@ -221,7 +248,7 @@ defmodule CB.Belief.Formatter do
 
           [art_line] ++ evidence_lines
 
-        b.type == "implication" and b.materialized ->
+        b.type == "directive" and b.materialized ->
           mat = b.materialized
           count = length(mat["todos"] || [])
           ["#{meta_prefix}  #{color(:dim)}materialized: #{mat["date"]} (#{count} item(s))#{rst}"]

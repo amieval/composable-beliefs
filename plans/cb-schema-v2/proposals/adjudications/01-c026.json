@@ -1,0 +1,55 @@
+{
+  "proposed": {
+    "type": "directive",
+    "kind": "state-machine",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "type-system"
+    ],
+    "name": "dag-structural-types",
+    "claim": "DAG node type field accepts exactly four values - primitive, compound, inference, directive - one per epistemic operation (attest, aggregate, infer, prescribe) - and determines which other fields are meaningful",
+    "contract": true,
+    "rules": [
+      {
+        "scenario": "Structural type validation",
+        "given": "A node is being written to the DAG",
+        "when": "The type field is validated",
+        "then": "The type must be one of: primitive, compound, inference, directive"
+      },
+      {
+        "scenario": "Primitive carries an artifact",
+        "given": "A node has type: primitive",
+        "when": "The node is validated",
+        "then": "The node must have a non-null artifact field"
+      },
+      {
+        "scenario": "Compound and inference carry deps",
+        "given": "A node has type: compound or type: inference",
+        "when": "The node is validated",
+        "then": "The node must have a non-empty deps array"
+      },
+      {
+        "scenario": "Only directives carry contracts",
+        "given": "A node has rules or invariants populated",
+        "when": "The node is validated",
+        "then": "The node must have type: directive (descriptive types cannot carry contracts)"
+      }
+    ],
+    "invariants": [
+      "Every active node has exactly one type",
+      "type is a closed enum: primitive | compound | inference | directive",
+      "Only directives can carry rules or invariants",
+      "Structural type determines valid operations (only directives are materialized)"
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a298",
+      "cb:a470"
+    ]
+  },
+  "conflicting_id": "cb:c026",
+  "outcome": "accept_supersede",
+  "reasoning": "cb-schema-v2 D1-D6 (plans/cb-schema-v2/design.md): the type enum opens to four values, one per epistemic operation; rules and materialization re-attach to directives. The stale v1 'source' field reference is corrected to 'artifact' in passing.",
+  "session_ref": "session:2026-06-10-cb-schema-v2-landing"
+}

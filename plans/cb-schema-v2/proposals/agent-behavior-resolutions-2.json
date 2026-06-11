@@ -1,0 +1,8 @@
+{
+  "resolutions": {
+    "agent-behavior:a123": {
+      "type": "inference",
+      "note": "causal explanation (works because...) - abduction; subject 'agent' escapes dep union, the structural signature"
+    }
+  }
+}

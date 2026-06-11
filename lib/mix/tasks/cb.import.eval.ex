@@ -189,7 +189,9 @@ defmodule Mix.Tasks.Cb.Import.Eval do
   # Hand the fresh beliefs to the existing import path: serialize the
   # canonical spec, point the store at the collection, run cb.import.
   defp apply_via_import(new_beliefs, collection_path) do
-    spec_path = Path.join(System.tmp_dir!(), "cb-import-eval-spec-#{System.os_time(:millisecond)}.json")
+    spec_path =
+      Path.join(System.tmp_dir!(), "cb-import-eval-spec-#{System.os_time(:millisecond)}.json")
+
     File.write!(spec_path, spec_json(new_beliefs))
     Application.put_env(:cb, :beliefs_path, collection_path)
     Mix.Tasks.Cb.Import.run([spec_path, "--write"])
@@ -210,10 +212,14 @@ defmodule Mix.Tasks.Cb.Import.Eval do
   defp one_positional([manifest_path]), do: {:ok, manifest_path}
 
   defp one_positional(_),
-    do: {:error, "Usage: mix cb.import.eval <manifest.json> --collection <path/to/beliefs.json> [--write]"}
+    do:
+      {:error,
+       "Usage: mix cb.import.eval <manifest.json> --collection <path/to/beliefs.json> [--write]"}
 
   defp require_collection(nil),
-    do: {:error, "Usage: mix cb.import.eval <manifest.json> --collection <path/to/beliefs.json> [--write]"}
+    do:
+      {:error,
+       "Usage: mix cb.import.eval <manifest.json> --collection <path/to/beliefs.json> [--write]"}
 
   defp require_collection(path), do: {:ok, path}
 

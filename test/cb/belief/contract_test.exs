@@ -128,12 +128,17 @@ defmodule CB.Belief.ContractTest do
       contract: true,
       rules: [
         %{"when" => %{"status" => "overdue"}, "requires" => "block_checkout"},
-        %{"when" => %{"tier" => "premium", "status" => "checked-out"}, "requires" => "extend_eligible"}
+        %{
+          "when" => %{"tier" => "premium", "status" => "checked-out"},
+          "requires" => "extend_eligible"
+        }
       ]
     }
 
     test "invariants/1 returns when/requires maps" do
-      assert %{when: %{"status" => "overdue"}, requires: "block_checkout"} in Implies.invariants(@implies)
+      assert %{when: %{"status" => "overdue"}, requires: "block_checkout"} in Implies.invariants(
+               @implies
+             )
     end
 
     test "applicable/2 fires invariants whose condition matches" do

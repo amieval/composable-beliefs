@@ -45,7 +45,7 @@ If the error represents a new pattern not covered by a050-a054, create a standal
 After extracting primitives, scan for compounds:
 - Do any domain rule primitives interact with existing beliefs?
 - Do any error primitives compound with existing error patterns to form a stronger claim?
-- Are there implications (actionable gaps) that emerge?
+- Are there inferences (conclusions exceeding the observations) or directives (actionable gaps, rules to adopt) that emerge?
 
 ## Steps
 
@@ -56,7 +56,7 @@ After extracting primitives, scan for compounds:
 3. **Draft beliefs.** For each finding:
    - Domain rules: `type: "primitive"`, artifact: `"user:<owner>:YYYY-MM-DD"`, subjects linking to the code/data touched
    - Reasoning errors: `type: "primitive"`, artifact: `"session:YYYY-MM-DD"`, subjects: `[{"ref": "agent", "type": "agent"}]` plus any entity involved
-   - Compounds (`type: "compound"`) and implications (`type: "implication"`) as warranted. Belief meaning lives in `claim` + `deps` - no separate `implication` field.
+   - Compounds (`type: "compound"`), inferences (`type: "inference"`), and directives (`type: "directive"`) as warranted. Mood test: falsified -> inference; violated or withdrawn -> directive. Belief meaning lives in `claim` + `deps` - no separate `implication` field.
 
 4. **Present** all proposed beliefs to the user before writing. Group by category (domain rules, errors, compounds).
 

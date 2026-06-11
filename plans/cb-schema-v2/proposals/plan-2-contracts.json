@@ -1,0 +1,419 @@
+{
+  "new_beliefs": [
+    {
+      "id": "cb:c057",
+      "type": "directive",
+      "kind": "derivation-table",
+      "domain": "system",
+      "tags": [
+        "dag-schema",
+        "kind-type"
+      ],
+      "name": "kind-type-table",
+      "claim": "Kind binds mood: each belief kind maps to the structural types it may inhabit, converting the prescriptive/descriptive boundary from prose to a deterministic check. Prescriptive kinds bind to directive only; descriptive kinds may never be directives; dual kinds (definition, schema) carry both moods and the choice is per belief by direction of fit.",
+      "contract": true,
+      "rules": [
+        {
+          "kind": "policy",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "rule",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "action-item",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "convention",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "formatting-rule",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "domain-rule",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "domain-enum",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "governance",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "design-principle",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "derivation-rule",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "audit-rule",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "enum-registry",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "state-machine",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "derivation-table",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "output-target",
+          "allowed_types": [
+            "directive"
+          ]
+        },
+        {
+          "kind": "observation",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "fact",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "error",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "error-pattern",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "reasoning-error",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "meta-observation",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "design-observation",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "design-property",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "design-gap",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "design-rationale",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "analogical-claim",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "structural-parallel",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "architectural-synthesis",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "feedback-loop",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "outcome-claim",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "training-distribution",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "training-incentive",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "agent-architecture",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "composable-belief",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "human-factor",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "edit-pair",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference"
+          ]
+        },
+        {
+          "kind": "definition",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference",
+            "directive"
+          ]
+        },
+        {
+          "kind": "schema",
+          "allowed_types": [
+            "primitive",
+            "compound",
+            "inference",
+            "directive"
+          ]
+        }
+      ],
+      "invariants": [
+        "For all active beliefs b with kind k present in this table: b.type is in row(k).allowed_types",
+        "Prescriptive kinds never appear on descriptive types; descriptive kinds never appear on directives",
+        "A kind absent from the table is unchecked, not failed - the kind enum is the closure authority"
+      ],
+      "artifact": "plan:cb-schema-v2",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "The mood half of the v2 type function (type = f(mood(kind), grounding, scope)), landed with the c026-family supersessions. Bindings per design.md's three groups over the 38 c039 kinds. Preflight review per the a467/c040 precedent recorded on the plan-0 primitives this contract rests on.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [],
+      "deps": [
+        "cb:a472"
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    },
+    {
+      "id": "cb:c058",
+      "type": "directive",
+      "kind": "derivation-rule",
+      "domain": "system",
+      "tags": [
+        "dag-schema",
+        "subject-containment"
+      ],
+      "name": "subject-containment",
+      "claim": "A conjunction cannot be about something its parts are not about: an active compound's subject refs must be a subset of the union of its deps' subject refs. Scope widening is the structural signature of inference - a claim whose subjects escape its deps is an inference or carries commentary to trim, never a compound. Empty subjects pass vacuously; the check earns its discriminating power only where subjects are populated.",
+      "contract": true,
+      "rules": [
+        {
+          "scenario": "Containment on active compounds",
+          "given": "An active compound with non-empty subjects",
+          "when": "The collection is verified",
+          "then": "Every subject ref appears in the union of its deps' subject refs"
+        },
+        {
+          "scenario": "Escape is re-homed",
+          "given": "A compound whose subjects escape the dep union",
+          "when": "Triage resolves it",
+          "then": "The node is re-typed as an inference, or its claim is trimmed to the conjunction and the widened content minted as an inference depping on it"
+        },
+        {
+          "scenario": "Unresolvable deps skip",
+          "given": "A compound with a dep outside the loaded belief set",
+          "when": "The collection is verified standalone",
+          "then": "The compound is skipped, not failed - the union cannot be computed without the dep's subjects"
+        }
+      ],
+      "invariants": [
+        "For all active compounds c with subjects: subject_refs(c) is a subset of the union of subject_refs over deps(c)",
+        "A compound with empty subjects passes vacuously",
+        "Containment is checked on refs; subject types classify and do not partition scope"
+      ],
+      "artifact": "plan:cb-schema-v2",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "The scope half of the v2 type function, with the strict-aggregate doctrine (D3, cb:a474) as its authoring-side companion. Deterministic verifier check; subject-sparse graphs triage compounds by judgment instead.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [],
+      "deps": [
+        "cb:a472",
+        "cb:a474"
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    },
+    {
+      "id": "cb:c059",
+      "type": "directive",
+      "kind": "derivation-rule",
+      "domain": "system",
+      "tags": [
+        "dag-schema",
+        "grounding"
+      ],
+      "name": "directive-grounding",
+      "claim": "A prescription is adopted: an active non-contract directive grounds in deps (the beliefs it rests on) or in a stipulation artifact citing plan:, user:, session:, or document: - the record of the adoption event. Contract-grade directives may be declared standalone from policy. External-source schemes never ground a directive.",
+      "contract": true,
+      "rules": [
+        {
+          "scenario": "Grounded in beliefs",
+          "given": "An active non-contract directive with non-empty deps",
+          "when": "The node is validated",
+          "then": "The directive is grounded - it rests on the beliefs it cites"
+        },
+        {
+          "scenario": "Grounded in stipulation",
+          "given": "An active non-contract directive with empty deps",
+          "when": "The node is validated",
+          "then": "The artifact must carry a stipulation scheme (plan:, user:, session:, document:) recording where the prescription was adopted"
+        },
+        {
+          "scenario": "Contracts may stand alone",
+          "given": "A contract-grade directive",
+          "when": "The node is validated",
+          "then": "Both deps and stipulation artifact may be absent - contracts can be declared from policy"
+        }
+      ],
+      "invariants": [
+        "For all active non-contract directives d: deps(d) non-empty OR scheme(d.artifact) in {plan, user, session, document}",
+        "Stipulation schemes are a closed set: plan | user | session | document",
+        "External-source schemes (source, https, gmail) never ground a directive"
+      ],
+      "artifact": "plan:cb-schema-v2",
+      "evidence": [
+        {
+          "date": "2026-06-10",
+          "detail": "D4 confirmed, with the execution amendment admitting document: - the design's own worked re-homes (method:a1-a5, the lib: rules) are document-grounded stipulations. Legitimizes conventions as directives without manufacturing fake deps.",
+          "artifact": "document:plans/cb-schema-v2/design.md"
+        }
+      ],
+      "subjects": [],
+      "deps": [
+        "cb:a476"
+      ],
+      "status": "active",
+      "created": "2026-06-10"
+    }
+  ]
+}
