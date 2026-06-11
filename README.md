@@ -281,6 +281,8 @@ House methodology usually lives in prose - a METHODOLOGY.md nobody can mechanica
 
 Because these are graph-shape checks, they are pure traversal - deterministic - so they run as a static pass beside the schema checks, not in the dynamic verifier. A failed check names the offending belief ids - the failure message is the work order. And "methodology v2" is not a doc edit: it is a batch of adjudicated supersessions of these contracts, dated and diffable via `bs history`.
 
+Strip the eval vocabulary from these six rules and what remains is the epistemics you would want load-bearing in an agent's head: seek independent confirmation, cite raw evidence, never generalize from one sample, calibrate your judges, revise visibly. That identity - eval architecture as agentic epistemic architecture, externalized - is itself in a graph, with the methodology contracts as its subjects: `paradigm:a361` and `paradigm:a364` in the sibling `belief-collections` repo, traceable like any other belief.
+
 ### The run-manifest: how harness output becomes ledger input
 
 The seam between bench and ledger is one neutral JSON format, the **run-manifest** (`docs/run-manifest.md`). A thin adapter per harness converts native logs to it; CB never learns any harness's log format. Two properties make the importer trustworthy:
