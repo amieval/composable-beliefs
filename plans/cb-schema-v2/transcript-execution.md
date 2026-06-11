@@ -305,3 +305,19 @@ three things got settled and persisted:
   cannot layer silently - is captured as his observation. The dag-vs-prose
   eval remains the place the felt significance gets adjudicated; these nodes
   are the hypothesis, tagged as such.
+
+## Postscript 4 (2026-06-11): the first lap, and what it caught
+
+The paradigm:a367 lap ran with the live log pane (cb:a497's first use) and
+diverted at its first station: the extraction the directive prescribed had
+already been performed by another session before the directive was authored -
+a367 was minted from stale session memory against a graph that had moved.
+Resolution: verified the existing extraction complete (a358-a365 cover all
+eight claims), materialized a367 with refs to the pre-existing nodes plus an
+evidence entry recording the discovery (discharged, never retracted - the
+prescription was sound and the world had already complied), and appended the
+incident to cb:a501 as the live specimen for the recency view. The lap that
+existed to teach the lifecycle instead demonstrated the failure mode its own
+backlog predicts: session memory is not the SSOT of what remains - the graph
+is, and the desk query now returns empty for paradigm: with the cb: desk
+holding exactly the designed backlog (a494, a495, a499, a500, a501).

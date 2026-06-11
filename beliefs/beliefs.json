@@ -5533,6 +5533,11 @@
         "date": "2026-06-11",
         "detail": "Second finding of the observation-loop walkthrough, made acute the same day by three sessions writing the repos concurrently. Persisted as a directive per a496. Preflight 2026-06-11: observability tag-overlap with a497 (the lap-log convention, compatible sibling); no semantic conflict.",
         "artifact": "session:2026-06-11-stasis-observability"
+      },
+      {
+        "date": "2026-06-11",
+        "detail": "Live specimen within hours of authoring: a stale-memory directive (paradigm:a367) was minted for an extraction another session had already completed; the observation lap caught it at the READ station. A recency view makes that class of authoring error structurally unlikely rather than vigilance-dependent.",
+        "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
       }
     ],
     "subjects": [],
