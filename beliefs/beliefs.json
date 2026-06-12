@@ -5899,5 +5899,30 @@
     ],
     "status": "active",
     "created": "2026-06-11"
+  },
+  {
+    "id": "cb:a510",
+    "type": "directive",
+    "kind": "action-item",
+    "domain": "dev",
+    "tags": [
+      "backlog",
+      "lifecycle:discrete",
+      "viewer",
+      "deep-links"
+    ],
+    "claim": "Fix bare-id deep links in the graph viewer: links built from bare belief ids (a299-style, from older plan and position bodies) resolve to /dag/<bare-id>, but the viewer's selection index is keyed by namespaced ids, so the page loads with nothing selected and no warning. Either resolve bare ids against the default collection's namespace at selection time or surface an explicit unresolved-reference notice; silent no-op is the one behavior that should not survive.",
+    "artifact": "session:2026-06-11-positions-live-join",
+    "evidence": [
+      {
+        "date": "2026-06-11",
+        "detail": "Found while wiring plan-app position deep links: PlanLinks was extended to namespaced ids and those land selected via /c/<ns>/dag/<id>, but pre-existing bare-id references throughout plan bodies still emit /dag/<bare-id>, where Map.get(index, id) misses every namespaced key and select_by_id silently no-ops. Desk reviewed before minting per a504: not present among cb:a494-a503 and in no plan record. Preflight tag-overlap review: backlog/viewer-family overlap only, no active structure contradicted.",
+        "artifact": "session:2026-06-11-positions-live-join"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-11"
   }
 ]
