@@ -1,0 +1,17 @@
+{
+  "type": "directive",
+  "kind": "convention",
+  "domain": "dev",
+  "tags": ["claude-md", "skills"],
+  "claim": "Skills coordinate authoring, query, and presentation: `/assert` adds beliefs from artifacts, entities, or reasoning; `/assertions` queries and traverses the graph; `/materialize` turns directives into concrete tasks; `/present-codepath` walks a codepath - a code-anchored collection rendered as a narrated, branching tour of real source that can also run as a test suite (`mix cb.verify.codepath`).",
+  "artifact": "session:2026-06-11-assert-session-fold",
+  "evidence": [
+    {
+      "date": "2026-06-11",
+      "detail": "Supersedes a480 to retire /assert-session from the framework skill set. Audit found it an un-ported origin-system extract: its error taxonomy (a050-a054) dangles in cb:, its policy-kind-on-primitives instruction violates c057, and its write step bypasses the preflight/adjudicate/import flow. Its unique content - conversation-parse heuristics for user-stated rules and agent reasoning errors - folded into the operator's /end sweep (Step 2), scoped to the operator ecosystem rather than framework-shipped. The rot pattern matched a386: every broken part cached canon as prose; the surviving parts were judgment content with no graph counterpart.",
+      "artifact": "session:2026-06-11-assert-session-fold"
+    }
+  ],
+  "subjects": [],
+  "deps": ["cb:a470"]
+}

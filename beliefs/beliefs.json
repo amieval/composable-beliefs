@@ -5520,6 +5520,11 @@
         "date": "2026-06-11",
         "detail": "First finding of the observation-loop walkthrough: bs list unlinked tag:lifecycle:discrete shows only the targeted graph, so paradigm:a367 was invisible from the framework desk. Persisted as a directive per a496's proportionality rule - an observation with an obvious prescription, no position ceremony. Preflight 2026-06-11: observability tag-overlap with a497 (the lap-log convention, compatible sibling); no semantic conflict.",
         "artifact": "session:2026-06-11-stasis-observability"
+      },
+      {
+        "date": "2026-06-11",
+        "detail": "Live specimen: the /assert-session audit concluded the a050-a054 error taxonomy was never ported after querying only the framework graph; it lives in agent-behavior: (101 beliefs, written to by another session the same day). A one-namespace query licensed a confident nonexistence claim; the cross-collection view makes that error class structural rather than vigilance-dependent (postscript 8).",
+        "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
       }
     ],
     "subjects": [],
@@ -6216,6 +6221,11 @@
         "date": "2026-06-11",
         "detail": "Grounded in the adjudication machinery's first live user-decision exercise (the thread-backlog close, a517/a518): both contract-level blocks were bare tag-overlap escalations, one against a genuinely disjoint match, costing a user interrupt the calibration would have avoided. Corroborated by a week of identical reviews: every plan-0-onward dag-schema proposal triggered the same wall and the same overlap-is-necessary-but-not-sufficient boilerplate. Surfaced in the closing report of that thread and minted here per /end step 8 (the close sweeps itself). Adjacent to a494 (consensual primitives / supportive-match handling), deliberately separate from it. Preflight 2026-06-11: one non-contract tag-overlap (backlog family sibling); notably the calibration directive itself cleared without a contract-level wall - tagged by concern (preflight, calibration) rather than dag-schema, which is itself a data point for the calibration: the escalation tracks the tag, not the content.",
         "artifact": "document:plans/thread-backlog-2026-06-11/adjudications/adj-session-res.json"
+      },
+      {
+        "date": "2026-06-11",
+        "detail": "Second specimen within hours of authoring: cb:c062's preflight returned 17 contract / 35 schema hits, every one bare tag_overlap from the dag-schema family; the single true match (cb:c061, the supersession target) carried claim_overlap. Signal-to-noise 1:51; reviewed per c055 and proceeded on the a494 precedent (postscript 8).",
+        "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
       }
     ],
     "subjects": [],
@@ -6273,6 +6283,11 @@
         "date": "2026-06-11",
         "detail": "Accepted via human adjudication against cb:a480. Reasoning: Operator-directed fold (2026-06-11): /assert-session retired from the framework skill set after audit found it un-ported origin canon (dangling a050-a054 taxonomy, c057 violation, write-flow bypass). Its unique extraction heuristics moved to the operator /end sweep; the framework skill list shrinks by one. Successor carries the four remaining skills verbatim.",
         "artifact": "adjudication:human:session:2026-06-11-assert-session-fold"
+      },
+      {
+        "date": "2026-06-11",
+        "detail": "Self-bootstrapping pointer per cb:a507: the session: stipulation above resolves in transcript postscript 8 and chronicles/2026-06-11-recency-and-rot.md.",
+        "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
       }
     ],
     "subjects": [],
@@ -6398,6 +6413,11 @@
         "date": "2026-06-11",
         "detail": "Accepted via human adjudication against cb:c061. Reasoning: Render-list maintenance: c061's Skills section references cb:a480, superseded today by cb:a521 when /assert-session was retired from the framework skill set (operator-directed fold into the /end sweep). The contract changes only that reference and the dep union; the chain is c060 -> c061 -> this node.",
         "artifact": "adjudication:human:session:2026-06-11-assert-session-fold"
+      },
+      {
+        "date": "2026-06-11",
+        "detail": "Self-bootstrapping pointer per cb:a507: the session: stipulation above resolves in transcript postscript 8 and chronicles/2026-06-11-recency-and-rot.md.",
+        "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
       }
     ],
     "subjects": [],
@@ -6420,6 +6440,31 @@
       "cb:a508",
       "cb:a521"
     ],
+    "status": "active",
+    "created": "2026-06-11"
+  },
+  {
+    "id": "cb:a522",
+    "type": "directive",
+    "kind": "action-item",
+    "domain": "dev",
+    "tags": [
+      "backlog",
+      "lifecycle:discrete",
+      "write-flow",
+      "evidence"
+    ],
+    "claim": "Provide an evidence-append front door: a sanctioned entry point (a Mutation type plus a mix task) for appending a dated evidence entry to an existing belief. Evidence is the one sanctioned in-place growth point on an immutable node, yet it is the only common write without tooling - every append today is an ad-hoc scripted Store write.",
+    "artifact": "document:plans/cb-schema-v2/transcript-execution.md",
+    "evidence": [
+      {
+        "date": "2026-06-11",
+        "detail": "Three specimens in one session (postscript 8): the a501 link-back replay, the c049 dep re-point (whose Mutation clauses append evidence internally but expose no evidence-only type), and the close's own four appends (a519, a500, and the a507 retro-pairs on a521/c062) - each a hand-rolled script against CB.Belief.Store. Preflight 2026-06-11: backlog tag-family overlap only; no semantic conflict.",
+        "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
     "status": "active",
     "created": "2026-06-11"
   }

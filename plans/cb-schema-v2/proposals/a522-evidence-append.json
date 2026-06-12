@@ -1,0 +1,17 @@
+{
+  "type": "directive",
+  "kind": "action-item",
+  "domain": "dev",
+  "tags": ["backlog", "lifecycle:discrete", "write-flow", "evidence"],
+  "claim": "Provide an evidence-append front door: a sanctioned entry point (a Mutation type plus a mix task) for appending a dated evidence entry to an existing belief. Evidence is the one sanctioned in-place growth point on an immutable node, yet it is the only common write without tooling - every append today is an ad-hoc scripted Store write.",
+  "artifact": "document:plans/cb-schema-v2/transcript-execution.md",
+  "evidence": [
+    {
+      "date": "2026-06-11",
+      "detail": "Three specimens in one session (postscript 8): the a501 link-back replay, the c049 dep re-point (whose Mutation clauses append evidence internally but expose no evidence-only type), and the close's own four appends (a519, a500, and the a507 retro-pairs on a521/c062) - each a hand-rolled script against CB.Belief.Store. Preflight 2026-06-11: backlog tag-family overlap only; no semantic conflict.",
+      "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
+    }
+  ],
+  "subjects": [],
+  "deps": []
+}

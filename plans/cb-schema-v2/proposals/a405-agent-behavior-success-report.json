@@ -1,0 +1,33 @@
+{
+  "new_beliefs": [
+    {
+      "type": "primitive",
+      "kind": "error-pattern",
+      "domain": "agent",
+      "tags": [
+        "verification",
+        "persistence",
+        "tool-use"
+      ],
+      "claim": "Observed: the agent treats a tool's success report as proof of persistence. A write path can succeed while silently dropping the load-bearing change - the success message describes the code path taken, not the state that landed. After a load-bearing write, verify the read-back (the stored artifact, not the return value) before reporting completion.",
+      "artifact": "document:plans/cb-schema-v2/transcript-execution.md",
+      "evidence": [
+        {
+          "date": "2026-06-11",
+          "detail": "CB.Belief.Materializer reported 'Materialized cb:a501 (2 items)' while its materialized link-back was silently discarded: Belief.to_map serialized only keys present in the source JSON (_keys filtering), so a field assigned after from_map never landed. Caught only because the agent happened to run a bs show read-back; fixed at the root with a regression test (composable-beliefs f94808c). Adjacent but distinct from a169 (stale observed state treated as current) and a109 (skipping requested verification): here the state was never current and no verification was requested - the gap is treating a return value as evidence about the store.",
+          "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
+        }
+      ],
+      "subjects": [
+        {
+          "ref": "agent",
+          "type": "agent"
+        }
+      ],
+      "deps": [],
+      "id": "agent-behavior:a405",
+      "status": "active",
+      "created": "2026-06-11"
+    }
+  ]
+}

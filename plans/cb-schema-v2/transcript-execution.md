@@ -387,3 +387,48 @@ audit, graph for the work, chronicle for the steering) and paradigm:a379
 (the observation, his). The epoch's first chronicle was written in the same
 change: chronicles/2026-06-10-the-schema-epoch.md. Stasis verified from
 three sides; the next session needs nothing from this one.
+
+## Postscript 8 (2026-06-11): the desk starts working - recency, rot, and a fold
+
+The first desk-driven session: bootstrapped cold from the graph per a508
+(pull, desk query, stale check - no handoff, no memory), it picked cb:a501
+off the backlog and closed the loop the directive predicted. While this
+session deliberated, concurrent threads committed a509 out from under its
+staged copy and grew the desk from 7 to 16; `mix bs recent` (Graph.recent/2,
+pure window scan over dates the records already carry) rendered the burst -
+78 events in two days - the moment it compiled.
+
+The discharge surfaced a serialization bug with a lesson attached:
+Belief.to_map serialized only keys present in the source JSON (_keys), so a
+field assigned after from_map was silently dropped on write. The
+materializer reported "Materialized cb:a501 (2 items)" while its link-back
+never persisted - caught only because the read-back happened to be run.
+Fixed at the root (a non-nil value now always serializes), regression
+test added, round-trip verified byte-identical. The error pattern (a tool's
+success report taken as proof of persistence) is now
+agent-behavior:a405.
+
+The operator then asked for an audit of /assert-session, an origin-system
+extract. Verdict: every broken part had cached canon as prose (the a386
+digest antipattern in a skill file - dangling a050-a054 ids, policy-kind
+primitives violating c057, a write step predating the write flow); every
+surviving part was judgment content with no graph counterpart. The
+operator removed the case for separation (no mid-session use; no
+framework-wide scope wanted) and the skill folded: its extraction
+heuristics moved into the operator /end sweep (Step 2 gains the
+agent-reasoning-error category), a480 -> a521 (the four-skill list),
+c061 -> c062 (CLAUDE.md render re-pointed), c049's dep re-pointed by
+mutation batch. Wire records for both adjudications graduate to
+proposals/ (15-a480, 16-c061) per the convention settled at close.
+
+Close findings, persisted where they point: the c062 preflight returned
+51 bare tag-overlap hits against 1 true match (evidence appended to
+cb:a519); the audit's "taxonomy never ported" conclusion was wrong -
+agent-behavior: holds a050-a054 and 101 beliefs, invisible to a
+one-namespace query (evidence appended to cb:a500, whose case this makes
+better than its author did); evidence appends themselves have no front
+door and were scripted three times today (minted as cb:a522). The /end
+skill gained the retro-pair rule (a507: bare session: slugs minted
+mid-session get document: pointers once the chronicle exists) and the
+wire-record graduation rule. Chronicle:
+chronicles/2026-06-11-recency-and-rot.md.
