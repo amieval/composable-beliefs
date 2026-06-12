@@ -6444,6 +6444,11 @@
         "date": "2026-06-11",
         "detail": "Second specimen within hours of authoring: cb:c062's preflight returned 17 contract / 35 schema hits, every one bare tag_overlap from the dag-schema family; the single true match (cb:c061, the supersession target) carried claim_overlap. Signal-to-noise 1:51; reviewed per c055 and proceeded on the a494 precedent (postscript 8).",
         "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Third specimen, with a wrinkle that cuts the other way: the a526/a527 preflight (the a511 discharge) returned 17 contract / 35 schema hits, all bare tag_overlap from a dag-schema tag - but this time the tag was semantically wrong on the proposal (the anchored-position format is document schema, not DAG-node schema), and the wall prompted the correction before import; under a511's own positions/schema/anchoring family the matches collapsed to zero in every conflict bucket. Calibration data point: the escalation tracks the tag, and exactly because it does, a contract-level wall on a mis-tagged proposal had diagnostic value once. The one genuine flag in the batch (a473 vs a528) was naming-tag overlap with no semantic contact, user-adjudicated proceed-unchanged.",
+        "artifact": "document:chronicles/2026-06-12-the-format-pins-itself.md"
       }
     ],
     "subjects": [],
@@ -6686,6 +6691,11 @@
         "date": "2026-06-12",
         "detail": "Third and fourth instances in one session (the a515 discharge thread): the discharge rationale append on a515 and this close's a507 retro-pairs both required raw CB.Belief.Store scripts because no sanctioned append entry point exists. Now the most-reproved gap on the desk.",
         "artifact": "document:chronicles/2026-06-11-the-position-skill-lands.md"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Fifth and sixth specimens (the a511 discharge close), plus a new failure mode the front door would also close: the a511 discharge-evidence append and the t0013 status flip both went through raw python against the graph files, and the whole-file re-dump used json.dumps defaults (ensure_ascii=true), unicode-escaping every non-ascii character in beliefs.json - caught only by diff inspection and re-dumped clean. A sanctioned append entry point would pin serialization along with the write. This close's own appends (this entry and a519's third specimen) ran through CB.Belief.Store directly - still a hand-rolled script, specimens seven and eight by the same count.",
+        "artifact": "document:chronicles/2026-06-12-the-format-pins-itself.md"
       }
     ],
     "subjects": [],
