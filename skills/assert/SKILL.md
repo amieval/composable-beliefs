@@ -20,7 +20,7 @@ See `docs/belief-graph.md` for the canonical system reference.
 
 3. **Identify primitives.** Extract non-reducible facts worth asserting. Each primitive:
    - Has `type: "primitive"`
-   - Has an `artifact` URI whose scheme is one of the c040 enum values (`gmail:`, `document:`, `source:`, `user:`, `session:`, `https:`). Policy-grade beliefs (`kind: "policy"`) carry the `session:<id>` artifact of the session in which they were authored - same as any other primitive.
+   - Has an `artifact` URI whose scheme is in the closed artifact-scheme enum - read it live (`mix bs show cb:c043`), never from a cached list. Policy-grade claims are directives per the kind-type table (c057) and carry the `session:<id>` artifact of the session in which they were adopted.
    - Has an `evidence` array with at least one entry. Each entry has `date`, `artifact`, and `detail`. The `detail` is a specific, detailed description of what happened - not a generalization (that's `claim`) but the full narrative of the event that constitutes evidence. More detail resists conflation.
    - Has `subjects` array linking to referenced entities (e.g. `[{"ref": "policy/loan-period", "type": "policy"}]`)
    - `kind` is enum-constrained by c039 (e.g. `"fact"`, `"observation"`, `"rule"`, `"policy"`, `"action-item"`, `"convention"`); `domain` is enum-constrained by c041 (`ops`, `design`, `agent`, `system`, `dev`); `tags` is free-form for cross-cutting concerns
