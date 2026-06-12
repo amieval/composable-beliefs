@@ -6696,10 +6696,25 @@
         "date": "2026-06-12",
         "detail": "Fifth and sixth specimens (the a511 discharge close), plus a new failure mode the front door would also close: the a511 discharge-evidence append and the t0013 status flip both went through raw python against the graph files, and the whole-file re-dump used json.dumps defaults (ensure_ascii=true), unicode-escaping every non-ascii character in beliefs.json - caught only by diff inspection and re-dumped clean. A sanctioned append entry point would pin serialization along with the write. This close's own appends (this entry and a519's third specimen) ran through CB.Belief.Store directly - still a hand-rolled script, specimens seven and eight by the same count.",
         "artifact": "document:chronicles/2026-06-12-the-format-pins-itself.md"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Discharged 2026-06-12 (materialized t0014): the append-evidence Mutation clause and the mix cb.evidence front door landed with clause and validator tests (308 passing, schema verify 20/20). The entry rides Belief.to_map key ordering and Store.write atomic serialization, so the encoder drift evidence 3 recorded cannot recur through this path - verified end-to-end on a temp graph copy before the live run. This entry is the front door appending its own discharge evidence: first production run.",
+        "artifact": "code:lib/mix/tasks/cb.evidence.ex#defmodule Mix.Tasks.Cb.Evidence do"
       }
     ],
     "subjects": [],
     "deps": [],
+    "materialized": {
+      "date": "2026-06-12",
+      "todos": [
+        {
+          "action": "Provide the evidence-append front door: append-evidence Mutation type in CB.Belief.Mutation (explicit artifact/date with session-slug and today fallbacks) plus the mix cb.evidence task - bare or namespaced id resolution, detail/artifact/date validation, dry-run default, --beliefs collection override, serialization pinned by Belief.to_map key order and Store.write atomic encoding",
+          "id": "t0014",
+          "notes": "Discharged in the executing session itself. End-to-end verified on a temp graph copy: an append containing non-ascii produced a diff of exactly the five new entry lines, byte-identical elsewhere, no unicode escapes - the ensure_ascii encoder-drift failure mode from evidence 3 closed by construction. This materialization's own discharge evidence was appended via mix cb.evidence, the front door's first production run."
+        }
+      ]
+    },
     "status": "active",
     "created": "2026-06-11"
   },
@@ -7076,6 +7091,60 @@
     "deps": [
       "cb:a485",
       "cb:a488"
+    ],
+    "status": "active",
+    "created": "2026-06-12"
+  },
+  {
+    "id": "cb:a530",
+    "type": "directive",
+    "kind": "action-item",
+    "domain": "dev",
+    "tags": [
+      "backlog",
+      "lifecycle:discrete",
+      "write-flow",
+      "todos"
+    ],
+    "claim": "Extend the write-flow front door to the todo collection: a sanctioned entry point for flipping a materialized item's status (open -> done, with discharge notes). The belief half of the gap closed with mix cb.evidence (a522); the todo half remains - every t-item status flip is still a hand-rolled script against todos.json, and the flip is half of every discharge.",
+    "artifact": "document:chronicles/2026-06-12-the-front-door-opens.md",
+    "evidence": [
+      {
+        "date": "2026-06-12",
+        "detail": "Two specimens bracket the gap: the t0013 flip went through raw python (the ensure_ascii incident's other half), and the t0014 flip went through an ad-hoc mix run -e script in the very session that built the evidence front door - the a522 discharge could sanction its own evidence append but not its own todo flip. Preflight 2026-06-12: 0 contract, 2 non-contract flags (a494, a498), both bare tag_overlap with no semantic contact - a498 (canon changes through the write flow) is supportive in spirit; reviewed per c055 and proceeded.",
+        "artifact": "document:chronicles/2026-06-12-the-front-door-opens.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a522"
+    ],
+    "status": "active",
+    "created": "2026-06-12"
+  },
+  {
+    "id": "cb:a531",
+    "type": "directive",
+    "kind": "action-item",
+    "domain": "dev",
+    "tags": [
+      "backlog",
+      "lifecycle:discrete",
+      "write-flow",
+      "docs"
+    ],
+    "claim": "Surface the evidence front door in the generated CLAUDE.md: the Operations write-flow line (cb:a449, rendered via c063) names preflight/adjudicate/import but not mix cb.evidence, so the one sanctioned in-place write is invisible to a cold session reading the file. Supersede a449 with a successor naming the evidence append, re-point c063's deps, and regenerate per the live-render rule (a386).",
+    "artifact": "document:chronicles/2026-06-12-the-front-door-opens.md",
+    "evidence": [
+      {
+        "date": "2026-06-12",
+        "detail": "Surfaced at the a522 close: the discharge deliberately left CLAUDE.md untouched because the Operations mention requires the a449 supersession ceremony, which exceeded the discharge's authorized scope. Precedent: the a515 close updated the skills line the same way (a521 -> a524, c062 -> c063). Preflight 2026-06-12: 0 contract, 2 non-contract flags (a494, a498), both bare tag_overlap, no semantic contact; a449's claim_overlap surfaced neutral - it is the supersession target. Reviewed per c055 and proceeded.",
+        "artifact": "document:chronicles/2026-06-12-the-front-door-opens.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a522"
     ],
     "status": "active",
     "created": "2026-06-12"

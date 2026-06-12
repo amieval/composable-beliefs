@@ -1,0 +1,17 @@
+{
+  "type": "directive",
+  "kind": "action-item",
+  "domain": "dev",
+  "tags": ["backlog", "lifecycle:discrete", "write-flow", "docs"],
+  "claim": "Surface the evidence front door in the generated CLAUDE.md: the Operations write-flow line (cb:a449, rendered via c063) names preflight/adjudicate/import but not mix cb.evidence, so the one sanctioned in-place write is invisible to a cold session reading the file. Supersede a449 with a successor naming the evidence append, re-point c063's deps, and regenerate per the live-render rule (a386).",
+  "artifact": "document:chronicles/2026-06-12-the-front-door-opens.md",
+  "evidence": [
+    {
+      "date": "2026-06-12",
+      "detail": "Surfaced at the a522 close: the discharge deliberately left CLAUDE.md untouched because the Operations mention requires the a449 supersession ceremony, which exceeded the discharge's authorized scope. Precedent: the a515 close updated the skills line the same way (a521 -> a524, c062 -> c063). Preflight 2026-06-12: 0 contract, 2 non-contract flags (a494, a498), both bare tag_overlap, no semantic contact; a449's claim_overlap surfaced neutral - it is the supersession target. Reviewed per c055 and proceeded.",
+      "artifact": "document:chronicles/2026-06-12-the-front-door-opens.md"
+    }
+  ],
+  "subjects": [],
+  "deps": ["cb:a522"]
+}

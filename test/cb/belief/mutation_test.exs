@@ -104,6 +104,51 @@ defmodule CB.Belief.MutationTest do
     assert {:error, {:belief_id_conflict, "a001"}} = Mutation.apply_one(m, beliefs(), @opts)
   end
 
+  test "append-evidence with explicit artifact and date needs no slug" do
+    m = %{
+      type: "append-evidence",
+      id: "m1",
+      belief_id: "a001",
+      detail: "ninth specimen retired",
+      artifact: "document:chronicles/2026-06-12-front-door.md",
+      date: "2026-06-12"
+    }
+
+    assert {:ok, [updated]} = Mutation.apply_one(m, beliefs(), [])
+
+    assert List.last(updated.evidence) == %{
+             "date" => "2026-06-12",
+             "detail" => "ninth specimen retired",
+             "artifact" => "document:chronicles/2026-06-12-front-door.md"
+           }
+  end
+
+  test "append-evidence falls back to session slug and opts date" do
+    m = %{type: "append-evidence", id: "m1", belief_id: "a001", detail: "noted"}
+
+    assert {:ok, [updated]} = Mutation.apply_one(m, beliefs(), @opts)
+    entry = List.last(updated.evidence)
+    assert entry["artifact"] == "session:session-test"
+    assert entry["date"] == "2026-06-03"
+  end
+
+  test "append-evidence appends after existing entries" do
+    [base] = beliefs()
+    existing = %{"date" => "2026-06-01", "detail" => "first", "artifact" => "session:earlier"}
+    bs = [%Belief{base | evidence: [existing]}]
+
+    m = %{
+      type: "append-evidence",
+      id: "m1",
+      belief_id: "a001",
+      detail: "second",
+      artifact: "document:x.md"
+    }
+
+    assert {:ok, [updated]} = Mutation.apply_one(m, bs, @opts)
+    assert [^existing, %{"detail" => "second"}] = updated.evidence
+  end
+
   test "belief-not-found surfaces for mutations targeting a missing id" do
     m = %{type: "set-name", id: "m1", belief_id: "zzz", after: %{"name" => "x"}}
     assert {:error, {:belief_not_found, "zzz"}} = Mutation.apply_one(m, beliefs(), @opts)

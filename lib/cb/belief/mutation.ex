@@ -52,8 +52,9 @@ defmodule CB.Belief.Mutation do
 
   - `:slug` — proposal slug, used as the `session:<slug>` artifact in
     evidence entries appended to each mutated belief. Required by every
-    per-type clause that mutates the belief list; the `context` clause
-    ignores it.
+    per-type clause that synthesizes its evidence artifact; the `context`
+    clause ignores it, and `append-evidence` skips it when the mutation
+    carries an explicit `:artifact`.
   - `:date` — ISO date string for the evidence entry. Defaults to
     today (`Date.utc_today/0 |> Date.to_iso8601/1`). Surfaced as an
     option mainly to keep tests deterministic.
@@ -172,6 +173,18 @@ defmodule CB.Belief.Mutation do
     end)
   end
 
+  def apply_one(%{type: "append-evidence"} = m, beliefs, opts) do
+    with_belief(beliefs, m.belief_id, fn belief ->
+      entry = %{
+        "date" => Map.get(m, :date) || resolve_date(opts),
+        "detail" => m.detail,
+        "artifact" => Map.get(m, :artifact) || "session:#{resolve_slug!(opts)}"
+      }
+
+      append_evidence(belief, entry)
+    end)
+  end
+
   def apply_one(%{type: type}, _beliefs, _opts), do: {:error, {:not_implemented, type}}
 
   @doc """
@@ -250,6 +263,9 @@ defmodule CB.Belief.Mutation do
 
   def summary(%{type: "drop-field"} = m),
     do: "#{m.id} (drop-field) #{m.belief_id}: drop #{m.field}"
+
+  def summary(%{type: "append-evidence"} = m),
+    do: "#{m.id} (append-evidence) #{m.belief_id}: + #{Map.get(m, :artifact) || "session:<slug>"}"
 
   def summary(%{type: "context"} = m),
     do: "#{m.id} (context) #{m.belief_id}: noted"

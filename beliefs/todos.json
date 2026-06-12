@@ -93,5 +93,13 @@
     "notes": "Discharged in the executing session itself. All seven worked-instance anchors plus the appendix anchors re-verified green via mix cb.resolve before authoring; the dag-schema mis-tag caught at preflight (52 tag-overlap matches collapsed to zero under the positions/schema/anchoring family); the a473 flag on a528 user-adjudicated proceed-unchanged.",
     "source": "cb:a511",
     "status": "done"
+  },
+  {
+    "action": "Provide the evidence-append front door: append-evidence Mutation type in CB.Belief.Mutation (explicit artifact/date with session-slug and today fallbacks) plus the mix cb.evidence task - bare or namespaced id resolution, detail/artifact/date validation, dry-run default, --beliefs collection override, serialization pinned by Belief.to_map key order and Store.write atomic encoding",
+    "created": "2026-06-12",
+    "id": "t0014",
+    "notes": "Discharged in the executing session itself. End-to-end verified on a temp graph copy: an append containing non-ascii produced a diff of exactly the five new entry lines, byte-identical elsewhere, no unicode escapes - the ensure_ascii encoder-drift failure mode from evidence 3 closed by construction. This materialization's own discharge evidence was appended via mix cb.evidence, the front door's first production run.",
+    "source": "cb:a522",
+    "status": "done"
   }
 ]
