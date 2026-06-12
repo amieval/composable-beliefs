@@ -12,5 +12,33 @@
     "id": "t0002",
     "source": "cb:a501",
     "status": "done"
+  },
+  {
+    "action": "Make mix cb.import reject new-belief ids lacking the graph's namespace prefix (the single prefix all existing ids share; empty, bare, or mixed graphs pass vacuously) before any write",
+    "created": "2026-06-11",
+    "id": "t0003",
+    "source": "cb:a513",
+    "status": "done"
+  },
+  {
+    "action": "Correct the cb.import moduledoc's bare-id examples (a305 -> cb:a305, a044 -> cb:a044) and document the namespace gate under Validation",
+    "created": "2026-06-11",
+    "id": "t0004",
+    "source": "cb:a513",
+    "status": "done"
+  },
+  {
+    "action": "Add a dep-resolution check to mix cb.verify.schema: every dep of every active belief resolves in-collection; deps in namespaces the collection's ids never use defer to verify.collection's union check; bare deps are never cross-namespace",
+    "created": "2026-06-11",
+    "id": "t0005",
+    "source": "cb:a514",
+    "status": "done"
+  },
+  {
+    "action": "Cover dep resolution: resolving dep, dangling local dep, bare-dep incident replay, cross-namespace deferral, and non-active exemption",
+    "created": "2026-06-11",
+    "id": "t0006",
+    "source": "cb:a514",
+    "status": "done"
   }
 ]
