@@ -49,3 +49,25 @@ resolve against the repo root.
 **DAG status:** extracted
 **Belief:** [[cb:a488]]
 **Anchor:** code:lib/cb/codepath.ex#anchor "#{anchor}" not found in
+
+## Design rationale (appended 2026-06-11, for cb:a511)
+
+Appended at user direction after the a511 self-bootstrap audit found this
+rationale reachable only through an unresolvable session: slug (the a518 gap).
+This is the settle-time capture the /position skill (cb:a515) mechanizes;
+claims below stage for extraction when a511 executes. Anchors verified at
+append time, one match each.
+
+### Claim: A position may carry a terms block: entries of shape {term, definition, anchor?}. A term naming a code construct anchors to its defining site, so a definition is a navigable stop; prose-only definitions remain valid for terms with no code referent.
+**DAG status:** pending
+**Intended:** schema rule, lands under cb:a511
+
+### Claim: Position names the epistemic artifact - the stance and its claims. Codepath names the render face - the navigable tour resolved from the position's anchors. A position with anchors has a codepath; the term "walkthrough" is retired with its repo.
+**DAG status:** pending
+**Intended:** definition, lands under cb:a511
+**Anchor:** code:lib/cb/codepath.ex#Resolve a codepath output-target into ordered, anchored stops
+
+### Claim: Anchored claims verify on a three-tier gradient: provenance integrity (source anchors - the quoted evidence still exists), grounding currency (code anchors - the referent still exists in the substrate), and behavioral validity (predicates - the referent still behaves as claimed, contract grade). An anchor check is a necessary condition only: failure flags the claim for review, while success alone never re-validates the claim.
+**DAG status:** pending
+**Intended:** inference, kind design-rationale, lands under cb:a511
+**Anchor:** code:lib/mix/tasks/cb.verify.codepath.ex#defmodule Mix.Tasks.Cb.Verify.Codepath
