@@ -6449,12 +6449,32 @@
         "date": "2026-06-12",
         "detail": "Third specimen, with a wrinkle that cuts the other way: the a526/a527 preflight (the a511 discharge) returned 17 contract / 35 schema hits, all bare tag_overlap from a dag-schema tag - but this time the tag was semantically wrong on the proposal (the anchored-position format is document schema, not DAG-node schema), and the wall prompted the correction before import; under a511's own positions/schema/anchoring family the matches collapsed to zero in every conflict bucket. Calibration data point: the escalation tracks the tag, and exactly because it does, a contract-level wall on a mis-tagged proposal had diagnostic value once. The one genuine flag in the batch (a473 vs a528) was naming-tag overlap with no semantic contact, user-adjudicated proceed-unchanged.",
         "artifact": "document:chronicles/2026-06-12-the-format-pins-itself.md"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Discharged 2026-06-12 (materialized t0015/t0016): the calibration decided and landed. Criteria encoded as cb:c064 (preflight-escalation-criteria, contract-grade audit-rule, deps c055 + this node): escalation into a conflict bucket requires semantic contact (subject_overlap or claim_overlap) alongside the contract-grade or dag-schema trigger; bare tag overlap re-buckets to neutral with the candidate's grade annotated in the render, preserving the evidence-3 mis-tag diagnostic without the wall. CB.Belief.Conflict.classify/2 gained semantic_contact?/1; 311 tests passing, schema verify 20/20. No c055-family supersession: the scope doctrine did not move - c055's overlap-is-necessary-but-not-sufficient invariant is now enforced mechanically at preflight instead of delegated to reviewer boilerplate. c064's own preflight was the calibrated bucketing's first live run: 0 contract, 0 schema, 3 neutral, with c055 surfacing as annotated neutral where the old code would have blocked.",
+        "artifact": "code:lib/cb/belief/conflict.ex#defp semantic_contact?(reasons) do"
       }
     ],
     "subjects": [],
     "deps": [
       "cb:c055"
     ],
+    "materialized": {
+      "date": "2026-06-12",
+      "todos": [
+        {
+          "action": "Recalibrate preflight bucketing in CB.Belief.Conflict: contract-grade or dag-schema-tagged matches classify as conflicting only with semantic contact (claim_overlap or subject_overlap among the match reasons); bare tag_overlap downgrades to neutral with the candidate's grade still annotated in the rendered output. Update moduledocs and tests.",
+          "id": "t0015",
+          "notes": "a519's three specimens: every contract-level block in the thread-backlog close and the c062/a526 preflights was bare tag_overlap (signal-to-noise 1:51 on c062); the one mis-tag diagnostic (evidence 3) is preserved by keeping downgraded matches visible with grade annotation rather than suppressing them."
+        },
+        {
+          "action": "Encode the escalation criteria as a contract-grade audit-rule node through the write flow (preflight, adjudicate, import), deps cb:c055 and cb:a519. No c055 supersession: its overlap-is-necessary-but-not-sufficient invariant is what the calibration enforces at preflight time.",
+          "id": "t0016",
+          "notes": "a519 conditions the c055-family supersession on the scope doctrine moving; it does not - preflight stops delegating the insufficiency to reviewer boilerplate and enforces it mechanically instead."
+        }
+      ]
+    },
     "status": "active",
     "created": "2026-06-11"
   },
@@ -7113,6 +7133,11 @@
         "date": "2026-06-12",
         "detail": "Two specimens bracket the gap: the t0013 flip went through raw python (the ensure_ascii incident's other half), and the t0014 flip went through an ad-hoc mix run -e script in the very session that built the evidence front door - the a522 discharge could sanction its own evidence append but not its own todo flip. Preflight 2026-06-12: 0 contract, 2 non-contract flags (a494, a498), both bare tag_overlap with no semantic contact - a498 (canon changes through the write flow) is supportive in spirit; reviewed per c055 and proceeded.",
         "artifact": "document:chronicles/2026-06-12-the-front-door-opens.md"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Specimens nine and ten by the running count: the t0015/t0016 status flips in the a519 discharge went through a hand-rolled .exs (CB.JSON read, Jason pretty encode, write_atomic_raw) - serialization pinned by using the sink's own modules, but still an ad-hoc script in the session that had just used mix cb.evidence for the belief half of the same discharge. The asymmetry is now the routine shape of every close: sanctioned append on the node, hand-rolled flip on the todo.",
+        "artifact": "document:chronicles/2026-06-12-overlap-is-not-contact.md"
       }
     ],
     "subjects": [],
@@ -7146,6 +7171,81 @@
     "deps": [
       "cb:a522"
     ],
+    "status": "active",
+    "created": "2026-06-12"
+  },
+  {
+    "id": "cb:c064",
+    "type": "directive",
+    "kind": "audit-rule",
+    "domain": "system",
+    "tags": [
+      "preflight",
+      "conflicts",
+      "calibration"
+    ],
+    "name": "preflight-escalation-criteria",
+    "claim": "Preflight escalates a matched belief into a conflict bucket only when the contract-grade or dag-schema trigger is accompanied by semantic contact: a shared subject ref or claim overlap. Bare tag overlap is family resemblance, not contact - it classifies as neutral (informational) and never blocks a write, but the entry keeps its contract-grade marker and the renderer annotates the grade, so a mis-tagged proposal still receives its diagnostic signal. This enforces at preflight time what c055 states as doctrine: overlap is necessary but not sufficient for contradiction.",
+    "rules": [
+      {
+        "outcome": "conflicting with priority contract_level - blocks the write pending explicit adjudication",
+        "scenario": "contract-grade match with claim or subject overlap"
+      },
+      {
+        "outcome": "conflicting (schema bucket) - requires a captured adjudication outcome before the write",
+        "scenario": "dag-schema-tagged non-contract match with claim or subject overlap"
+      },
+      {
+        "outcome": "neutral - informational, grade marker retained, write not blocked",
+        "scenario": "contract-grade or dag-schema-tagged match on bare tag overlap"
+      }
+    ],
+    "invariants": [
+      "Semantic contact is exactly: subject_overlap or claim_overlap among the match reasons",
+      "Bare tag overlap never blocks a write",
+      "A contract-grade match with semantic contact always carries priority contract_level",
+      "Downgraded matches remain visible in preflight output with their grade annotated - the calibration re-buckets noise, never suppresses it"
+    ],
+    "contract": true,
+    "evidence": [
+      {
+        "date": "2026-06-12",
+        "detail": "Calibration landed as the a519 discharge (materialized t0015/t0016) after three recorded specimens: the thread-backlog close where both contract-level blocks were bare tag-overlap escalations, one against a genuinely disjoint match; the c062 preflight returning 17 contract / 35 schema hits at 1:51 signal-to-noise where the single true match carried claim_overlap; and the a526/a527 preflight where the wall on a mis-tagged proposal had diagnostic value once - which is why the downgrade annotates grade instead of suppressing. CB.Belief.Conflict.classify/2 now requires semantic_contact?/1 (subject_overlap or claim_overlap) before either conflict bucket; the renderer marks contract-grade entries wherever they land. 311 tests passing; the multiple-overlap fixture moved c029 from conflicting to neutral, the calibration in action. No c055 supersession: the scope doctrine did not move - preflight now enforces mechanically the necessary-but-not-sufficient invariant c055 already states. This node's own preflight was the calibrated bucketing's first live run: 0 contract, 0 schema, 3 neutral - c055 itself surfacing as neutral bare tag-overlap with its grade annotated, where the old code would have raised the wall.",
+        "artifact": "code:lib/cb/belief/conflict.ex#defp semantic_contact?(reasons) do"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:c055",
+      "cb:a519"
+    ],
+    "materialized": null,
+    "status": "active",
+    "created": "2026-06-12"
+  },
+  {
+    "id": "cb:a532",
+    "type": "directive",
+    "kind": "action-item",
+    "domain": "dev",
+    "tags": [
+      "backlog",
+      "lifecycle:discrete",
+      "write-flow",
+      "materializer"
+    ],
+    "claim": "Give CB.Belief.Materializer bare-id resolution: materialize/1 rejects a bare id (node_not_found on 'a519') while mix bs and mix cb.evidence both resolve bare ids when exactly one belief matches - and the /materialize skill's own spec example uses a bare id, so the documented path fails on first try. Reuse the resolution (and ambiguity error) the evidence front door already carries.",
+    "artifact": "document:chronicles/2026-06-12-overlap-is-not-contact.md",
+    "evidence": [
+      {
+        "date": "2026-06-12",
+        "detail": "Hit live in the a519 discharge: the materialization spec was written with belief_id 'a519' per the skill's own example shape, failed with {:node_not_found, \"a519\"}, and succeeded only after namespacing to 'cb:a519'. The temp script's exit-0-on-error compounded it - the && rm cleaned up the failed script before the retry. mix cb.evidence resolves the same bare id without complaint in the same session. Kin to the bare-id class a510/a513 close: this is the materializer member. Preflight 2026-06-12 (first close under the c064 calibration): 0 contract, 0 schema, 25 neutral - all bare tag_overlap from the backlog family, reviewed at a glance, no wall.",
+        "artifact": "document:chronicles/2026-06-12-overlap-is-not-contact.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "materialized": null,
     "status": "active",
     "created": "2026-06-12"
   }

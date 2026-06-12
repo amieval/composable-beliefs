@@ -101,5 +101,21 @@
     "notes": "Discharged in the executing session itself. End-to-end verified on a temp graph copy: an append containing non-ascii produced a diff of exactly the five new entry lines, byte-identical elsewhere, no unicode escapes - the ensure_ascii encoder-drift failure mode from evidence 3 closed by construction. This materialization's own discharge evidence was appended via mix cb.evidence, the front door's first production run.",
     "source": "cb:a522",
     "status": "done"
+  },
+  {
+    "action": "Recalibrate preflight bucketing in CB.Belief.Conflict: contract-grade or dag-schema-tagged matches classify as conflicting only with semantic contact (claim_overlap or subject_overlap among the match reasons); bare tag_overlap downgrades to neutral with the candidate's grade still annotated in the rendered output. Update moduledocs and tests.",
+    "created": "2026-06-12",
+    "id": "t0015",
+    "notes": "Discharged in the executing session itself. CB.Belief.Conflict.classify/2 now gates both conflict buckets on semantic_contact?/1 (subject_overlap or claim_overlap); bare tag_overlap re-buckets to neutral with the grade annotated by the cb.preflight renderer. The multiple-overlap fixture moved c029 from conflicting to neutral - the calibration in action; 311 tests passing.",
+    "source": "cb:a519",
+    "status": "done"
+  },
+  {
+    "action": "Encode the escalation criteria as a contract-grade audit-rule node through the write flow (preflight, adjudicate, import), deps cb:c055 and cb:a519. No c055 supersession: its overlap-is-necessary-but-not-sufficient invariant is what the calibration enforces at preflight time.",
+    "created": "2026-06-12",
+    "id": "t0016",
+    "notes": "Discharged in the executing session itself. Encoded as cb:c064 (preflight-escalation-criteria), deps c055 + a519, three scenario rules and four invariants. Its own preflight was the calibrated bucketing's first live run: 0 contract, 0 schema, 3 neutral, c055 surfacing as annotated neutral where the old code would have raised the wall. Schema verify 20/20 after import.",
+    "source": "cb:a519",
+    "status": "done"
   }
 ]

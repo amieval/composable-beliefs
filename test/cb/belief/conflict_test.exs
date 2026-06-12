@@ -87,9 +87,10 @@ defmodule CB.Belief.ConflictTest do
     created: "2024-09-11"
   }
 
-  # A proposal that materializes a fifth status value. Matches c029 on the
-  # `dag-schema` tag; c029 is contract-grade, so the match must surface as
-  # contract-level conflicting.
+  # A proposal that materializes a fifth status value. Matches c029 on
+  # the `dag-schema` tag AND on claim tokens (status, active, superseded,
+  # retracted, retired); the semantic contact is what licenses the
+  # contract-level escalation.
   defp fifth_status_proposal do
     %Belief{
       type: "primitive",
@@ -182,6 +183,84 @@ defmodule CB.Belief.ConflictTest do
       assert entry.id == "c029"
       assert entry.priority == :contract_level
       assert :tag_overlap in entry.reasons
+      assert :claim_overlap in entry.reasons
+    end
+
+    test "bare tag overlap with a contract is neutral but keeps the grade marker" do
+      proposed = %Belief{
+        type: "directive",
+        kind: "action-item",
+        domain: "dev",
+        tags: ["dag-schema", "backlog"],
+        claim: "Provide a renderer for belief cards in the graph viewer",
+        subjects: [],
+        status: "active",
+        deps: [],
+        rules: [],
+        invariants: []
+      }
+
+      result = Conflict.preflight(proposed, [@status_contract])
+
+      assert result.conflicting == []
+      assert result.supportive == []
+      assert [entry] = result.neutral
+      assert entry.id == "c029"
+      assert entry.reasons == [:tag_overlap]
+      assert entry.priority == :contract_level
+    end
+
+    test "bare tag overlap with a schema-tagged non-contract is neutral" do
+      active_schema_primitive = %Belief{@schema_primitive | status: "active"}
+
+      proposed = %Belief{
+        type: "directive",
+        kind: "action-item",
+        domain: "dev",
+        tags: ["dag-schema", "backlog"],
+        claim: "Provide a renderer for belief cards in the graph viewer",
+        subjects: [],
+        status: "active",
+        deps: [],
+        rules: [],
+        invariants: []
+      }
+
+      result = Conflict.preflight(proposed, [active_schema_primitive])
+
+      assert result.conflicting == []
+      assert result.supportive == []
+      assert [entry] = result.neutral
+      assert entry.id == "a373"
+      assert entry.reasons == [:tag_overlap]
+      refute Map.has_key?(entry, :priority)
+    end
+
+    test "subject overlap with a contract escalates without claim overlap" do
+      contract_with_subject = %Belief{
+        @status_contract
+        | subjects: [%{"ref" => "docs/schema.md", "type" => "doc"}]
+      }
+
+      proposed = %Belief{
+        type: "primitive",
+        kind: "note",
+        domain: "circulation",
+        tags: ["renewal"],
+        claim: "Branch opens at nine on weekdays for renewals",
+        subjects: [%{"ref" => "docs/schema.md", "type" => "doc"}],
+        status: "active",
+        deps: [],
+        rules: [],
+        invariants: []
+      }
+
+      result = Conflict.preflight(proposed, [contract_with_subject])
+
+      assert [entry] = result.conflicting
+      assert entry.id == "c029"
+      assert entry.priority == :contract_level
+      assert entry.reasons == [:subject_overlap]
     end
 
     test "dag-schema primitive match is conflicting but not contract-level" do
@@ -217,8 +296,11 @@ defmodule CB.Belief.ConflictTest do
       supportive_ids = Elixir.Enum.map(result.supportive, & &1.id)
       neutral_ids = Elixir.Enum.map(result.neutral, & &1.id)
 
-      assert "c029" in conflicting_ids
-      assert Elixir.Enum.find(result.conflicting, &(&1.id == "c029")).priority == :contract_level
+      # c029 matches on the dag-schema tag alone (claim overlap is barred
+      # by the domain mismatch): family resemblance without semantic
+      # contact stays informational, grade marker intact.
+      assert "c029" in neutral_ids
+      assert Elixir.Enum.find(result.neutral, &(&1.id == "c029")).priority == :contract_level
       assert "a200" in supportive_ids
       assert "a300" in neutral_ids
       refute "a100" in (conflicting_ids ++ supportive_ids ++ neutral_ids)

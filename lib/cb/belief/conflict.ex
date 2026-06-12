@@ -27,24 +27,30 @@ defmodule CB.Belief.Conflict do
 
   - **Conflicting** when the matched belief is contract-grade
     (`CB.Belief.contract?/1` or c-prefix ID) or carries the `dag-schema`
-    tag. v1 errs on the side of flagging schema-adjacent matches and
-    lets the adjudication path decide. Contract-grade matches also
-    receive a `priority: :contract_level` marker.
+    tag, AND the match carries semantic contact - a shared subject ref
+    or claim overlap. Contract-grade matches also receive a
+    `priority: :contract_level` marker.
   - **Supportive** when the match shares a subject ref and the matched
     belief is not schema/contract. Subject-level agreement is the
     coarsest "speaks to the same thing" signal.
-  - **Neutral** when overlap exists but none of the above apply (e.g.
-    tag-only match on a non-schema tag).
+  - **Neutral** when overlap exists but none of the above apply. Bare
+    tag overlap with a contract-grade or schema-tagged node lands here:
+    overlap is necessary but not sufficient for contradiction (cb:c055),
+    and a shared tag alone carries no semantic contact. The entry keeps
+    its `priority` marker so the candidate's grade stays visible in the
+    rendered output rather than being suppressed.
 
   Sentiment-inversion detection (whether the proposal negates or extends
-  an enum a contract closes) is deferred. v1 relies on contract-grade
-  matches raising adjudication regardless of content direction.
+  an enum a contract closes) is deferred. Preflight relies on
+  contract-grade matches with semantic contact raising adjudication
+  regardless of content direction.
 
   ## Entry shape
 
-      %{id: "c029", reasons: [:tag_overlap], priority: :contract_level}
+      %{id: "c029", reasons: [:tag_overlap, :claim_overlap], priority: :contract_level}
 
-  `priority` is only present when the match is contract-grade.
+  `priority` is only present when the match is contract-grade,
+  regardless of which bucket the entry lands in.
 
   ## Example
 
@@ -211,11 +217,18 @@ defmodule CB.Belief.Conflict do
 
   defp classify(candidate, reasons) do
     cond do
-      contract_level?(candidate) -> :conflicting
-      schema_tagged?(candidate) -> :conflicting
+      contract_level?(candidate) and semantic_contact?(reasons) -> :conflicting
+      schema_tagged?(candidate) and semantic_contact?(reasons) -> :conflicting
       :subject_overlap in reasons -> :supportive
       true -> :neutral
     end
+  end
+
+  # A shared tag alone is family resemblance, not semantic contact:
+  # escalation to a conflict bucket requires the match to also touch the
+  # same subject or the same claim territory (cb:c064).
+  defp semantic_contact?(reasons) do
+    :subject_overlap in reasons or :claim_overlap in reasons
   end
 
   defp contract_level?(%Belief{id: id} = b) do

@@ -45,6 +45,11 @@ defmodule Mix.Tasks.Cb.Preflight do
       3. SUPPORTIVE                - dep candidates
       4. NEUTRAL                   - informational only
 
+  Escalation into the conflict buckets requires semantic contact (a
+  shared subject ref or claim overlap) in addition to the contract-grade
+  or dag-schema trigger; bare tag overlap is informational and lands in
+  NEUTRAL with the candidate's grade annotated (cb:c064).
+
   Each entry shows the matched belief's id, match reasons, and a
   truncated claim so the agent can render it inline without a second
   lookup.
@@ -196,7 +201,8 @@ defmodule Mix.Tasks.Cb.Preflight do
 
   defp format_entry(%{id: id, reasons: reasons} = entry) do
     reason_str = reasons |> Enum.map(&Atom.to_string/1) |> Enum.join(", ")
-    "  #{id} [#{reason_str}] — #{truncate(entry[:claim])}"
+    grade = if entry[:priority] == :contract_level, do: " (contract-grade)", else: ""
+    "  #{id} [#{reason_str}]#{grade} — #{truncate(entry[:claim])}"
   end
 
   defp truncate(nil), do: "(no claim)"
