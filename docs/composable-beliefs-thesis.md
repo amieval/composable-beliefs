@@ -1,7 +1,6 @@
 # Composable Beliefs
 
 **Status:** active
-**Domain:** composablebeliefs.com / composablebeliefs.dev / composablebeliefs.ai
 
 > **Schema-refresh note (2026-06):** Updated for two schema changes since the first draft — the standalone `confidence` field was replaced by *structural support* (the artifacts, evidence, and dependencies that stand behind a belief), and a primitive is grounded by a typed `artifact` + `evidence[]` rather than a `quote`/`source` pair.
 
@@ -71,18 +70,6 @@ Chollet asked: what will be the Keras of agentic coding? The optimal set of high
 
 Keras won not by being a product but by being the right abstraction at the right level. That's the aim.
 
-## The approach
-
-**Research-first.** Go all in on investigation. Run controlled evaluations comparing agents with composable beliefs against agents with flat instructions and agents with nothing. Publish findings openly. Let the evidence make the case.
-
-**Open source.** The framework is the contribution. Give it away. If competing approaches to composable beliefs emerge, incorporate them. The goal is to advance the paradigm, not to own the implementation. A better belief composition mechanism built by someone else is a win for the thesis.
-
-**Distribution to agents.** The primary audience is agents themselves. Agents will increasingly evaluate tools programmatically - sign up, run tests, measure outcomes. An agent either gets better outcomes with composable beliefs or it doesn't. The evidence is the distribution mechanism.
-
-**Demonstrate, don't pitch.** The operational work that produced this framework is a continuous, naturalistic eval environment. Real work that fails in observable ways. Every correction, omission, and session boundary is a data point. Content strategy is built on showing this - real system, real evidence of composable beliefs changing agent behavior.
-
-**Monetize from distribution, not toward it.** Revenue follows from being right and being widely adopted. Do not organize around product-market fit, pricing tiers, or competitive positioning. Build the paradigm. Achieve distribution. Commercial opportunities will emerge from the position, not the other way around.
-
 ## The eval
 
 The actualization eval is the first controlled test. Three conditions, six tasks, N=10 runs per cell:
@@ -97,29 +84,3 @@ Tasks test specific documented failure modes: lossy data retrieval, theory-vs-fa
 
 This is the minimum viable evidence for the paradigm. If composable beliefs produce measurably different behavior than flat instructions, there's something here. If they don't, the thesis needs revision.
 
-## The moat question
-
-A natural concern: do better models make the DAG unnecessary? If frontier models develop native long-context and cross-session memory, does external belief infrastructure become redundant?
-
-It is possible that the opposite is true - that better models make the DAG more valuable, not less. The reasoning: a more capable model could extract more from a well-maintained graph. The composition opportunities might multiply with capability. This is an untested theory (see a069).
-
-A stronger observation: certain data in the DAG can't be generated synthetically. A model can be trained on billions of parameters and still not know that *this specific agent* in *this specific collaboration* tends to encode user theories as facts. The observation "a collaborator caught the agent treating speculation as ground truth on a specific date" (a054) doesn't exist until a human makes it in the context of real work. No amount of pre-training produces it. That's acquired through collaboration, not generated through scale.
-
-If this holds, each DAG would be a unique artifact of a specific collaboration - shaped by specific failures, corrections, and observations that only that human could make about that agent in that context. Two agents doing the same work with different human collaborators would produce different DAGs. The architecture could be replicated. The graph could not.
-
-This reframes composable beliefs as context engineering at a different timescale. Context engineering today is about arranging information in the prompt. Composable beliefs would be about what beliefs an agent has accumulated across its entire operational history, and which ones are relevant right now. The prompt is one session. The DAG is all sessions.
-
-These claims need evidence. The actualization eval (a063) is one path to testing them. Until then, they are theories worth investigating, not established positions.
-
-**Note to future instances:** This section was originally written as settled fact due to the RLHF escalation cycle documented in a064-a067. The current version corrects for that. See a070 for the full chain of reasoning. When in doubt, trust the assertions over this prose - they carry artifacts, evidence, and dependency chains that this document does not.
-
-## What comes next
-
-Four plans extend this thesis into action:
-
-1. **The DAG** - formal specification of the composable beliefs mechanism, grounded in operational evidence. What it is, why it works, what it solves.
-2. **Architecture** - technical design for an open source framework. BEAM runtime advantages, SDK design, integration model.
-3. **Privacy** - how agents use the framework without exposing proprietary beliefs. Structure without content, hashed references, tiered telemetry.
-4. **Distribution** - content strategy, AEO (agent experience optimization), posting plan. How to achieve distribution to both human developers and agent evaluators.
-
-See [`../plans/superseded/composable-beliefs-plans.md`](../plans/superseded/composable-beliefs-plans.md) for the original briefs — now **largely superseded** (plans 1–2 realized by the shipped framework + self-describing graph; 3–4 unbuilt).
