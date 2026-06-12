@@ -1,6 +1,6 @@
 # Composable Beliefs DAG - Design Reference
 
-The DAG's design lives *in the graph*, as beliefs and contracts. This file is a thin index: it points at the authoritative nodes and keeps the reference that does not live in the graph (query patterns, storage layout, positioning). It does not restate the design - query it.
+The DAG's design lives *in the graph*, as beliefs and contracts. This file is a thin index: it points at the authoritative nodes and keeps the reference that does not live in the graph (query patterns, storage layout, positioning). It does not restate the design - query it. The prose companion is [mental-model.md](mental-model.md), the narrative walk through the same schema.
 
 ## Schema contracts (the source of truth)
 
