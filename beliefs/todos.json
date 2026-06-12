@@ -40,5 +40,26 @@
     "id": "t0006",
     "source": "cb:a514",
     "status": "done"
+  },
+  {
+    "action": "Extract the belief-free anchor-resolution core (per-line literal matching, first-match tighten warning, out-of-range nth) from CB.Codepath into CB.Anchor, with CB.Codepath delegating",
+    "created": "2026-06-11",
+    "id": "t0007",
+    "source": "cb:a512",
+    "status": "done"
+  },
+  {
+    "action": "Add mix cb.resolve --file: validate and resolve a JSON array of anchor rows (path/anchor/nth objects or code: URI strings per the c043 grammar) against --root with no belief collection loaded; exit 0 only when every row resolves",
+    "created": "2026-06-11",
+    "id": "t0008",
+    "source": "cb:a512",
+    "status": "done"
+  },
+  {
+    "action": "Cover the resolver core and the task: CB.Anchor resolution-rule tests plus cb.resolve row parsing (mixed object/URI files, per-index error reporting) and text rendering",
+    "created": "2026-06-11",
+    "id": "t0009",
+    "source": "cb:a512",
+    "status": "done"
   }
 ]

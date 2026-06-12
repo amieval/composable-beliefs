@@ -5203,6 +5203,11 @@
         "date": "2026-06-10",
         "detail": "The prescriptive extraction of the position's conditional (a485), anchored to the resolver's enforcement site - the anchor-not-found warning constructor in lib/cb/codepath.ex; anchor verified resolving with exactly one match at authoring time. Recurring rule: fires on every agent answer that cites code; non-contract grade until a draft-mode verifier exists to machine-check compliance.",
         "artifact": "session:2026-06-10-substrate-position-discussion"
+      },
+      {
+        "date": "2026-06-11",
+        "detail": "The stated escalation condition is met: a512 discharged 2026-06-11 - mix cb.resolve --file machine-checks code: anchors with no belief collection loaded, so draft-mode compliance verification exists. Escalation to contract grade is now unblocked but remains a deliberate act (a contract needs rules per c056), not an automatic consequence of the tool landing.",
+        "artifact": "code:lib/mix/tasks/cb.resolve.ex#def run("
       }
     ],
     "subjects": [],
@@ -6005,6 +6010,11 @@
         "date": "2026-06-11",
         "detail": "The gap surfaced twice in the thread: presenting the substrate position as a codepath required hand-running grep -nF with the resolver's semantics because mix cb.render.codepath only loads codepath output-targets, and a488's evidence names a draft-mode verifier as its contract-escalation condition.",
         "artifact": "session:2026-06-10-substrate-position-discussion"
+      },
+      {
+        "date": "2026-06-11",
+        "detail": "Discharged 2026-06-11 (materialized t0007-t0009): CB.Anchor extracted as the belief-free core CB.Codepath and mix cb.resolve share - the belief coupling lived only in resolve/resolve_stop, so the one-tested-resolver promise holds by construction. The task accepts bare {path, anchor, nth} objects and code: URI strings interchangeably, so a position's Anchor: lines pass through verbatim; loose-anchor warnings report without failing, any unresolved or invalid row fails the gate (exit 1). Full suite green at 293 tests.",
+        "artifact": "code:lib/mix/tasks/cb.resolve.ex#def run("
       }
     ],
     "subjects": [],
@@ -6012,7 +6022,23 @@
       "cb:a488",
       "cb:a467"
     ],
-    "materialized": null,
+    "materialized": {
+      "date": "2026-06-11",
+      "todos": [
+        {
+          "action": "Extract the belief-free anchor-resolution core (per-line literal matching, first-match tighten warning, out-of-range nth) from CB.Codepath into CB.Anchor, with CB.Codepath delegating",
+          "id": "t0007"
+        },
+        {
+          "action": "Add mix cb.resolve --file: validate and resolve a JSON array of anchor rows (path/anchor/nth objects or code: URI strings per the c043 grammar) against --root with no belief collection loaded; exit 0 only when every row resolves",
+          "id": "t0008"
+        },
+        {
+          "action": "Cover the resolver core and the task: CB.Anchor resolution-rule tests plus cb.resolve row parsing (mixed object/URI files, per-index error reporting) and text rendering",
+          "id": "t0009"
+        }
+      ]
+    },
     "status": "active",
     "created": "2026-06-11"
   },
@@ -6515,6 +6541,11 @@
         "date": "2026-06-11",
         "detail": "Live specimen at the materialize flow's first batch use: the a513/a514 discharge wrote rationale notes on all four action items (t0003-t0006) per the skill's traceability rule; the sink ignored them by documented design and the flow reported success - same species as agent-behavior:a405, a success message describing the code path rather than the state that landed. Preflight 2026-06-11: 2 schema hits, both bare tag-overlap (a494 backlog family, a498 write-flow family), reviewed per c055 - no active structure contradicted; the a519 calibration pattern applies.",
         "artifact": "document:chronicles/2026-06-11-the-bare-id-class-closes.md"
+      },
+      {
+        "date": "2026-06-11",
+        "detail": "Second live specimen, at the very next materialization (the a512 discharge, t0007-t0009): the skill's traceability mandate was followed - all three action items carried notes - and the JSON sink dropped them by documented design while the flow reported success. The divergence reproduces on every materialization until the sink persists notes or the skill stops mandating them.",
+        "artifact": "document:chronicles/2026-06-11-draft-mode-anchoring.md"
       }
     ],
     "subjects": [],
