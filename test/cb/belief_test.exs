@@ -244,6 +244,15 @@ defmodule CB.BeliefTest do
     assert String.contains?(json, "\"materialized\": null")
   end
 
+  test "field set after from_map serializes even when source JSON lacked the key" do
+    map = Map.delete(@directive_map, "materialized")
+    a = Belief.from_map(map)
+    materialized = %{"date" => "2026-06-11", "todos" => [%{"id" => "t0001", "action" => "do it"}]}
+    decoded = %{a | materialized: materialized} |> Belief.to_map() |> Jason.encode!() |> Jason.decode!()
+
+    assert decoded["materialized"] == materialized
+  end
+
   test "key ordering is canonical" do
     a = Belief.from_map(@primitive_map)
     ordered = Belief.to_map(a)

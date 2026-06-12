@@ -5543,6 +5543,19 @@
     ],
     "subjects": [],
     "deps": [],
+    "materialized": {
+      "date": "2026-06-11",
+      "todos": [
+        {
+          "action": "Implement mix bs recent [--since DATE | --days N]: deterministic window scan over the loaded graph, events grouped by class (new nodes, supersessions, evidence appends, materializations, retractions); honors --beliefs PATH",
+          "id": "t0001"
+        },
+        {
+          "action": "Cover and document bs recent: tests for the window scan and each event class, plus the mix bs help entry",
+          "id": "t0002"
+        }
+      ]
+    },
     "status": "active",
     "created": "2026-06-11"
   },

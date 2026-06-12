@@ -1,0 +1,16 @@
+[
+  {
+    "action": "Implement mix bs recent [--since DATE | --days N]: deterministic window scan over the loaded graph, events grouped by class (new nodes, supersessions, evidence appends, materializations, retractions); honors --beliefs PATH",
+    "created": "2026-06-11",
+    "id": "t0001",
+    "source": "cb:a501",
+    "status": "done"
+  },
+  {
+    "action": "Cover and document bs recent: tests for the window scan and each event class, plus the mix bs help entry",
+    "created": "2026-06-11",
+    "id": "t0002",
+    "source": "cb:a501",
+    "status": "done"
+  }
+]

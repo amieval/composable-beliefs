@@ -350,4 +350,153 @@ defmodule CB.Belief.GraphTest do
       assert s.unlinked_directives == 1
     end
   end
+
+  describe "recent" do
+    # Events spread around a 2026-06-10 window boundary:
+    #   r001 created before the window, evidence appended inside it
+    #   r002 created on the boundary (inclusive), superseded by r003 inside
+    #   r003 successor created inside the window
+    #   r004 created before, materialized inside
+    #   r005 created before, retracted inside
+    #   r006 entirely before the window
+    defp recent_dag do
+      [
+        %Belief{
+          id: "r001",
+          type: "primitive",
+          kind: "rule",
+          claim: "old node, new evidence",
+          status: "active",
+          deps: [],
+          created: "2026-06-01",
+          evidence: [
+            %{"date" => "2026-06-01", "detail" => "founding"},
+            %{"date" => "2026-06-11", "detail" => "appended"}
+          ]
+        },
+        %Belief{
+          id: "r002",
+          type: "directive",
+          kind: "rule",
+          claim: "boundary node",
+          status: "superseded",
+          deps: [],
+          created: "2026-06-10",
+          superseded_by: "r003"
+        },
+        %Belief{
+          id: "r003",
+          type: "directive",
+          kind: "rule",
+          claim: "successor",
+          status: "active",
+          deps: [],
+          created: "2026-06-11"
+        },
+        %Belief{
+          id: "r004",
+          type: "directive",
+          kind: "action-item",
+          claim: "materialized in window",
+          status: "active",
+          deps: [],
+          created: "2026-06-01",
+          materialized: %{"date" => "2026-06-11", "todos" => [%{"id" => "t1", "action" => "x"}]}
+        },
+        %Belief{
+          id: "r005",
+          type: "primitive",
+          kind: "rule",
+          claim: "retracted in window",
+          status: "retracted",
+          deps: [],
+          created: "2026-06-01",
+          retracted_on: "2026-06-10"
+        },
+        %Belief{
+          id: "r006",
+          type: "primitive",
+          kind: "rule",
+          claim: "entirely before the window",
+          status: "active",
+          deps: [],
+          created: "2026-06-01",
+          evidence: [%{"date" => "2026-06-02", "detail" => "old append"}]
+        }
+      ]
+    end
+
+    test "new nodes include the boundary date (inclusive since)" do
+      r = Graph.recent(recent_dag(), ~D[2026-06-10])
+      assert Enum.map(r.new, & &1.id) == ["r002", "r003"]
+    end
+
+    test "supersessions are dated by the successor's created" do
+      r = Graph.recent(recent_dag(), ~D[2026-06-11])
+      assert Enum.map(r.superseded, fn {old, succ} -> {old.id, succ.id} end) == [{"r002", "r003"}]
+
+      # successor outside the window -> no event
+      r2 = Graph.recent(recent_dag(), ~D[2026-06-12])
+      assert r2.superseded == []
+    end
+
+    test "a supersession pointing at a missing successor is ignored" do
+      dangling = [
+        %Belief{
+          id: "r010",
+          type: "primitive",
+          kind: "rule",
+          claim: "x",
+          status: "superseded",
+          deps: [],
+          created: "2026-06-01",
+          superseded_by: "r999"
+        }
+      ]
+
+      assert Graph.recent(dangling, ~D[2026-06-01]).superseded == []
+    end
+
+    test "evidence appended after creation counts; founding and pre-window entries do not" do
+      r = Graph.recent(recent_dag(), ~D[2026-06-10])
+      assert [{belief, entries}] = r.evidence
+      assert belief.id == "r001"
+      assert Enum.map(entries, & &1["detail"]) == ["appended"]
+    end
+
+    test "same-day evidence on a new node is founding, not an append" do
+      same_day = [
+        %Belief{
+          id: "r020",
+          type: "primitive",
+          kind: "rule",
+          claim: "x",
+          status: "active",
+          deps: [],
+          created: "2026-06-11",
+          evidence: [%{"date" => "2026-06-11", "detail" => "founding"}]
+        }
+      ]
+
+      r = Graph.recent(same_day, ~D[2026-06-10])
+      assert r.evidence == []
+      assert Enum.map(r.new, & &1.id) == ["r020"]
+    end
+
+    test "materializations and retractions are picked up by their own dates" do
+      r = Graph.recent(recent_dag(), ~D[2026-06-10])
+      assert Enum.map(r.materialized, & &1.id) == ["r004"]
+      assert Enum.map(r.retracted, & &1.id) == ["r005"]
+    end
+
+    test "events sort by date then id" do
+      r = Graph.recent(recent_dag(), ~D[2026-06-01])
+      assert Enum.map(r.new, & &1.id) == ["r001", "r004", "r005", "r006", "r002", "r003"]
+    end
+
+    test "a window after all activity is empty" do
+      r = Graph.recent(recent_dag(), ~D[2026-07-01])
+      assert r == %{new: [], superseded: [], evidence: [], materialized: [], retracted: []}
+    end
+  end
 end

@@ -197,16 +197,28 @@ defmodule CB.Belief do
     }
   end
 
-  @doc "Convert a Belief struct to a `Jason.OrderedObject` for serialization."
+  @doc """
+  Convert a Belief struct to a `Jason.OrderedObject` for serialization.
+
+  A key serializes when the source JSON carried it (`_keys`) or when its
+  in-memory value is set - so a field assigned after `from_map/1` (e.g.
+  `materialized` on a record authored without the key) is never silently
+  dropped, while absent keys still round-trip without null/[] churn.
+  """
   def to_map(%__MODULE__{} = a) do
     present_keys = a._keys || MapSet.new(@ordered_keys)
 
     pairs =
-      for key <- @ordered_keys, MapSet.member?(present_keys, key) do
+      Enum.flat_map(@ordered_keys, fn key ->
         atom = String.to_existing_atom(key)
         value = Map.get(a, atom)
-        {key, order_nested(key, value)}
-      end
+
+        if MapSet.member?(present_keys, key) or (value != nil and value != []) do
+          [{key, order_nested(key, value)}]
+        else
+          []
+        end
+      end)
 
     Jason.OrderedObject.new(pairs)
   end

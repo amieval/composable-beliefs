@@ -11,6 +11,7 @@ defmodule Mix.Tasks.Bs do
       deps <id>            Direct dependencies (--deep for full tree)
       dependents <id>      Reverse dependency lookup (--deep for transitive)
       stale                Find beliefs with superseded/retracted deps (--cascade)
+      recent               Graph changes in a window (--since DATE | --days N)
       path <id1> <id2>     Find connection between two beliefs
       history <id>         Supersession chain
       subjects <ref|type>  Find beliefs by subject
@@ -73,6 +74,9 @@ defmodule Mix.Tasks.Bs do
 
       ["stale" | _] ->
         cmd_stale(flags)
+
+      ["recent" | _] ->
+        cmd_recent(flags)
 
       ["path", id1, id2 | _] ->
         cmd_path(id1, id2)
@@ -214,6 +218,88 @@ defmodule Mix.Tasks.Bs do
       end)
 
       IO.puts("#{length(results)} stale belief(s)")
+    end
+  end
+
+  defp cmd_recent(flags) do
+    since = resolve_since(flags)
+    {:ok, beliefs} = Store.read()
+    r = Graph.recent(beliefs, since)
+
+    total =
+      length(r.new) + length(r.superseded) + length(r.evidence) +
+        length(r.materialized) + length(r.retracted)
+
+    IO.puts("")
+    IO.puts("Graph changes since #{Date.to_iso8601(since)} (inclusive):")
+    IO.puts("")
+
+    if total == 0 do
+      IO.puts("No changes in the window.")
+      IO.puts("")
+    else
+      recent_section("NEW", r.new, fn a ->
+        "  #{a.id} [#{a.type}] #{trunc(a.claim, 56)} (#{a.created})"
+      end)
+
+      recent_section("SUPERSEDED", r.superseded, fn {old, succ} ->
+        "  #{old.id} -> #{succ.id} #{trunc(succ.claim, 44)} (#{succ.created})"
+      end)
+
+      recent_section("EVIDENCE APPENDED", r.evidence, fn {a, entries} ->
+        dates = entries |> Enum.map(& &1["date"]) |> Enum.uniq() |> Enum.join(", ")
+        "  #{a.id} +#{length(entries)} entr#{if length(entries) == 1, do: "y", else: "ies"} #{trunc(a.claim, 44)} (#{dates})"
+      end)
+
+      recent_section("MATERIALIZED", r.materialized, fn a ->
+        items = a.materialized["todos"] || []
+        "  #{a.id} #{length(items)} item(s) #{trunc(a.claim, 48)} (#{a.materialized["date"]})"
+      end)
+
+      recent_section("RETRACTED", r.retracted, fn a ->
+        "  #{a.id} #{trunc(a.claim, 56)} (#{a.retracted_on})"
+      end)
+
+      IO.puts("#{total} event(s)")
+      IO.puts("")
+    end
+  end
+
+  defp recent_section(_label, [], _line_fn), do: :ok
+
+  defp recent_section(label, events, line_fn) do
+    IO.puts("#{label} (#{length(events)})")
+    Enum.each(events, &IO.puts(line_fn.(&1)))
+    IO.puts("")
+  end
+
+  defp resolve_since(flags) do
+    since = Keyword.get(flags, :since)
+    days = Keyword.get(flags, :days)
+
+    cond do
+      since != nil ->
+        case Date.from_iso8601(since) do
+          {:ok, date} ->
+            date
+
+          {:error, _} ->
+            IO.puts(:stderr, "Invalid --since date: #{since} (expected YYYY-MM-DD)")
+            System.halt(1)
+        end
+
+      days != nil ->
+        case Integer.parse(days) do
+          {n, ""} when n >= 0 ->
+            Date.add(CB.today(), -n)
+
+          _ ->
+            IO.puts(:stderr, "Invalid --days value: #{days} (expected a non-negative integer)")
+            System.halt(1)
+        end
+
+      true ->
+        Date.add(CB.today(), -7)
     end
   end
 
@@ -372,6 +458,8 @@ defmodule Mix.Tasks.Bs do
       deps <id>            Direct dependencies (--deep for full tree)
       dependents <id>      Reverse dependency lookup (--deep for transitive)
       stale                Find beliefs with bad deps (--cascade for transitive)
+      recent               Graph changes in a window: new nodes, supersessions,
+                           evidence appends, materializations, retractions
       path <id1> <id2>     Find connection between two beliefs
       history <id>         Supersession chain
       subjects <ref|type>  Find beliefs by subject
@@ -388,6 +476,8 @@ defmodule Mix.Tasks.Bs do
       -v / --verbose       Show full detail in list view
       --deep               Recurse through full chain (deps, dependents)
       --cascade            Include transitively stale (stale)
+      --since DATE         Window start for recent, inclusive (YYYY-MM-DD)
+      --days N             Window as N days back from today (recent; default 7)
 
     IDS
       Bare (c029) or namespaced (cb:c029). A bare id resolves to its
@@ -439,21 +529,32 @@ defmodule Mix.Tasks.Bs do
 
   # --- Flag extraction ---
 
-  defp extract_flags(args) do
-    Enum.reduce(args, {[], []}, fn
-      arg, {flags, rest} when arg in ~w(-v --verbose) ->
-        {[{:verbose, true} | flags], rest}
+  defp extract_flags(args), do: extract_flags(args, [], [])
 
-      "--deep", {flags, rest} ->
-        {[{:deep, true} | flags], rest}
+  defp extract_flags([], flags, rest), do: {flags, rest}
 
-      "--cascade", {flags, rest} ->
-        {[{:cascade, true} | flags], rest}
+  defp extract_flags([arg | t], flags, rest) when arg in ~w(-v --verbose),
+    do: extract_flags(t, [{:verbose, true} | flags], rest)
 
-      arg, {flags, rest} ->
-        {flags, rest ++ [arg]}
-    end)
+  defp extract_flags(["--deep" | t], flags, rest),
+    do: extract_flags(t, [{:deep, true} | flags], rest)
+
+  defp extract_flags(["--cascade" | t], flags, rest),
+    do: extract_flags(t, [{:cascade, true} | flags], rest)
+
+  defp extract_flags([flag], _flags, _rest) when flag in ~w(--since --days) do
+    IO.puts(:stderr, "#{flag} requires a value")
+    System.halt(1)
   end
+
+  defp extract_flags(["--since", value | t], flags, rest),
+    do: extract_flags(t, [{:since, value} | flags], rest)
+
+  defp extract_flags(["--days", value | t], flags, rest),
+    do: extract_flags(t, [{:days, value} | flags], rest)
+
+  defp extract_flags([arg | t], flags, rest),
+    do: extract_flags(t, flags, rest ++ [arg])
 
   defp flag_args(flags) do
     Enum.flat_map(flags, fn

@@ -251,6 +251,84 @@ defmodule CB.Belief.Graph do
     end
   end
 
+  @doc """
+  Events in the graph since a date (inclusive): new nodes, supersessions,
+  evidence appends, materializations, and retractions. Every event derives
+  from a date the belief records already carry, so the view is a pure
+  function of the graph - no git history involved.
+
+  `since` is a `Date`. Returns a map of event lists, each sorted by date
+  then id:
+
+    - `:new` - beliefs whose `created` falls in the window
+    - `:superseded` - `{old, successor}` pairs where the successor was
+      created in the window (the successor's `created` dates the event)
+    - `:evidence` - `{belief, entries}` pairs where `entries` are evidence
+      items dated in the window and strictly after the belief's creation
+      (same-day evidence on a new node is its founding, not an append)
+    - `:materialized` - beliefs whose `materialized.date` falls in the window
+    - `:retracted` - beliefs whose `retracted_on` falls in the window
+  """
+  def recent(beliefs, %Date{} = since) do
+    idx = index(beliefs)
+    iso = Date.to_iso8601(since)
+
+    new_nodes =
+      beliefs
+      |> Enum.filter(&in_window?(&1.created, iso))
+      |> sort_events(& &1.created)
+
+    superseded =
+      beliefs
+      |> Enum.filter(&(&1.superseded_by != nil))
+      |> Enum.map(&{&1, Map.get(idx, &1.superseded_by)})
+      |> Enum.filter(fn {_old, succ} -> succ != nil and in_window?(succ.created, iso) end)
+      |> sort_events(fn {_old, succ} -> succ.created end)
+
+    evidence_appends =
+      beliefs
+      |> Enum.map(fn a ->
+        appended =
+          Enum.filter(a.evidence || [], fn e ->
+            in_window?(e["date"], iso) and is_binary(a.created) and e["date"] > a.created
+          end)
+
+        {a, appended}
+      end)
+      |> Enum.reject(fn {_a, appended} -> appended == [] end)
+      |> sort_events(fn {_a, appended} -> appended |> Enum.map(& &1["date"]) |> Enum.max() end)
+
+    materializations =
+      beliefs
+      |> Enum.filter(&in_window?(&1.materialized && &1.materialized["date"], iso))
+      |> sort_events(& &1.materialized["date"])
+
+    retractions =
+      beliefs
+      |> Enum.filter(&in_window?(&1.retracted_on, iso))
+      |> sort_events(& &1.retracted_on)
+
+    %{
+      new: new_nodes,
+      superseded: superseded,
+      evidence: evidence_appends,
+      materialized: materializations,
+      retracted: retractions
+    }
+  end
+
+  # ISO-8601 date strings order lexicographically, so the window test is a
+  # plain string comparison; a missing or malformed date never matches.
+  defp in_window?(date, since_iso) when is_binary(date), do: date >= since_iso
+  defp in_window?(_date, _since_iso), do: false
+
+  defp sort_events(items, date_fn) do
+    Enum.sort_by(items, &{date_fn.(&1), event_id(&1)})
+  end
+
+  defp event_id({belief, _}), do: belief.id
+  defp event_id(belief), do: belief.id
+
   @doc "Find all beliefs about a given subject ref or type."
   def by_subject(beliefs, ref: ref) do
     Enum.filter(beliefs, fn a ->
