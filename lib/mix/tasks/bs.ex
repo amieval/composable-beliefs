@@ -248,6 +248,7 @@ defmodule Mix.Tasks.Bs do
 
       recent_section("EVIDENCE APPENDED", r.evidence, fn {a, entries} ->
         dates = entries |> Enum.map(& &1["date"]) |> Enum.uniq() |> Enum.join(", ")
+
         "  #{a.id} +#{length(entries)} entr#{if length(entries) == 1, do: "y", else: "ies"} #{trunc(a.claim, 44)} (#{dates})"
       end)
 

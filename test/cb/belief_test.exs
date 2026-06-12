@@ -248,7 +248,9 @@ defmodule CB.BeliefTest do
     map = Map.delete(@directive_map, "materialized")
     a = Belief.from_map(map)
     materialized = %{"date" => "2026-06-11", "todos" => [%{"id" => "t0001", "action" => "do it"}]}
-    decoded = %{a | materialized: materialized} |> Belief.to_map() |> Jason.encode!() |> Jason.decode!()
+
+    decoded =
+      %{a | materialized: materialized} |> Belief.to_map() |> Jason.encode!() |> Jason.decode!()
 
     assert decoded["materialized"] == materialized
   end
