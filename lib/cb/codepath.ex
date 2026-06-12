@@ -12,13 +12,10 @@ defmodule CB.Codepath do
 
   ## Resolution rules (per the cb-codepath plan-1 design)
 
-  - Anchors are literal substrings, matched per line (`grep -nF`
-    semantics); the resolved line number is never stored.
-  - A missing file or anchor is a **maintenance warning**, never a crash;
-    the stop still emits with `line: nil`.
-  - Multiple matches with no `@N` selector resolve to the **first** match
-    plus a tighten-this-anchor warning naming the match count. An
-    explicit `@N` is intentional and warns only when out of range.
+  Anchor semantics live in `CB.Anchor`, the belief-free core this module
+  shares with `mix cb.resolve`. Here a missing file or anchor is a
+  **maintenance warning**, never a crash; the stop still emits with
+  `line: nil`.
 
   ## Traversal
 
@@ -126,7 +123,7 @@ defmodule CB.Codepath do
   defp resolve_stop(step, by_belief_id, root) do
     belief = Map.fetch!(by_belief_id, step["belief"])
     {:ok, locator} = CodeLocator.parse(belief.artifact)
-    {line, warnings} = resolve_anchor(root, locator)
+    {line, warnings} = CB.Anchor.resolve(root, locator)
 
     %{
       step: step["id"],
@@ -138,49 +135,6 @@ defmodule CB.Codepath do
       goto: step["goto"],
       choices: choices(step)
     }
-  end
-
-  defp resolve_anchor(root, %{path: path, anchor: anchor, nth: nth}) do
-    case File.read(Path.join(root, path)) do
-      {:error, reason} ->
-        {nil, ["cannot read #{path} (#{inspect(reason)})"]}
-
-      {:ok, content} ->
-        matches =
-          content
-          |> String.split("\n")
-          |> Enum.with_index(1)
-          |> Enum.filter(fn {text, _n} -> String.contains?(text, anchor) end)
-          |> Enum.map(fn {_text, n} -> n end)
-
-        pick_match(matches, anchor, nth, path)
-    end
-  end
-
-  defp pick_match([], anchor, _nth, path),
-    do: {nil, [~s(anchor "#{anchor}" not found in #{path})]}
-
-  defp pick_match([line], _anchor, nil, _path), do: {line, []}
-
-  defp pick_match([first | _] = matches, anchor, nil, path) do
-    warning =
-      ~s(anchor "#{anchor}" matches #{length(matches)} lines in #{path}) <>
-        " - tighten this anchor (rendering the first match)"
-
-    {first, [warning]}
-  end
-
-  defp pick_match(matches, anchor, nth, path) do
-    case Enum.at(matches, nth - 1) do
-      nil ->
-        warning =
-          ~s{anchor "#{anchor}"@#{nth} requested but only #{length(matches)} match(es) in #{path}}
-
-        {nil, [warning]}
-
-      line ->
-        {line, []}
-    end
   end
 
   defp local_id(id) when is_binary(id), do: id |> String.split(":") |> List.last()
