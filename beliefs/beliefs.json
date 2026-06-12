@@ -6034,6 +6034,11 @@
         "date": "2026-06-10",
         "detail": "Observed live: the a484-a488 import followed the moduledoc's bare-id example, the batch stored bare while every other node is cb:-prefixed, namespaced lookups (mix bs tree cb:a488) and intra-batch deps dangled, and the ids were corrected surgically afterward. The 2026-06-11 stasis-backlog import used namespaced ids and landed clean, isolating the defect to validation plus the misleading example.",
         "artifact": "session:2026-06-10-substrate-position-discussion"
+      },
+      {
+        "date": "2026-06-11",
+        "detail": "Discharged 2026-06-11 (commit 06b6bc5, materialized t0003/t0004): rejection chosen over normalization - normalizing bare ids would also require heuristically rewriting intra-batch dep references, and would write a graph differing from the dry-run-reviewed spec. The graph's namespace is derived as the single prefix all existing ids share; empty, bare, or mixed graphs pass vacuously.",
+        "artifact": "document:chronicles/2026-06-11-the-bare-id-class-closes.md"
       }
     ],
     "subjects": [],
@@ -6485,6 +6490,31 @@
         "date": "2026-06-11",
         "detail": "Three specimens in one session (postscript 8): the a501 link-back replay, the c049 dep re-point (whose Mutation clauses append evidence internally but expose no evidence-only type), and the close's own four appends (a519, a500, and the a507 retro-pairs on a521/c062) - each a hand-rolled script against CB.Belief.Store. Preflight 2026-06-11: backlog tag-family overlap only; no semantic conflict.",
         "artifact": "document:plans/cb-schema-v2/transcript-execution.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-11"
+  },
+  {
+    "id": "cb:a523",
+    "type": "directive",
+    "kind": "action-item",
+    "domain": "dev",
+    "tags": [
+      "backlog",
+      "lifecycle:discrete",
+      "write-flow",
+      "materializer"
+    ],
+    "claim": "Make materialization notes persist: the /materialize skill requires each action item to carry notes referencing the directive's reasoning for traceability, but CB.Materializer.Sink.JSON records only id/action/source/created/status and drops extra keys by design, so the promised traceability never lands - not in the todo record, not in the materialized link-back refs. Either the default sink persists notes (and the link-back carries them) or the skill stops mandating what the flow discards; the silent divergence between the skill's contract and the sink's behavior is the part that must not survive.",
+    "artifact": "document:chronicles/2026-06-11-the-bare-id-class-closes.md",
+    "evidence": [
+      {
+        "date": "2026-06-11",
+        "detail": "Live specimen at the materialize flow's first batch use: the a513/a514 discharge wrote rationale notes on all four action items (t0003-t0006) per the skill's traceability rule; the sink ignored them by documented design and the flow reported success - same species as agent-behavior:a405, a success message describing the code path rather than the state that landed. Preflight 2026-06-11: 2 schema hits, both bare tag-overlap (a494 backlog family, a498 write-flow family), reviewed per c055 - no active structure contradicted; the a519 calibration pattern applies.",
+        "artifact": "document:chronicles/2026-06-11-the-bare-id-class-closes.md"
       }
     ],
     "subjects": [],
