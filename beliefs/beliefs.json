@@ -2599,7 +2599,8 @@
     ],
     "subjects": [],
     "deps": [],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:a533",
     "created": "2026-06-07"
   },
   {
@@ -3745,6 +3746,16 @@
         "date": "2026-06-11",
         "detail": "deps + cb:c063 via dag-proposal 2026-06-11-c049-repoint-c063",
         "artifact": "session:2026-06-11-position-skill-authoring"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "deps − cb:c063 via dag-proposal c049-repoint-c063-to-c065",
+        "artifact": "session:2026-06-12-claude-md-write-surface"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "deps + cb:c065 via dag-proposal c049-repoint-c063-to-c065",
+        "artifact": "session:2026-06-12-claude-md-write-surface"
       }
     ],
     "subjects": [
@@ -3759,7 +3770,7 @@
     ],
     "deps": [
       "cb:a467",
-      "cb:c063"
+      "cb:c065"
     ],
     "status": "active",
     "created": "2026-06-09"
@@ -6972,7 +6983,8 @@
       "cb:a508",
       "cb:a524"
     ],
-    "status": "active",
+    "status": "superseded",
+    "superseded_by": "cb:c065",
     "created": "2026-06-11"
   },
   {
@@ -7196,6 +7208,16 @@
     "deps": [
       "cb:a522"
     ],
+    "materialized": {
+      "date": "2026-06-12",
+      "todos": [
+        {
+          "action": "Supersede a449 with a successor naming the full sanctioned write surface (preflight/adjudicate/import, mix cb.evidence, mix cb.todo.close), re-point the c063 render contract's Operations section and deps, and regenerate CLAUDE.md",
+          "id": "t0019",
+          "notes": "Scope per a531 evidence 2 (the a530 close widened it): name the whole surface in one pass. Ceremony precedent: the a515 close (a521 -> a524, c062 -> c063)."
+        }
+      ]
+    },
     "status": "active",
     "created": "2026-06-12"
   },
@@ -7285,6 +7307,240 @@
         }
       ]
     },
+    "status": "active",
+    "created": "2026-06-12"
+  },
+  {
+    "id": "cb:a533",
+    "type": "directive",
+    "kind": "convention",
+    "domain": "dev",
+    "tags": [
+      "claude-md",
+      "authoring",
+      "write-flow"
+    ],
+    "claim": "Author beliefs through the write flow, never by hand-editing the graph file: `mix cb.preflight --file <f>` checks a proposed belief for conflicts, `mix cb.adjudicate --file <f>` resolves them, and `mix cb.import --file <f>` writes the belief. Two further doors complete the sanctioned write surface: `mix cb.evidence <id> --detail <text> --artifact <uri>` appends a dated evidence entry to an existing belief - the one sanctioned in-place growth point on an immutable node - and `mix cb.todo.close <id> --notes <text>` flips a materialized item open -> done with discharge notes. Both are dry-run by default and write only with `--write`.",
+    "artifact": "session:2026-06-12-claude-md-write-surface",
+    "evidence": [
+      {
+        "date": "2026-06-12",
+        "detail": "Supersedes a449 per the a531 work order: the Operations write-flow line named preflight/adjudicate/import but neither mix cb.evidence (landed in the a522 discharge) nor mix cb.todo.close (the a530 discharge), leaving the only sanctioned in-place writes invisible to a cold session reading the file. Scope per a531 evidence 2: name the whole surface in one pass rather than the evidence door alone. The original three-task sentence carries verbatim; the successor adds the two doors and their dry-run default.",
+        "artifact": "code:lib/mix/tasks/cb.todo.close.ex#defmodule Mix.Tasks.Cb.Todo.Close do"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Accepted via human adjudication against cb:a449. Reasoning: The a531 work order (2026-06-12): the Operations write-flow line predates both sanctioned in-place writes - mix cb.evidence (a522 discharge) and mix cb.todo.close (a530 discharge) - so a cold session reading CLAUDE.md cannot see them. Successor carries the original three-task sentence verbatim and adds the two doors with their dry-run default, the whole surface in one pass per a531 evidence 2. Preflight 2026-06-12 under the c064 calibration: 0 contract, 0 schema, 28 neutral; claim_overlap hits were the supersession target and the grounding family (a522/a530/a531), reviewed per c055.",
+        "artifact": "adjudication:human:session:2026-06-12-claude-md-write-surface"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a522",
+      "cb:a530"
+    ],
+    "status": "active",
+    "created": "2026-06-12"
+  },
+  {
+    "id": "cb:c065",
+    "type": "directive",
+    "kind": "output-target",
+    "domain": "system",
+    "tags": [
+      "dag-schema",
+      "output:claude-md"
+    ],
+    "claim": "The framework CLAUDE.md compiles from the beliefs listed in this contract's render_sections. The file is read-only and regenerated from the cb: graph by `mix cb.generate.claude_md`. Authoring happens by creating beliefs (via /assert) and by editing this contract's render_sections; hand-edits to CLAUDE.md are overwritten on the next generation.",
+    "rules": [
+      {
+        "output_path": "CLAUDE.md"
+      },
+      {
+        "header_comment": "<!-- Generated by mix cb.generate.claude_md from the cb: DAG. Do not edit; run the task to regenerate. -->\n\n# Composable Beliefs\n\nA framework for giving AI agents persistent, source-grounded, inspectable reasoning that survives session boundaries and composes into understanding the agent never explicitly derived."
+      },
+      {
+        "render_sections": [
+          {
+            "beliefs": [
+              "cb:a459",
+              "cb:a444"
+            ],
+            "title": "Quick Start"
+          },
+          {
+            "beliefs": [
+              "cb:a477"
+            ],
+            "title": "Active directives"
+          },
+          {
+            "beliefs": [
+              "cb:a508"
+            ],
+            "title": "Session start"
+          },
+          {
+            "beliefs": [
+              "cb:a478",
+              "cb:a479",
+              "cb:a448"
+            ],
+            "title": "Architecture"
+          },
+          {
+            "beliefs": [
+              "cb:a533",
+              "cb:a450"
+            ],
+            "title": "Operations"
+          },
+          {
+            "beliefs": [
+              "cb:a482",
+              "cb:a481"
+            ],
+            "title": "Schema"
+          },
+          {
+            "beliefs": [
+              "cb:a524"
+            ],
+            "title": "Skills"
+          },
+          {
+            "beliefs": [
+              "cb:a454"
+            ],
+            "title": "Collections"
+          },
+          {
+            "beliefs": [
+              "cb:a455"
+            ],
+            "title": "Formatting"
+          },
+          {
+            "beliefs": [
+              "cb:a456"
+            ],
+            "title": "Git Policy"
+          },
+          {
+            "beliefs": [
+              "cb:a457"
+            ],
+            "title": "Data Protection"
+          },
+          {
+            "beliefs": [
+              "cb:a458"
+            ],
+            "title": "Origin"
+          }
+        ]
+      }
+    ],
+    "invariants": [
+      "CLAUDE.md is read-only - edits are overwritten on next generation",
+      "Every line of output traces to exactly one belief's claim field",
+      "deps equals the union of all beliefs referenced in render_sections",
+      "Section titles are human-readable; tags remain free for cross-cutting audit queries"
+    ],
+    "contract": true,
+    "artifact": "session:2026-06-12-claude-md-write-surface",
+    "evidence": [
+      {
+        "date": "2026-06-12",
+        "detail": "Single change from cb:c063: the Operations section renders cb:a533 (the full sanctioned write surface - preflight/adjudicate/import, mix cb.evidence, mix cb.todo.close) in place of the superseded cb:a449; deps updated to match per the union invariant. All other sections, rules, and invariants carried verbatim. The chain is c060 -> c061 -> c062 -> c063 -> this node.",
+        "artifact": "code:lib/mix/tasks/cb.evidence.ex#defmodule Mix.Tasks.Cb.Evidence do"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Accepted via human adjudication against cb:c063. Reasoning: Render-list maintenance (2026-06-12, the a531 discharge): c063's Operations section references cb:a449, superseded today by cb:a533 when the write-surface line grew the mix cb.evidence and mix cb.todo.close doors. The contract changes only that reference and the dep union; the chain is c060 -> c061 -> c062 -> c063 -> this node. Preflight under the c064 calibration: the single contract-level hit was cb:c063 itself (the supersession target, claim_overlap); the single schema-level hit was a483, the descriptive v2-migration record with phrasing overlap and no semantic contradiction; reviewed per c055.",
+        "artifact": "adjudication:human:session:2026-06-12-claude-md-write-surface"
+      }
+    ],
+    "subjects": [],
+    "deps": [
+      "cb:a444",
+      "cb:a448",
+      "cb:a450",
+      "cb:a454",
+      "cb:a455",
+      "cb:a456",
+      "cb:a457",
+      "cb:a458",
+      "cb:a459",
+      "cb:a477",
+      "cb:a478",
+      "cb:a479",
+      "cb:a481",
+      "cb:a482",
+      "cb:a508",
+      "cb:a524",
+      "cb:a533"
+    ],
+    "status": "active",
+    "created": "2026-06-12"
+  },
+  {
+    "id": "cb:a535",
+    "type": "directive",
+    "kind": "action-item",
+    "domain": "dev",
+    "tags": [
+      "backlog",
+      "lifecycle:discrete",
+      "collections",
+      "repo-organization"
+    ],
+    "claim": "Split the eval-practice collections out of belief-collections: method: and eval-provenance (plus future finding collections) move to a repo under the amieval GitHub org, while the teaching and framework collections (library, toy-eval, paradigm, agent-behavior) stay with belief-collections under the composablebeliefs org. The eval practice's house methodology should not live under the framework vendor's org. Do this before the first published finding cites method: nodes, while no external links point in.",
+    "artifact": "user:monetization-contingency-2026-06-12",
+    "evidence": [
+      {
+        "date": "2026-06-12",
+        "detail": "Surfaced by the 2026-06-12 org split: the composablebeliefs org took belief-collections whole, so the amieval practice's methodology contracts (method:a1-a7, c1-c11) now sit under the other venture's roof. Stipulated in the monetization-contingency adjudication's open items; the readable record is the private direction repo (path in the paired artifact). Tag-overlap review: backlog/lifecycle:discrete family only; no existing claim governs collection-to-org homing, so no conflict.",
+        "artifact": "document:../amieval-direction/direction/2026-06-12-monetization-contingency-adjudication.md"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Retro-pair per cb:a507: stipulating thread verbatim at the paired artifact.",
+        "artifact": "document:../amieval-direction/direction/2026-06-12-thread/conversation.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
+    "status": "active",
+    "created": "2026-06-12"
+  },
+  {
+    "id": "cb:a536",
+    "type": "directive",
+    "kind": "action-item",
+    "domain": "dev",
+    "tags": [
+      "backlog",
+      "lifecycle:discrete",
+      "verifier",
+      "method-contracts"
+    ],
+    "claim": "Upgrade the verdict-category firewall (method:a6) to contract grade: implement a named predicate in the collection verifier that fails any verdict whose subject category appears in the sold-category list carried by the firewall node, then supersede method:a6 from convention to a predicate-routing contract beside m-corroboration through m-correction. Until then the rule binds as authoring discipline only.",
+    "artifact": "user:monetization-contingency-2026-06-12",
+    "evidence": [
+      {
+        "date": "2026-06-12",
+        "detail": "method:a6 was minted as kind convention because the closed method-kind enum and the verifier's predicate registry had no slot for a category-scope check; the check itself is pure traversal over verdict subjects, so it belongs beside the m-* contracts once a predicate exists. Stipulated in the monetization-contingency adjudication's open items. Tag-overlap review: verifier work neighbors the method-check machinery; no existing claim covers this predicate, so no conflict.",
+        "artifact": "document:../amieval-direction/direction/2026-06-12-monetization-contingency-adjudication.md"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Retro-pair per cb:a507: stipulating thread verbatim at the paired artifact.",
+        "artifact": "document:../amieval-direction/direction/2026-06-12-thread/conversation.md"
+      }
+    ],
+    "subjects": [],
+    "deps": [],
     "status": "active",
     "created": "2026-06-12"
   }
