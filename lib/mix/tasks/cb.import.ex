@@ -9,6 +9,12 @@ defmodule Mix.Tasks.Cb.Import do
 
       mix cb.import <spec.json>            # Dry run
       mix cb.import <spec.json> --write    # Apply
+      mix cb.import <spec.json> --write --beliefs path/to/collection/beliefs.json
+
+  `--beliefs PATH` points import at an alternate belief graph for one
+  invocation (the same override the belief shell and preflight take), so a
+  belief can be written into a non-default collection without exporting
+  `CB_BELIEFS`. Both read and write honor the override.
 
   ## Spec format
 
@@ -64,7 +70,9 @@ defmodule Mix.Tasks.Cb.Import do
   @impl Mix.Task
   def run(args) do
     {opts, positional, _} =
-      OptionParser.parse(args, strict: [write: :boolean])
+      OptionParser.parse(args, strict: [write: :boolean, beliefs: :string])
+
+    if opts[:beliefs], do: Application.put_env(:cb, :beliefs_path, opts[:beliefs])
 
     write? = opts[:write] || false
 

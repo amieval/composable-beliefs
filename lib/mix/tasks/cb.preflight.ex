@@ -18,6 +18,11 @@ defmodule Mix.Tasks.Cb.Preflight do
       mix cb.preflight --file path/to/proposed.json
       mix cb.preflight             # reads JSON from stdin
       mix cb.preflight --json ...  # structured output
+      mix cb.preflight --file p.json --beliefs path/to/collection/beliefs.json
+
+  `--beliefs PATH` points preflight at an alternate belief graph for one
+  invocation (the same override the belief shell takes), so a proposal can be
+  checked against a non-default collection without exporting `CB_BELIEFS`.
 
   ## Input shape
 
@@ -76,9 +81,11 @@ defmodule Mix.Tasks.Cb.Preflight do
   def run(args) do
     {opts, _positional, _} =
       OptionParser.parse(args,
-        strict: [file: :string, json: :boolean],
+        strict: [file: :string, json: :boolean, beliefs: :string],
         aliases: [f: :file, j: :json]
       )
+
+    if opts[:beliefs], do: Application.put_env(:cb, :beliefs_path, opts[:beliefs])
 
     with {:ok, raw} <- read_input(opts[:file]),
          {:ok, decoded} <- decode(raw),
