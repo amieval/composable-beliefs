@@ -7610,5 +7610,27 @@
     "subjects": [],
     "status": "active",
     "created": "2026-06-12"
+  },
+  {
+    "id": "cb:a539",
+    "type": "directive",
+    "kind": "design-principle",
+    "domain": "system",
+    "tags": [
+      "scope"
+    ],
+    "claim": "Composable Beliefs is a reasoning and audit substrate, not a memory system: it layers over any memory/recall system rather than becoming one. Vector memory, model calls, recall/retrieval, and eval execution stay outside CB's scope and are owned by an external harness; CB ingests their outputs as observations and audits what they store and claim. Building retrieval into CB would forfeit the deterministic, LLM-free read path - the property the framework exists to provide.",
+    "evidence": [],
+    "subjects": [
+      {
+        "ref": "composable beliefs",
+        "type": "system"
+      }
+    ],
+    "deps": [
+      "cb:a462"
+    ],
+    "status": "active",
+    "created": "2026-06-12"
   }
 ]
