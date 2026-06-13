@@ -133,5 +133,13 @@
     "notes": "a532: the skill's own example shape (bare id) failed on first try in the a519 discharge; this materialization passes bare ids as its own live demonstration\n\nDischarged in the executing session itself. find_node routes through Graph.resolve_id: a bare id resolves when exactly one belief matches, ambiguity surfaces as {:ambiguous_id, ids}, and the canonical id is what gets linked and returned. This item's own materialization passed the bare id a532 per the skill's example shape - first-try success on the documented path. 326 tests passing including the ambiguity case.",
     "source": "cb:a532",
     "status": "done"
+  },
+  {
+    "action": "Supersede a449 with a successor naming the full sanctioned write surface (preflight/adjudicate/import, mix cb.evidence, mix cb.todo.close), re-point the c063 render contract's Operations section and deps, and regenerate CLAUDE.md",
+    "created": "2026-06-12",
+    "id": "t0019",
+    "notes": "Scope per a531 evidence 2 (the a530 close widened it): name the whole surface in one pass. Ceremony precedent: the a515 close (a521 -> a524, c062 -> c063).\n\nDone 2026-06-12: a449 -> a533 (write surface named in one pass), c063 -> c065 (Operations render re-pointed), c049 dep re-pointed to c065, CLAUDE.md regenerated and current. Chronicle: chronicles/2026-06-12-the-house-lists-its-doors.md.",
+    "source": "cb:a531",
+    "status": "done"
   }
 ]

@@ -1,0 +1,15 @@
+{
+  "type": "directive",
+  "kind": "action-item",
+  "domain": "dev",
+  "tags": ["backlog", "lifecycle:discrete", "git", "concurrency"],
+  "claim": "Settle commit hygiene for concurrently-written graph repos: a mid-session commit that stages the graph file sweeps foreign in-flight writes and can land a torn HEAD where the repo's own gates are red. Decide and encode the rule - for example, run the repo gates (mix cb.verify.schema, mix cb.generate.claude_md --check) against the staged tree before any commit touching graph-rendered surfaces, or coordinate commits across live sessions.",
+  "artifact": "document:chronicles/2026-06-12-the-house-lists-its-doors.md",
+  "evidence": [
+    {
+      "date": "2026-06-12",
+      "detail": "First specimen, 585f9ec: a session minting a535/a536 staged beliefs.json while the a531 ceremony was mid-flight in another session, committing the a533/c065 supersessions and t0019 materialization without the matching regenerated CLAUDE.md - at that commit mix cb.generate.claude_md --check fails. No data lost in either direction; the a531 close's commit repairs main. The hazard is structural: CLAUDE.md's own session-start doctrine says other sessions write these repos concurrently, so selective staging of a shared graph file will recur."
+    }
+  ],
+  "subjects": []
+}

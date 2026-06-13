@@ -1,0 +1,16 @@
+{
+  "type": "directive",
+  "kind": "action-item",
+  "domain": "dev",
+  "tags": ["backlog", "lifecycle:discrete", "write-flow", "deps"],
+  "claim": "Extend the write-flow front door to dep re-points: a sanctioned mix task for re-pointing a belief's dep from a superseded node to its successor (drop-dep + add-dep in one atomic pass, dry-run default, refusal on dangling targets, mirroring mix cb.evidence and mix cb.todo.close). The Mutation clauses exist and append their own evidence trail; only the task front door is missing, so every re-point is still a hand-rolled mix run script.",
+  "artifact": "document:chronicles/2026-06-12-the-house-lists-its-doors.md",
+  "evidence": [
+    {
+      "date": "2026-06-12",
+      "detail": "Three specimens, all the same shape: c049's dep re-points at every link of the render-contract chain (c061 -> c062 in the assert-session fold, c062 -> c063 in the a515 close, c063 -> c065 in the a531 close), each a throwaway .exs around Mutation.apply_batch plus Store.write. The a531 close's script also tripped on Store.write returning {:ok, path} - exactly the API-shape friction a front door absorbs once. Completes the a522/a530 arc: with this door the supersession ceremony needs no scripts at all."
+    }
+  ],
+  "subjects": [],
+  "deps": ["cb:a522", "cb:a530"]
+}

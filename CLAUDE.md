@@ -28,7 +28,7 @@ There are no confidence scores. Subjective scores synthesized without a determin
 
 ## Operations
 
-Author beliefs through the write flow, never by hand-editing the graph file: `mix cb.preflight --file <f>` checks a proposed belief for conflicts, `mix cb.adjudicate --file <f>` resolves them, and `mix cb.import --file <f>` writes the belief.
+Author beliefs through the write flow, never by hand-editing the graph file: `mix cb.preflight --file <f>` checks a proposed belief for conflicts, `mix cb.adjudicate --file <f>` resolves them, and `mix cb.import --file <f>` writes the belief. Two further doors complete the sanctioned write surface: `mix cb.evidence <id> --detail <text> --artifact <uri>` appends a dated evidence entry to an existing belief - the one sanctioned in-place growth point on an immutable node - and `mix cb.todo.close <id> --notes <text>` flips a materialized item open -> done with discharge notes. Both are dry-run by default and write only with `--write`.
 
 Verify with the graph's own tooling: `mix cb.verify.schema` checks a collection against the contracts it carries, `mix cb.verify.collection <namespace>` checks it together with its declared dependency collections, and `mix cb.generate.claude_md --check` confirms this file is current.
 
