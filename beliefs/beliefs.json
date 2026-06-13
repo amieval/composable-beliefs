@@ -7138,12 +7138,27 @@
         "date": "2026-06-12",
         "detail": "Specimens nine and ten by the running count: the t0015/t0016 status flips in the a519 discharge went through a hand-rolled .exs (CB.JSON read, Jason pretty encode, write_atomic_raw) - serialization pinned by using the sink's own modules, but still an ad-hoc script in the session that had just used mix cb.evidence for the belief half of the same discharge. The asymmetry is now the routine shape of every close: sanctioned append on the node, hand-rolled flip on the todo.",
         "artifact": "document:chronicles/2026-06-12-overlap-is-not-contact.md"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Discharged 2026-06-12 (materialized t0017): CB.Todos now owns the collection's serialization - tolerant read, atomic pretty write, strict open->done close that keeps materialization notes and appends discharge notes - with mix cb.todo.close fronting it (dry-run default, --notes required, refusals on unknown ids and non-open status) and the materializer's JSON sink rerouted through the same store, so the append and flip paths share one encoding and the ensure_ascii drift class is closed by construction on this collection too. Smoke-verified on a temp copy of the live file: non-ascii notes landed unescaped, untouched records byte-identical. t0017's own flip was the front door's first production run.",
+        "artifact": "code:lib/mix/tasks/cb.todo.close.ex#defmodule Mix.Tasks.Cb.Todo.Close do"
       }
     ],
     "subjects": [],
     "deps": [
       "cb:a522"
     ],
+    "materialized": {
+      "date": "2026-06-12",
+      "todos": [
+        {
+          "action": "Provide the todo-flip front door: CB.Todos store owning the collection's read/atomic write/close (strict open -> done, materialization notes kept with discharge notes appended as a new paragraph), the mix cb.todo.close task fronting it (dry-run default, --notes required, --todos override, refusals on unknown ids and non-open status), and the materializer's JSON sink rerouted through the same store so the append path and the flip path share one serialization",
+          "id": "t0017",
+          "notes": "a530: ten specimens of hand-rolled flips counted across the closes; the flip of this very item is the front door's first production run"
+        }
+      ]
+    },
     "status": "active",
     "created": "2026-06-12"
   },
@@ -7241,11 +7256,25 @@
         "date": "2026-06-12",
         "detail": "Hit live in the a519 discharge: the materialization spec was written with belief_id 'a519' per the skill's own example shape, failed with {:node_not_found, \"a519\"}, and succeeded only after namespacing to 'cb:a519'. The temp script's exit-0-on-error compounded it - the && rm cleaned up the failed script before the retry. mix cb.evidence resolves the same bare id without complaint in the same session. Kin to the bare-id class a510/a513 close: this is the materializer member. Preflight 2026-06-12 (first close under the c064 calibration): 0 contract, 0 schema, 25 neutral - all bare tag_overlap from the backlog family, reviewed at a glance, no wall.",
         "artifact": "document:chronicles/2026-06-12-overlap-is-not-contact.md"
+      },
+      {
+        "date": "2026-06-12",
+        "detail": "Discharged 2026-06-12 (materialized t0018): find_node routes through Graph.resolve_id, the same resolution the bs and cb.evidence front doors carry - a bare id resolves when exactly one belief matches, ambiguity surfaces as {:ambiguous_id, ids} instead of node_not_found, and the canonical id is what gets linked and returned. The /materialize skill doc now states the bare-or-namespaced contract. This discharge's own materialization passed bare ids (a530, a532) per the skill's example shape: first-try success on the documented path. 326 tests passing, ambiguity case covered.",
+        "artifact": "code:lib/cb/belief/materializer.ex#defp find_node(id) do"
       }
     ],
     "subjects": [],
     "deps": [],
-    "materialized": null,
+    "materialized": {
+      "date": "2026-06-12",
+      "todos": [
+        {
+          "action": "Route CB.Belief.Materializer.find_node through Graph.resolve_id so materialize/1 accepts bare or namespaced ids (bare resolving when exactly one belief matches, ambiguity surfacing as {:ambiguous_id, ids}), link and return the canonical id, and state the contract in the /materialize skill doc",
+          "id": "t0018",
+          "notes": "a532: the skill's own example shape (bare id) failed on first try in the a519 discharge; this materialization passes bare ids as its own live demonstration"
+        }
+      ]
+    },
     "status": "active",
     "created": "2026-06-12"
   }

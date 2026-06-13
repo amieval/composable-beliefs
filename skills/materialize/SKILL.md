@@ -4,7 +4,7 @@ A directive identifies work that needs doing. Materializing it means turning tha
 
 ## Input
 
-`$ARGUMENTS` is a belief ID (e.g. `a820` or `c080`) - it must resolve to a `directive` node (you do not materialize a theory: inferences and compounds describe, directives prescribe).
+`$ARGUMENTS` is a belief ID, bare (`a820`) or namespaced (`cb:a820`) - a bare id resolves when exactly one belief matches, the same resolution `mix bs` and `mix cb.evidence` carry. It must resolve to a `directive` node (you do not materialize a theory: inferences and compounds describe, directives prescribe).
 
 ## Steps
 
@@ -81,6 +81,10 @@ Each action item:
 - any other keys (e.g. `owner`, `due`, `object`) pass through to the sink untouched. The default JSON sink ignores them; a host that needs richer items supplies its own sink implementing the `CB.Materializer.Sink` behaviour.
 
 `action_items` may also be supplied under the legacy key `todos`.
+
+## Closing Items
+
+The flip back is not this skill's job, but it has a sanctioned front door too: when an item is discharged, close it with `mix cb.todo.close <todo-id> --notes "..." --write` (dry run without `--write`). Never flip `status` with a hand-rolled script.
 
 ## Rules
 

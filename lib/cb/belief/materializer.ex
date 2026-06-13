@@ -20,6 +20,7 @@ defmodule CB.Belief.Materializer do
   `:today`).
   """
 
+  alias CB.Belief.Graph
   alias CB.Belief.Store, as: BeliefStore
   alias CB.Materializer.Sink
 
@@ -29,7 +30,9 @@ defmodule CB.Belief.Materializer do
   Materialize a belief directive into action items.
 
   `spec` is a string-keyed map with:
-  - `"belief_id"` - the directive node ID to materialize (aXXX/cXXX)
+  - `"belief_id"` - the directive node ID to materialize; bare (`a519`)
+    or namespaced (`cb:a519`), a bare id resolving when exactly one
+    belief matches
   - `"action_items"` (or legacy `"todos"`) - a list of action-item maps,
     each with at least an `"action"` key (free text). Any extra keys are
     passed through to the sink untouched.
@@ -39,7 +42,9 @@ defmodule CB.Belief.Materializer do
     `CB.Materializer.Sink.JSON`)
   - any other keys are forwarded to the sink's `persist/3`
 
-  Returns `{:ok, %{belief_id: id, entries: refs}}` or `{:error, reason}`.
+  Returns `{:ok, %{belief_id: canonical_id, entries: refs}}`,
+  `{:error, reason}`, or `{:error, {:ambiguous_id, ids}}` when a bare
+  id matches more than one namespace.
   """
   def materialize(spec, opts \\ []) do
     belief_id = spec["belief_id"]
@@ -50,8 +55,8 @@ defmodule CB.Belief.Materializer do
          {:ok, node} <- find_node(belief_id),
          :ok <- validate_node(node),
          {:ok, entries} <- run_sink(sink, node, action_items, sink_opts),
-         :ok <- update_node(belief_id, entries) do
-      {:ok, %{belief_id: belief_id, entries: entries}}
+         :ok <- update_node(node.id, entries) do
+      {:ok, %{belief_id: node.id, entries: entries}}
     end
   end
 
@@ -61,9 +66,10 @@ defmodule CB.Belief.Materializer do
 
   defp find_node(id) do
     with {:ok, all} <- BeliefStore.read() do
-      case Enum.find(all, &(&1.id == id)) do
-        nil -> {:error, {:node_not_found, id}}
-        belief -> {:ok, belief}
+      case Graph.resolve_id(all, id) do
+        {:ok, canonical} -> {:ok, Enum.find(all, &(&1.id == canonical))}
+        {:error, :not_found} -> {:error, {:node_not_found, id}}
+        {:error, {:ambiguous, ids}} -> {:error, {:ambiguous_id, ids}}
       end
     end
   end

@@ -21,6 +21,9 @@ defmodule CB.Materializer.Sink.JSON do
   Records are appended to the JSON array at `CB.Config.todos_path/0`
   (overridable via the `:path` opt, or globally via
   `config :cb, todos_path: ...`). The file is created on first write.
+  Reads and writes route through `CB.Todos`, the collection's store,
+  so this append path and the `mix cb.todo.close` flip path share one
+  serialization.
   IDs are `t`-prefixed, zero-padded, and continue from the highest
   existing id in the file so appends never collide.
 
@@ -32,7 +35,7 @@ defmodule CB.Materializer.Sink.JSON do
   @behaviour CB.Materializer.Sink
 
   alias CB.Config
-  alias CB.JSON
+  alias CB.Todos
 
   @impl CB.Materializer.Sink
   def persist(implication, action_items, opts \\ []) do
@@ -40,7 +43,7 @@ defmodule CB.Materializer.Sink.JSON do
     today = Keyword.get(opts, :today, Date.to_iso8601(CB.today()))
     source = implication.id
 
-    with {:ok, existing} <- read(path) do
+    with {:ok, existing} <- Todos.read(path) do
       {records, refs, _next} =
         Enum.reduce(action_items, {[], [], next_seq(existing)}, fn item, {recs, refs, seq} ->
           id = format_id(seq)
@@ -61,9 +64,8 @@ defmodule CB.Materializer.Sink.JSON do
         end)
 
       updated = existing ++ Enum.reverse(records)
-      content = Jason.encode!(updated, pretty: true) <> "\n"
 
-      case JSON.write_atomic_raw(path, content) do
+      case Todos.write(updated, path) do
         {:ok, _path} -> {:ok, Enum.reverse(refs)}
         {:error, reason} -> {:error, {:write_failed, reason}}
       end
@@ -76,19 +78,6 @@ defmodule CB.Materializer.Sink.JSON do
     do: Map.put(map, "notes", notes)
 
   defp put_notes(map, _item), do: map
-
-  # Read the existing todo array, tolerating a missing file (treated as []).
-  defp read(path) do
-    if File.exists?(path) do
-      case JSON.read(path) do
-        {:ok, list} when is_list(list) -> {:ok, list}
-        {:ok, _} -> {:error, :todos_not_a_list}
-        {:error, reason} -> {:error, {:read_failed, reason}}
-      end
-    else
-      {:ok, []}
-    end
-  end
 
   # Next sequence number = one past the highest t-prefixed id present.
   defp next_seq(records) do

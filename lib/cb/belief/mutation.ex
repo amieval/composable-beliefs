@@ -56,8 +56,8 @@ defmodule CB.Belief.Mutation do
     clause ignores it, and `append-evidence` skips it when the mutation
     carries an explicit `:artifact`.
   - `:date` — ISO date string for the evidence entry. Defaults to
-    today (`Date.utc_today/0 |> Date.to_iso8601/1`). Surfaced as an
-    option mainly to keep tests deterministic.
+    today (`CB.today/0`, the local date every other writer stamps).
+    Surfaced as an option mainly to keep tests deterministic.
   """
   @spec apply_one(mutation(), [Belief.t()], keyword()) ::
           {:ok, [Belief.t()]} | {:error, error_reason()}
@@ -324,7 +324,7 @@ defmodule CB.Belief.Mutation do
 
   defp resolve_date(opts) do
     case Keyword.get(opts, :date) do
-      nil -> Date.utc_today() |> Date.to_iso8601()
+      nil -> CB.today() |> Date.to_iso8601()
       iso when is_binary(iso) -> iso
     end
   end

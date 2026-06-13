@@ -188,6 +188,72 @@ defmodule CB.Belief.MaterializerTest do
     assert {:error, {:node_not_found, "zzz999"}} = Materializer.materialize(spec, sink: EchoSink)
   end
 
+  # Bare-id resolution: the same resolution the bs and cb.evidence front
+  # doors carry, so the /materialize skill's documented bare-id example
+  # works on a namespaced graph.
+  describe "bare belief ids" do
+    setup do
+      dir = System.tmp_dir!()
+      beliefs = Path.join(dir, "cb-mat-ns-beliefs-#{:rand.uniform(999_999)}.json")
+
+      nodes = [
+        %{
+          "id" => "cb:a020",
+          "type" => "directive",
+          "kind" => "rule",
+          "domain" => "ops",
+          "claim" => "When a hold expires the item returns to available",
+          "materialized" => nil,
+          "status" => "active",
+          "created" => "2024-09-15"
+        },
+        %{
+          "id" => "lib:a021",
+          "type" => "directive",
+          "kind" => "rule",
+          "domain" => "ops",
+          "claim" => "Duplicated local id in a second namespace",
+          "materialized" => nil,
+          "status" => "active",
+          "created" => "2024-09-15"
+        },
+        %{
+          "id" => "cb:a021",
+          "type" => "directive",
+          "kind" => "rule",
+          "domain" => "ops",
+          "claim" => "Duplicated local id in the first namespace",
+          "materialized" => nil,
+          "status" => "active",
+          "created" => "2024-09-15"
+        }
+      ]
+
+      File.write!(beliefs, Jason.encode!(nodes, pretty: true))
+      Application.put_env(:cb, :beliefs_path, beliefs)
+      on_exit(fn -> File.rm(beliefs) end)
+      :ok
+    end
+
+    test "a bare id resolves to the single namespaced match and links the canonical node" do
+      spec = %{"belief_id" => "a020", "action_items" => [%{"action" => "x"}]}
+
+      assert {:ok, %{belief_id: "cb:a020", entries: entries}} =
+               Materializer.materialize(spec, sink: EchoSink)
+
+      {:ok, all} = Store.read()
+      node = Enum.find(all, &(&1.id == "cb:a020"))
+      assert %{"todos" => ^entries} = node.materialized
+    end
+
+    test "a bare id matching more than one namespace is rejected" do
+      spec = %{"belief_id" => "a021", "action_items" => [%{"action" => "x"}]}
+
+      assert {:error, {:ambiguous_id, ["cb:a021", "lib:a021"]}} =
+               Materializer.materialize(spec, sink: EchoSink)
+    end
+  end
+
   # Sanity: the Belief alias is used so the module compiles cleanly even
   # if future edits reference it directly.
   test "directive belief shape" do

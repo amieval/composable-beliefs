@@ -117,5 +117,21 @@
     "notes": "Discharged in the executing session itself. Encoded as cb:c064 (preflight-escalation-criteria), deps c055 + a519, three scenario rules and four invariants. Its own preflight was the calibrated bucketing's first live run: 0 contract, 0 schema, 3 neutral, c055 surfacing as annotated neutral where the old code would have raised the wall. Schema verify 20/20 after import.",
     "source": "cb:a519",
     "status": "done"
+  },
+  {
+    "action": "Provide the todo-flip front door: CB.Todos store owning the collection's read/atomic write/close (strict open -> done, materialization notes kept with discharge notes appended as a new paragraph), the mix cb.todo.close task fronting it (dry-run default, --notes required, --todos override, refusals on unknown ids and non-open status), and the materializer's JSON sink rerouted through the same store so the append path and the flip path share one serialization",
+    "created": "2026-06-12",
+    "id": "t0017",
+    "notes": "a530: ten specimens of hand-rolled flips counted across the closes; the flip of this very item is the front door's first production run\n\nDischarged in the executing session itself. CB.Todos owns the collection's serialization end to end - the sink delegates its read and write, so append and flip cannot drift apart. Smoke-verified on a temp copy of the live collection: refusal on the already-done t0016, two flips with non-ascii notes landing unescaped, every untouched record byte-identical. This flip is the front door's first production run - the eleventh hand-rolled specimen never happened.",
+    "source": "cb:a530",
+    "status": "done"
+  },
+  {
+    "action": "Route CB.Belief.Materializer.find_node through Graph.resolve_id so materialize/1 accepts bare or namespaced ids (bare resolving when exactly one belief matches, ambiguity surfacing as {:ambiguous_id, ids}), link and return the canonical id, and state the contract in the /materialize skill doc",
+    "created": "2026-06-12",
+    "id": "t0018",
+    "notes": "a532: the skill's own example shape (bare id) failed on first try in the a519 discharge; this materialization passes bare ids as its own live demonstration\n\nDischarged in the executing session itself. find_node routes through Graph.resolve_id: a bare id resolves when exactly one belief matches, ambiguity surfaces as {:ambiguous_id, ids}, and the canonical id is what gets linked and returned. This item's own materialization passed the bare id a532 per the skill's example shape - first-try success on the documented path. 326 tests passing including the ambiguity case.",
+    "source": "cb:a532",
+    "status": "done"
   }
 ]
